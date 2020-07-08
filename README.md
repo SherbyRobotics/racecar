@@ -44,7 +44,7 @@ sudo apt-get install ros-<distro>-cv-bridge
 ![](https://github.com/SherbyRobotics/racecar/blob/master/images/Racecar_rqt_graph_teleop.png "teleop" )
 In the graph, you can see a representation of the communication between the nodes and the topics on the base launch file `teleop.launch`. 
 
-The RaceCar has many modes of operation that allow you to test different properties of the car, but they are a little bit tricky to pull off. To select a mode for the RaceCar, you must **simultaneously** perform an **input combination ** on the controller while **giving propulsion or changing direction** of the electric car (with the exception of a mode which repositions the autonomous car). After releasing the input, the car will return to its original state. See [Controller modes](#controller-modes)  table for more details.
+The RaceCar has many modes of operation that allow you to test different properties of the car, but they are a little bit tricky to pull off. To select a mode for the RaceCar, you must **simultaneously** perform an **input combination** on the controller while **giving propulsion or changing direction** of the electric car (with the exception of a mode which repositions the autonomous car). After releasing the input, the car will return to its original state. See [Controller modes](#controller-modes)  table for more details.
 
 ## Launch
 1. Connect the Arduino mega 2560 of the RaceCar to the computer.
