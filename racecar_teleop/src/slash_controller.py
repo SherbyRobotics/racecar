@@ -21,7 +21,7 @@ class slash_controller(object):
         
         # Timer
         self.dt         = 0.05
-        #self.timer      = rospy.Timer( rospy.Duration( self.dt ), self.timed_controller )
+        self.timer      = rospy.Timer( rospy.Duration( self.dt ), self.timed_controller )
         
         # Paramters
 
