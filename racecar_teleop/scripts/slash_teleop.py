@@ -18,7 +18,7 @@ class teleop(object):
         self.max_vel  = rospy.get_param('~max_vel',   6.0) # Max linear velocity (m/s)
         self.max_volt = rospy.get_param('~max_volt',  8)   # Max voltage is set at 6 volts   
         self.maxStAng = rospy.get_param('~max_angle', 40)  # Supposing +/- 40 degrees max for the steering angle
-        self.cmd2rad   = -self.maxStAng*2*3.1416/360     
+        self.cmd2rad   = self.maxStAng*2*3.1416/360     
 
     ####################################### 
         

@@ -285,7 +285,7 @@ void set_pwm( int pwm ){
 ///////////////////////////////////////////////////////////////////
 void cmdCallback ( const geometry_msgs::Twist&  twistMsg ){
   
-  ser_ref  = twistMsg.angular.z; //rad
+  ser_ref  = -twistMsg.angular.z; //rad
   dri_ref  = twistMsg.linear.x;  // volt or m/s or m
   ctl_mode = twistMsg.linear.z;  // 1    or 2   or 3
 
