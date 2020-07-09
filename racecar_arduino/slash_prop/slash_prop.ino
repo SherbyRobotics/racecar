@@ -415,7 +415,7 @@ void ctl(){
 
 
 // ROS suscriber
-ros::Subscriber<geometry_msgs::Twist> cmdSubscriber("/prop_cmd", &cmdCallback) ;
+ros::Subscriber<geometry_msgs::Twist> cmdSubscriber("prop_cmd", &cmdCallback) ;
 
 
 ///////////////////////////////////////////////////////////////////
