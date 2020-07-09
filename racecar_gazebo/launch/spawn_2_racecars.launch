@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar1"/>
+    <arg name="color" value="Blue"/>
+    <arg name="x" value="1.5"/>
+    <arg name="y" value="0.75"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar2"/>
+    <arg name="color" value="Yellow"/>
+    <arg name="x" value="1.5"/>
+    <arg name="y" value="-0.25"/>
+  </include>  
+
+</launch>

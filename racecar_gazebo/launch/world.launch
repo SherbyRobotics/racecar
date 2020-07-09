@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="gui" default="true" />
+  <arg name="name" default="tunnel" /> <!-- tunnel, circuit, parking_1, cones -->
+  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find racecar_gazebo)/worlds/racecar_$(arg name).world"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+  
+  <node pkg="topic_tools" type="throttle" name="link_states_throttle" args="messages /gazebo/link_states 20"/>
+</launch>

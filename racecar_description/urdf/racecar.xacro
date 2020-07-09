@@ -1,0 +1,285 @@
+<?xml version="1.0"?>
+<robot name="racecar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="prefix" default="racecar"/>
+  <xacro:arg name="color" default="Blue"/>
+  
+  <xacro:include filename="$(find racecar_description)/urdf/macros.xacro"/>
+  <xacro:include filename="$(find racecar_description)/urdf/materials.xacro"/>
+  
+  <!-- Add chassis and it's inertia link -->
+
+  <link name="$(arg prefix)/base_footprint" />
+
+  <link name="$(arg prefix)/base_link" />
+
+  <joint name="base_footprint_link_joint" type="fixed">
+    <origin xyz="0 0 0.05" rpy="0 0 0" />
+    <parent link="$(arg prefix)/base_footprint" />
+    <child link="$(arg prefix)/base_link" />
+  </joint>
+
+  <link name="$(arg prefix)/chassis">
+    <visual>
+      <xacro:chassis_geometry/>
+      <material name="$(arg color)" />
+    </visual>
+    <collision>
+      <geometry>
+        <box size=".3 .1 .05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_link_joint" type="fixed">
+    <origin xyz="0 0 0.0" rpy="0 0 0" />
+    <parent link="$(arg prefix)/base_link" />
+    <child link="$(arg prefix)/chassis" />
+  </joint>
+
+  <link name="$(arg prefix)/chassis_inertia">
+    <inertial>
+      <xacro:chassis_inertial_params />
+    </inertial>
+  </link>
+
+  <joint name="chassis_inertia_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="$(arg prefix)/chassis" />
+    <child link="$(arg prefix)/chassis_inertia" />
+  </joint>
+
+  <!-- Add the left rear wheel with its joints and tranmissions -->
+
+  <link name="$(arg prefix)/left_rear_wheel">
+    <inertial>
+      <xacro:left_wheels_inertial_params />
+    </inertial>
+    <visual>
+      <xacro:left_rear_wheel_geometry />
+      <material name="black" />
+    </visual>
+    <collision>robot
+      <xacro:left_wheels_collision_geometry />
+    </collision>
+  </link>
+
+  <joint name="left_rear_wheel_joint" type="continuous">
+    <origin xyz="0 0.1 0" rpy="1.5708 0 0" />
+    <parent link="$(arg prefix)/chassis" />
+    <child link="$(arg prefix)/left_rear_wheel" />
+    <axis xyz="0 0 -1" />
+    <limit effort="20" velocity="100" />
+  </joint>
+
+  <xacro:wheel_transmission name="left_rear_wheel" />
+
+  <!-- Add the right rear wheel with its joints and tranmissions -->
+
+  <link name="$(arg prefix)/right_rear_wheel">
+    <inertial>
+      <xacro:right_wheels_inertial_params />
+    </inertial>
+    <visual>
+      <xacro:right_rear_wheel_geometry />
+      <material name="black" />
+    </visual>
+    <collision>
+      <xacro:right_wheels_collision_geometry />
+    </collision>
+  </link>
+
+  <joint name="right_rear_wheel_joint" type="continuous">
+    <origin xyz="0 -0.1 0" rpy="1.5708 0 0" />
+    <parent link="$(arg prefix)/chassis" />
+    <child link="$(arg prefix)/right_rear_wheel" />
+    <axis xyz="0 0 -1" />
+    <limit effort="20" velocity="100" />
+  </joint>
+
+  <xacro:wheel_transmission name="right_rear_wheel" />
+
+  <!-- Add the left steering hinge with its joints and tranmissions -->
+
+  <link name="$(arg prefix)/left_steering_hinge">
+    <inertial>
+      <xacro:steering_hinge_inertial_params />
+    </inertial>
+    <visual>
+      <xacro:left_steering_hinge_geometry />
+      <material name="grey" />
+    </visual>
+  </link>
+
+  <joint name="left_steering_hinge_joint" type="revolute">
+    <origin xyz="0.34 0.1 0" rpy="0 1.5708 0" />
+    <parent link="$(arg prefix)/chassis" />
+    <child link="$(arg prefix)/left_steering_hinge" />
+    <axis xyz="-1 0 0" />
+    <limit lower="-1.0" upper="1.0" effort="10" velocity="100" />
+  </joint>
+
+  <xacro:steering_hinge_transmission name="left_steering_hinge" />
+
+  <!-- Add the right steering hinge with its joints and tranmissions -->
+
+  <link name="$(arg prefix)/right_steering_hinge">
+    <inertial>
+      <xacro:steering_hinge_inertial_params />
+    </inertial>
+    <visual>
+      <xacro:right_steering_hinge_geometry />
+      <material name="grey" />
+    </visual>
+  </link>
+
+  <joint name="right_steering_hinge_joint" type="revolute">
+    <origin xyz="0.34 -0.1 0" rpy="0 1.5708 0" />
+    <parent link="$(arg prefix)/chassis" />
+    <child link="$(arg prefix)/right_steering_hinge" />
+    <axis xyz="-1 0 0" />
+    <limit lower="-1.0" upper="1.0" effort="10" velocity="100" />
+  </joint>
+
+  <xacro:steering_hinge_transmission name="right_steering_hinge" />
+
+  <!-- Add the left front wheel with its joints and tranmissions -->
+
+  <link name="$(arg prefix)/left_front_wheel">
+    <inertial>
+      <xacro:left_wheels_inertial_params />
+    </inertial>
+    <visual>
+      <xacro:left_front_wheel_geometry />
+      <material name="black" />
+    </visual>
+    <collision>
+      <xacro:left_wheels_collision_geometry />
+    </collision>
+  </link>
+
+  <joint name="left_front_wheel_joint" type="continuous">
+    <origin xyz="0 0 0" rpy="1.5708 0 0" />
+    <parent link="$(arg prefix)/left_steering_hinge" />
+    <child link="$(arg prefix)/left_front_wheel" />
+    <axis xyz="0 0 -1" />
+    <limit effort="20" velocity="100" />
+  </joint>
+
+  <xacro:wheel_transmission name="left_front_wheel" />
+
+  <!-- Add the left front wheel with its joints and tranmissions -->
+
+  <link name="$(arg prefix)/right_front_wheel">
+    <inertial>
+      <xacro:right_wheels_inertial_params />
+    </inertial>
+    <visual>
+      <xacro:right_front_wheel_geometry />
+      <material name="black" />
+    </visual>
+    <collision>
+      <xacro:right_wheels_collision_geometry />
+    </collision>
+  </link>
+
+  <joint name="right_front_wheel_joint" type="continuous">
+    <origin xyz="0 0 0" rpy="1.5708 0 0" />
+    <parent link="$(arg prefix)/right_steering_hinge" />
+    <child link="$(arg prefix)/right_front_wheel" />
+    <axis xyz="0 0 -1" />
+    <limit effort="20" velocity="100"/>
+  </joint>
+  
+  <xacro:wheel_transmission name="right_front_wheel" />
+
+  <!-- Add Hokuyo laser scanner -->
+  <link name="$(arg prefix)/base_laser">
+    <inertial>
+      <xacro:hokuyo_inertial_params />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://racecar_description/meshes/hokuyo.dae"/>
+        <material name="grey" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="hokuyo_joint" type="fixed">
+    <origin xyz="0.1387 0.0 0.166" rpy="0 0 3.14159"/>
+    <parent link="$(arg prefix)/chassis" />
+    <child link="$(arg prefix)/base_laser" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+
+  <!-- camera -->
+  <link name="$(arg prefix)/camera_link">
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.033 0.03 0.030"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.033 0.03 0.030"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.21 0 0.13" rpy="0 0 0"/>
+    <parent link="$(arg prefix)/chassis"/>
+    <child link="$(arg prefix)/camera_link"/>
+    <axis xyz="0 0 1" />
+  </joint>
+  <link name="$(arg prefix)/camera_optical_link">
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  <joint name="camera_optical_joint" type="fixed">
+    <origin xyz="0 0.0 0" rpy="-1.570796327 0 -1.570796327"/>
+    <parent link="$(arg prefix)/camera_link"/>
+    <child link="$(arg prefix)/camera_optical_link"/>
+    <axis xyz="0 0 1" />
+  </joint>
+
+
+  <!-- IMU -->
+  <joint name="imu_joint" type="fixed">
+    <origin xyz="0 -0.065 -0.015" rpy="0 0 -1.570796327" /> 
+    <parent link="$(arg prefix)/base_laser"/>
+    <child link="$(arg prefix)/imu_link" />
+  </joint>
+  <link name='$(arg prefix)/imu_link'>
+     <inertial>
+       <origin xyz="0 0 0" rpy="0 0 0"/>
+       <mass value="0.0000001"/>
+       <inertia
+	  ixx="1e-05" ixy="0.0" ixz="0.0"
+	  iyy="1e-05" iyz="0.0"
+	  izz="1e-05"/>
+       </inertial>
+  </link>
+ 
+  <!-- Add the remaining xacros -->
+  <xacro:include filename="$(find racecar_description)/urdf/racecar.gazebo"/>
+
+</robot>

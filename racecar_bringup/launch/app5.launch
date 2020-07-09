@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
+  <arg name="odom_fusion"   default="false"/> <!-- APP5: Use robot_localization pkg for odometry -->
+
   <arg name="joy_port"     default="js0"/>    <!-- for /dev/input/js0 -->
 
   <arg name="prefix"       default="racecar"/>
@@ -15,9 +17,20 @@
     <arg name="arduino_baud" value="$(arg arduino_baud)"/>
     <arg name="lidar_port"   value="$(arg lidar_port)"/>
     <arg name="sensors"      value="$(arg sensors)"/>
+    <arg if="$(arg odom_fusion)" name="publish_tf" value="false"/>
   </include>
 
   <group ns="$(arg prefix)">
+  
+    <!-- optional sensor fusion -->
+    <include if="$(arg odom_fusion)" file="$(find racecar_bringup)/launch/includes/robot_localization.launch.xml">
+      <arg name="prefix" value="$(arg prefix)"/>
+    </include>
+  
+    <!-- Arbitration node for twists coming from the joystick and the web client-->
+    <node pkg="racecar_bringup" type="cmd_vel_arbitration.py" name="cmd_vel_arbitration">     
+      <remap from="cmd_vel_output" to="cmd_vel"/>
+    </node>
 
     <node pkg="joy" type="joy_node" name="joy" >
       <param name="dev"               value="/dev/input/$(arg joy_port)"/>
@@ -26,8 +39,15 @@
       <param name="coalesce_interval" value="0.01"/>
     </node>
 
-    <node pkg="racecar_teleop" type="slash_teleop.py" name="teleop"/>
-    <node pkg="racecar_teleop" type="slash_controller.py" name="controller" output="screen"/>
+    <node pkg="racecar_teleop" type="slash_teleop.py" name="teleop">
+      <remap from="ctl_ref" to="cmd_vel_abtr_0"/> <!-- Highest priority -->
+      <param name="max_vel" value="2"/>
+      <param name="max_angle" value="21"/>
+    </node>
+    
+    <node pkg="racecar_teleop" type="slash_controller.py" name="controller" output="screen">
+      <remap from="ctl_ref" to="cmd_vel"/> 
+    </node>
 
   </group>
 

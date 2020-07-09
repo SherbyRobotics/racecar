@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="gui" default="true" />
+  <arg name="web_server" default="false"/>
+  <arg name="joy" default="js0" />
+  <arg name="prefix" default="racecar" />
+  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find racecar_gazebo)/worlds/racecar_tunnel_genie.world"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="$(arg prefix)"/>
+    <arg name="web_server" value="$(arg web_server)"/>
+    <arg name="joy" value="$(arg joy)"/>
+    <arg name="x" value="0"/>
+    <arg name="theta" value="-1.57295"/>
+  </include>
+</launch>

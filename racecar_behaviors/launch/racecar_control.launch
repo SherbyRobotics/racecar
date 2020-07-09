@@ -1,0 +1,35 @@
+<!-- -->
+<launch>  
+  
+  <!-- APP5: Add your behaviors in this file.
+       Remap cmd_vel output of your nodes to one available abitration entries (from highest to lowest prority): 
+         cmd_vel_abtr_1,
+         cmd_vel_abtr_2,
+         cmd_vel_abtr_3,
+         cmd_vel_abtr_4,
+         cmd_vel_abtr_5,
+         cmd_vel_abtr_6,
+         cmd_vel_abtr_7,
+         
+         cmd_vel_abtr_0 is reserved for teleop (highest priority).
+  -->
+
+  <arg name="prefix" default="racecar"/>
+  
+  <group ns="$(arg prefix)">
+      
+    <node pkg="racecar_behaviors" type="path_following.py" name="path_following" output="screen">
+       <param name="max_speed" value="1"/>
+       <remap from="cmd_vel" to="cmd_vel_abtr_2"/>
+       <remap from="scan"    to="scan"/>
+       <remap from="odom"    to="odometry/filtered"/>
+    </node>  
+    
+    <node pkg="racecar_behaviors" type="obstacle_detector.py" name="obstacle_detector" output="screen">
+       <remap from="cmd_vel" to="cmd_vel_abtr_1"/>
+       <remap from="scan"    to="scan"/>
+    </node>    
+            
+  </group>
+
+</launch>

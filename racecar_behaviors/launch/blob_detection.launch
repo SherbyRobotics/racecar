@@ -1,0 +1,37 @@
+<!-- -->
+<launch>  
+  <arg name="prefix" default="racecar"/>
+  <arg name="fixed_frame_id" value="odom"/> <!-- set "map" when a map is used! -->
+   
+  <group ns="$(arg prefix)">
+
+    <!-- uncompress raspicam image -->
+    <node pkg="image_transport" type="republish" name="republish_raspicam" args="compressed in:=raspicam_node/image raw out:=raspicam_node/image"/>
+    <!-- convert scan to a point cloud -->
+    <node pkg="racecar_behaviors" type="laserscan_to_pointcloud.py" name="laserscan_to_pointcloud">
+       <remap from="converted_pc" to="scan_cloud"/>
+       <remap from="/scan" to="scan"/>
+    </node>
+    <!-- register scan to camera -->
+    <node pkg="rtabmap_ros" type="pointcloud_to_depthimage" name="pointcloud_to_depthimage">
+       <param name="fixed_frame_id"  value="$(arg prefix)/odom"/>
+       <param name="fill_holes_size" value="2"/>
+       <remap from="camera_info" to="raspicam_node/camera_info"/>
+       <remap from="cloud"     to="scan_cloud"/>
+       <remap from="image"     to="raspicam_node/depth_registered"/>
+       <remap from="image_raw" to="raspicam_node/depth_registered_raw"/>
+    </node>
+    <!-- blob_detector -->
+    <node pkg="racecar_behaviors" type="blob_detector.py" name="blob_detector" output="screen">
+       <remap from="image"       to="raspicam_node/image"/>
+       <remap from="camera_info" to="raspicam_node/camera_info"/>
+       <remap from="depth"       to="raspicam_node/depth_registered"/>
+       <param name="map_frame_id"    value="$(arg prefix)/$(arg fixed_frame_id)"/>
+       <param name="frame_id"        value="$(arg prefix)/base_footprint"/>
+       <param name="object_frame_id" value="$(arg prefix)/object"/>
+       <param name="color_hue"       value="10"/>
+    </node>
+        
+  </group>
+
+</launch>

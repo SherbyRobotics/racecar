@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar1"/>
+    <arg name="color" value="Blue"/>
+    <arg name="x" value="1.5"/>
+    <arg name="y" value="0.75"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar2"/>
+    <arg name="color" value="Yellow"/>
+    <arg name="x" value="1.5"/>
+    <arg name="y" value="-0.25"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar3"/>
+    <arg name="color" value="Indigo"/>
+    <arg name="x" value="0.75"/>
+    <arg name="y" value="0.75"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar4"/>
+    <arg name="color" value="White"/>
+    <arg name="x" value="0.75"/>
+    <arg name="y" value="-0.25"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar5"/>
+    <arg name="color" value="Black"/>
+    <arg name="x" value="0"/>
+    <arg name="y" value="0.75"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar6"/>
+    <arg name="color" value="DarkGrey"/>
+    <arg name="x" value="0"/>
+    <arg name="y" value="-0.25"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar7"/>
+    <arg name="color" value="Orange"/>
+    <arg name="x" value="-0.75"/>
+    <arg name="y" value="0.75"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar8"/>
+    <arg name="color" value="Purple"/>
+    <arg name="x" value="-0.75"/>
+    <arg name="y" value="-0.25"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar9"/>
+    <arg name="color" value="Green"/>
+    <arg name="x" value="-1.5"/>
+    <arg name="y" value="0.75"/>
+  </include>
+  
+  <include file="$(find racecar_gazebo)/launch/spawn_racecar.launch">
+    <arg name="prefix" value="racecar10"/>
+    <arg name="color" value="Red"/>
+    <arg name="x" value="-1.5"/>
+    <arg name="y" value="-0.25"/>
+  </include>
+
+</launch>

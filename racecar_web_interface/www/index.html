@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<!-- 
+==References==
+Server-side:
+* http://docs.ros.org/indigo/api/roswww/html/
+* http://wiki.ros.org/web_video_server
+* http://wiki.ros.org/rosbridge_suite/Tutorials/RunningRosbridge
+
+Client-side:
+* http://wiki.ros.org/roslibjs/Tutorials/BasicRosFunctionality
+* https://getbootstrap.com/docs/4.0/getting-started/introduction/
+* https://getbootstrap.com/docs/4.0/layout/grid/
+-->
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <title>Laboratoire S5-APP1</title>
+</head>
+
+<body>
+    
+  <!-- Menu BEGIN-->
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <h6 class="text-white h4">Config</h6>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-dark bg-dark">
+    <div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>
+  <!-- Menu END-->
+
+  <!-- Main layout BEGIN-->
+  <div class="container-fluid">
+
+  </div>
+  <!-- Main layout END-->
+  
+  <!-- JavaScript, import frameworks -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="js/jquery-3.3.1.slim.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/roslib.min.js"></script> <!-- rosbridge -->
+
+  <!-- Custom scripts -->
+  <script>
+      // Define some global variables
+      var rbServer = null;
+      var cmdVelTopic = null;
+
+      //Some initializations after the page has been shown
+      $(document).ready(function(){
+        document.getElementById("log").value = 'Default text\n'
+      });
+
+      // Define some functions
+      function connectROS() {
+        // This function connects to the rosbridge server
+
+	    rbServer = new ROSLIB.Ros({
+          // Assuming ros server IP is 10.42.0.1
+	      url : 'ws://10.42.0.1:9090'
+	    });
+
+        rbServer.on('connection', function(){
+            console.log('Connected to websocket server.');
+
+            // These lines create a topic object as defined by roslibjs
+            cmdVelTopic = new ROSLIB.Topic({
+                ros : rbServer,
+                name : '/racecar/cmd_vel_abtr_2',
+                messageType : 'geometry_msgs/Twist'
+            });
+	    });
+
+        rbServer.on('error', function(error) {
+          console.log('Error connecting to websocket server: ', error);
+	    });
+
+	    rbServer.on('close', function() {
+          console.log('Connection to websocket server closed.');
+	    });
+      }
+
+      // These lines create a message that conforms to the structure of the Twist defined in our ROS installation
+      // It initalizes all properties to zero. They will be set to appropriate values before we publish this message.
+      var twist = new ROSLIB.Message({
+           linear : {
+                x : 0.0,
+                y : 0.0,
+                z : 0.0
+            },
+            angular : {
+                x : 0.0,
+                y : 0.0,
+                z : 0.0
+            }
+      });
+
+      //Publishing loop cmd_vel at 5 Hz
+      setInterval(function(){
+           if(cmdVelTopic != null)
+           {
+             cmdVelTopic.publish(twist);
+           }
+      }, 200);
+
+  </script>
+</body>
+</html>

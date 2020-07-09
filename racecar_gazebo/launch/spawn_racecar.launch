@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="prefix" default="racecar" />
+  <arg name="joy" default="js0" />
+  <arg name="x" default="0" />
+  <arg name="y" default="0" />
+  <arg name="theta" default="0" />
+  <arg name="web_server" default="false"/> <!-- Launch a web server -->
+  
+  <!-- Black, Blue, Green, DarkGrey, Orange, Red,
+       White, Yellow, Turquoise, SkyBlue, Indigo -->
+  <arg name="color" default="DarkGrey" /> 
+  
+  <group ns="$(arg prefix)">
+    <node pkg="joy" type="joy_node" name="joy">
+      <param name="dev" value="/dev/input/$(arg joy)"/>
+      <param name="deadzone" value="0.2"/>
+      <param name="autorepeat_rate" value="5"/>
+      <param name="coalesce_interval" value="0.01"/>
+    </node>
+
+    <node pkg="racecar" type="gamepad.py" name="gamepad">
+      <remap from="cmd_vel" to="cmd_vel_abtr_0"/> <!-- Highest priority -->
+    </node>
+    
+    <!-- Arbitration node -->
+    <node pkg="racecar" type="cmd_vel_arbitration.py" name="cmd_vel_arbitration">     
+       <remap from="cmd_vel_output" to="cmd_vel"/>
+    </node>
+
+    <!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find racecar_description)/urdf/racecar.xacro' prefix:=$(arg prefix) color:=$(arg color)" />
+
+    <!-- push robot_description to factory and spawn robot in gazebo -->
+    <node name="racecar_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model $(arg prefix) -x $(arg x) -y $(arg y) -z 0.05 -Y $(arg theta)" />
+
+    <!-- low-level gazebo control launch file -->
+    <include file="$(find racecar_gazebo)/launch/includes/gazebo_control.launch.xml">
+      <arg name="prefix" value="$(arg prefix)"/>
+    </include>
+    
+    <!-- Hack to republish image as compressed like on the real car, as publishing compressed from gazebo makes it crash -->
+    <node name="republish_rgb" type="republish" pkg="image_transport" args="raw in:=raspicam_node/image_raw compressed out:=raspicam_node/image" />
+
+    <!-- web stuff, interface will be available at: http://localhost:8085/racecar_web_interface -->
+    <include if="$(arg web_server)" file="$(find roswww)/launch/roswww.launch">
+      <arg name="name" value="roswww"/>
+      <arg name="port" value="8085"/> <!-- avoid to use apache default port -->
+      <arg name="webpath" value="www"/> <!-- relative path to the webroot. E.g. place this foloder in the ROS package root dir -->
+    </include>
+    <node if="$(arg web_server)" name="web_video_server" type="web_video_server" pkg="web_video_server"/>
+    <include if="$(arg web_server)" file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+  </group>
+</launch>

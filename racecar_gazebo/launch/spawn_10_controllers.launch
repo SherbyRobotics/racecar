@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar1"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar2"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar3"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar4"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar5"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar6"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar7"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar8"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar9"/>
+  </include>
+  
+  <include file="$(find racecar_control)/launch/racecar_control.launch">
+    <arg name="prefix" value="racecar10"/>
+  </include>
+
+</launch>
