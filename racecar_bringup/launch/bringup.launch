@@ -23,7 +23,7 @@
           <param name="port" value="/dev/tty$(arg arduino_port)"/>
           <param name="baud" value="$(arg arduino_baud)"/>
       </node>
-      <node pkg="racecar" type="arduino_sensors.py" name="arduino_sensors" output="screen">
+      <node pkg="racecar_bringup" type="arduino_sensors.py" name="arduino_sensors" output="screen">
         <remap from="raw_odom" to="prop_sensors"/>
         <remap if="$(arg publish_tf)" from="odom" to="odometry/filtered"/>
       </node>
