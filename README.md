@@ -1,5 +1,5 @@
 # racecar
-Files for the UdeS 1/10th autonomous car platform
+Software sources for the UdeS 1/10th autonomous car platform
 
 ## Table of contents
 * [Technologies](#technologies)
@@ -23,10 +23,12 @@ To be able to test our code, there are a few requirements.
 
 ### Software
 * Ubuntu 18.04 
-* ROS packages:
+* Main dependencies (baseline):
 	* [rosserial arduino](http://wiki.ros.org/rosserial_arduino)
 	* [rosserial](http://wiki.ros.org/rosserial)
 	* [joy](http://wiki.ros.org/joy)
+	* MPU  --> TODO Mettre le lien vers la librairie arduino nécessaire pour compiler le firmware avec l'IMU
+* Other dependencies (all fonctionnalities):
 	* [angle](http://wiki.ros.org/angles)
 	* [cv-camera](http://wiki.ros.org/cv_camera)
 	* [cv-bridge](http://wiki.ros.org/cv_bridge)
@@ -44,11 +46,11 @@ sudo apt-get install ros-<distro>-cv-bridge
 ![](https://github.com/SherbyRobotics/racecar/blob/master/images/Racecar_rqt_graph_teleop.png "teleop" )
 In the graph, you can see a representation of the communication between the nodes and the topics on the base launch file `teleop.launch`. 
 
-The RaceCar has many modes of operation that allow you to test different properties of the car, but they are a little bit tricky to pull off. To select a mode for the RaceCar, you must **simultaneously** perform an **input combination** on the controller while **giving propulsion or changing direction** of the electric car (with the exception of a mode which repositions the autonomous car). After releasing the input, the car will return to its original state. See [Controller modes](#controller-modes)  table for more details.
+The RaceCar has many modes that allow you to test different operating mode. The ROS controller node has multiple high-level mode that are selected by joystick inputs. For instance, open-loop, closed-loop in velocity, closed-loop in position for both the propulsion and the steering. See [Controller modes](#controller-modes)  table for more details.  The Arduino has also multiple internal low-level modes that are selected by the ROS controller node. Empty mode templates are available in the source code for you to test custom control modes.
 
 ## Launch
 1. Connect the Arduino mega 2560 of the RaceCar to the computer.
-2. Flash the Arduino mega 2560 with the firmware file `slash_prop.ino` (see [arduino firmware](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/slash_prop)).
+2. Flash the Arduino mega 2560 with the firmware file `racecar_propulsion_firmware.ino` (see [arduino firmware](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware)).
 3. Reconnect the Arduino mega 2560 to the USB-hub of the RaceCar.
 4. Connect the Raspberry Pi 3 to the the battery.
 5. Connect the Raspberry Pi 3 to a monitor with a HDMI cable.
@@ -58,7 +60,7 @@ The RaceCar has many modes of operation that allow you to test different propert
 9. Enable the joystick by performing an input combination to start.
 10. Enjoy!
 
-## Controller Modes
+## High-level Controller Modes
 Mode | Input sequence | Function
 -|-|-
 1|`LB`| Closed-loop velocity, open-loop steering
@@ -66,8 +68,8 @@ Mode | Input sequence | Function
 3|`LB` + `A`|Closed-loop position, open-loop steering
 4|`LB` + `B`|Closed-loop velocity, closed-loop steering
 5|`LB` + `X`|Closed-loop velocity, closed-loop steering
-6|`LB` + `Y`|Reset encoder
-7|`LB` + `LT`|Template
+6|`LB` + `Y`|Reset encoder command
+7|`LB` + `LT`|Empty template
 8|`LB` + `Button stick left` + `Button stick right`|Joystick disabled
 9|`LB` + `Croos key Up/Down`|Template
 10|None|Nothing 
