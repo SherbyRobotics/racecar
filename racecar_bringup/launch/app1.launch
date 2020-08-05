@@ -37,7 +37,7 @@
       <param name="max_angle" value="21"/>
     </node>
     
-    <node pkg="racecar_teleop" type="slash_controller.py" name="controller" output="screen">
+    <node pkg="racecar_autopilot" type="slash_controller.py" name="controller" output="screen">
       <remap from="ctl_ref" to="cmd_vel"/>
     </node>
 

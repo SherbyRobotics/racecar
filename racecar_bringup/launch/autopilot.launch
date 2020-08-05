@@ -9,7 +9,7 @@
     <param name="autorepeat_rate" value="5"/>
   </node>
 
-  <node pkg="racecar_autopilot" type="slash_teleop.py" name="teleop"/>
+  <node pkg="racecar_teleop" type="slash_teleop.py" name="teleop"/>
 
   <node pkg="racecar_autopilot" type="slash_controller.py" name="controller" output="screen"/>
 
