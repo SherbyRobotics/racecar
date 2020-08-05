@@ -46,7 +46,7 @@ sudo apt-get install ros-<distro>-cv-bridge
 ![](https://github.com/SherbyRobotics/racecar/blob/master/images/Racecar_rqt_graph_teleop.png "teleop" )
 In the graph, you can see a representation of the communication between the nodes and the topics on the base launch file `teleop.launch`. 
 
-The RaceCar has many modes that allow you to test different operating mode. The ROS controller node has multiple high-level mode that are selected by joystick inputs. For instance, open-loop, closed-loop in velocity, closed-loop in position for both the propulsion and the steering. See [Controller modes](#controller-modes)  table for more details.  The Arduino has also multiple internal low-level modes that are selected by the ROS controller node. Empty mode templates are available in the source code for you to test custom control modes.
+The RaceCar has many operating modes that allow you to test different functionnalities. The ROS controller Node, which control commands to the motor and the steering servo, has multiple high-level mode that are selected by joystick inputs (see [Controller modes](#controller-modes) table for more details). For instance, open-loop, closed-loop in velocity, closed-loop in position modes are available for both the propulsion and the steering.  The Arduino has also multiple internal low-level modes (different than the high-level ones!!!) that are selected by the ROS controller Node. Empty operating mode templates are available in the source code for you to test custom control modes.
 
 ## Launch
 1. Connect the Arduino mega 2560 of the RaceCar to the computer.
