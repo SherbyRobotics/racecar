@@ -61,6 +61,9 @@ The RaceCar has many modes that allow you to test different operating mode. The 
 10. Enjoy!
 
 ## High-level Controller Modes
+
+Note: LB is used as a deadman switch and must be always pressed for the car to operate. 
+
 Mode | Input sequence | Function
 -|-|-
 1|`LB`| Closed-loop velocity, open-loop steering
