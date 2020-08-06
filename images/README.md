@@ -1,6 +1,6 @@
 # Virtual Machine
 1. Install [Ubuntu 18.04 Desktop](https://ubuntu.com/download/alternative-downloads)
-2. Execute setup_vm.sh script
+2. Execute [setup_vm.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_vm.sh) script
     ```bash
     $ chmod +x setup_vm.sh
     $ setup_vm.sh
@@ -8,7 +8,7 @@
     
 # RaspberryPi3 image
 1. Install [Ubuntu Mate](https://ubuntu-mate.org/download/) 18.04 for RPI3
-2. Execute setup_rpi3.sh script
+2. Execute [setup_rpi3.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3.sh) script
     ```bash
     $ chmod +x setup_rpi3.sh
     $ setup_rpi3.sh
