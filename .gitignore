@@ -25,7 +25,5 @@ output/
 .pytest_cache/v/cache/lastfailed
 .pytest_cache/v/cache/nodeids
 .idea/other.xml
-*.html
-*.png
 .idea/workspace.xml
 build/
