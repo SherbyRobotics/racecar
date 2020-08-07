@@ -8,20 +8,14 @@
     
 # RaspberryPi3 image
 1. Install [Ubuntu Mate](https://ubuntu-mate.org/download/) 18.04 for RPI3
-2. Execute [setup_rpi3.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3.sh) script
+2. In Network Manager, edit "Wired Connection 1" then click on save to generate its configuration
+3. Execute [setup_rpi3.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3.sh) script
     ```bash
+    $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi3.sh
     $ chmod +x setup_rpi3.sh
     $ setup_rpi3.sh
     ```
-3. Setup minimum resolution for VNC
-    1. `sudo raspi-config`
-    2. Select option 5, then A5 (Resolution)
-    3. Choose "1024x768 60 Hz"
-
-4. To avoid black screen problem with HDMI->DVI converter
-    1. Edit `/boot/config.txt`
-    2. In section "chooses between HDMI and DVI modes", set `hdmi_Drive=1`. In section "defines screen resolution in CEA or DMT format", uncomment `hdmi_Drive=1`.
-
+    
 ## Backup/Shrink/Restore RaspberryPi3 image
 1. Backup
     ```bash
