@@ -8,7 +8,10 @@
     
 # RaspberryPi3 image
 1. Install [Ubuntu Mate](https://ubuntu-mate.org/download/) 18.04 for RPI3
-2. In Network Manager, edit "Wired Connection 1" then click on save to generate its configuration
+2. In Network Manager, edit "Wired connection 1":
+    1. In IPv4 settings, set connection type to Manual instead of Automatic (DHCP)
+    2. Add address `192.168.10.1` with mask `255.255.255.0`, leave Gateaway field empty
+    3. Click Save
 3. Execute [setup_rpi3.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3.sh) script
     ```bash
     $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi3.sh
