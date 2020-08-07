@@ -1,0 +1,12 @@
+4c4
+< #DHCPDv4_CONF=/etc/dhcp/dhcpd.conf
+---
+> DHCPDv4_CONF=/etc/dhcp/dhcpd.conf
+8c8
+< #DHCPDv4_PID=/var/run/dhcpd.pid
+---
+> DHCPDv4_PID=/var/run/dhcpd.pid
+17c17
+< INTERFACESv4=""
+---
+> INTERFACESv4="eth0"
