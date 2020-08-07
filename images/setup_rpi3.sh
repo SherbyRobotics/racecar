@@ -86,7 +86,8 @@ rosrun rosserial_arduino make_libraries.py .
 
 # Init SSH keys
 sudo dpkg-reconfigure openssh-server
-sudo service ssh restart
+sudo /lib/systemd/systemd-sysv-install enable sshguard
+sudo /lib/systemd/systemd-sysv-install enable ssh
 
 # VNC:
 cd ~/Downloads
@@ -96,6 +97,11 @@ sudo systemctl start vncserver-x11-serviced.service
 sudo systemctl enable vncserver-x11-serviced.service
 
 # Setup DHCP server 192.168.10.1
+
+sudo cp /etc/NetworkManager/system-connections/Wired\ connection\ 1 static_eth0
+sudo patch static_eth0 ~/catkin_ws/src/racecar/images/static_eth0.patch
+sudo cp static_eth0 /etc/NetworkManager/system-connections/Wired\ connection\ 1
+
 sudo ufw allow 67/udp
 sudo ufw reload
 
