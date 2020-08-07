@@ -1,6 +1,0 @@
-13a14
-> address1=192.168.10.1/24
-15c16
-< method=auto
----
-> method=manual

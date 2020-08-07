@@ -9,7 +9,7 @@ sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
 
-# Phase 1 - Install ROS
+# Install ROS
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
@@ -50,7 +50,7 @@ sudo apt install -y ros-melodic-rosbash \
                     evince \
                     sed 
 
-# Phase 2 - Workspace setup
+# ROS Workspace setup
 source /opt/ros/melodic/setup.bash
 
 mkdir -p ~/catkin_ws/src
@@ -63,19 +63,19 @@ catkin_make
 sudo rosdep init
 rosdep update
 
-# Phase 4 - For automatic sourcing of ROS scripts when starting a new session
+# For automatic sourcing of ROS scripts when starting a new session
 echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 echo "export ROS_PARALLEL_JOBS=-j1" >> ~/.bashrc
 source ~/.bashrc
 
-# specific package(s) compiled from source
+# Specific package(s) compiled from source
 cd ~/catkin_ws/src
 git clone https://github.com/UbiquityRobotics/raspicam_node
 git clone https://github.com/Slamtec/rplidar_ros
 git clone https://github.com/SherbyRobotics/racecar.git
 
-# Phase 3- ROS Build
+# ROS Build
 cd ~/catkin_ws
 catkin_make
 
@@ -89,7 +89,7 @@ sudo dpkg-reconfigure openssh-server
 sudo /lib/systemd/systemd-sysv-install enable sshguard
 sudo /lib/systemd/systemd-sysv-install enable ssh
 
-# VNC:
+# Install VNC server
 cd ~/Downloads
 wget https://www.realvnc.com/download/file/vnc.files/VNC-Server-6.7.2-Linux-ARM.deb
 sudo dpkg -i VNC-Server-6.7.2-Linux-ARM.deb
@@ -97,11 +97,7 @@ sudo systemctl start vncserver-x11-serviced.service
 sudo systemctl enable vncserver-x11-serviced.service
 
 # Setup DHCP server 192.168.10.1
-
-sudo cp /etc/NetworkManager/system-connections/Wired\ connection\ 1 static_eth0
-sudo patch static_eth0 ~/catkin_ws/src/racecar/images/static_eth0.patch
-sudo cp static_eth0 /etc/NetworkManager/system-connections/Wired\ connection\ 1
-
+# Make sure the address above is set as IpV4->"Manual" in Network Manager
 sudo ufw allow 67/udp
 sudo ufw reload
 
@@ -127,10 +123,6 @@ sudo cp config.txt /boot/config.txt
 
 # Add user to 'dialout' group to have permissions on /dev/ttyACM0
 sudo adduser $USER dialout
-
-# Manal steps:
-# 1-Downlaod/Install Arduino 1.8
-# 2- In Arduino IDE, install Bolder_Flight_Systems_MPU9250 library
 
 echo "Reboot needed!"
 

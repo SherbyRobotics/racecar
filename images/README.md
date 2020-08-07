@@ -7,10 +7,10 @@
     ```
     
 # RaspberryPi3 image
-1. Install [Ubuntu Mate](https://ubuntu-mate.org/download/) 18.04 for RPI3
+1. Install [Ubuntu Mate 18.04 for RPI3](https://ubuntu-mate.org/download/) with login name `racecar`
 2. In Network Manager, edit "Wired connection 1":
     1. In IPv4 settings, set connection type to Manual instead of Automatic (DHCP)
-    2. Add address `192.168.10.1` with mask `255.255.255.0`, leave Gateaway field empty
+    2. Add address `192.168.10.1` with mask `24`, leave Gateaway field empty
     3. Click Save
 3. Execute [setup_rpi3.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3.sh) script
     ```bash
@@ -18,6 +18,14 @@
     $ chmod +x setup_rpi3.sh
     $ setup_rpi3.sh
     ```
+4. Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software)
+5. Open Arduino IDE, from Tools->"Manage Libraries..." menu, install `Bolder_Flight_Systems_MPU9250` library
+6. Reboot
+7. At this point, you can connect by ethernet to RPI3 by VNC at address 192.168.10.1 or by SSH:
+    ```bash
+    $ ssh racecar@192.168.10.1
+    ```
+8. Setup Hotspot... todo
     
 ## Backup/Shrink/Restore RaspberryPi3 image
 1. Backup
