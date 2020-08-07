@@ -23,6 +23,7 @@ sudo apt install -y ros-melodic-rosbash \
                     ros-melodic-rqt-reconfigure \
                     ros-melodic-rqt-graph \
                     ros-melodic-joy \
+                    ros-melodic-gazebo-ros \
                     ros-melodic-camera-info-manager \
                     ros-melodic-rosserial-python \
                     ros-melodic-imu-filter-madgwick \
@@ -85,6 +86,7 @@ rosrun rosserial_arduino make_libraries.py .
 
 # Init SSH keys
 sudo dpkg-reconfigure openssh-server
+sudo service ssh restart
 
 # VNC:
 cd ~/Downloads
