@@ -1,3 +1,7 @@
+92c92
+< #hdmi_force_hotplug=1
+---
+> hdmi_force_hotplug=1
 113c113
 < hdmi_drive=2
 ---
