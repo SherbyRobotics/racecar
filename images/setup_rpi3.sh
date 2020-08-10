@@ -125,5 +125,8 @@ sudo cp config.txt /boot/config.txt
 # Add user to 'dialout' group to have permissions on /dev/ttyACM0
 sudo adduser $USER dialout
 
+# cleanup cache
+sudo apt-get clean
+
 echo "Reboot needed!"
 
