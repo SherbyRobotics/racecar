@@ -48,7 +48,8 @@ sudo apt install -y ros-melodic-rosbash \
                     wget \
                     libraspberrypi-dev \
                     evince \
-                    sed 
+                    sed \
+                    wireshark-qt
 
 # ROS Workspace setup
 source /opt/ros/melodic/setup.bash
