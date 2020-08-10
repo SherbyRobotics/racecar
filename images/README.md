@@ -8,7 +8,7 @@
     
 # RaspberryPi3 image
 1. Install [Ubuntu Mate 18.04 for RPI3](https://ubuntu-mate.org/download/) with login name `racecar`
-2. In Network Manager, edit "Wired connection 1":
+2. In Network Manager, edit "Wired connection 1" and rename it to "Wired connection 192.168.10.1":
     1. In IPv4 settings, set connection type to Manual instead of Automatic (DHCP)
     2. Add address `192.168.10.1` with mask `24`, leave Gateaway field empty
     3. Click Save
@@ -39,7 +39,7 @@
         Password: racecar
         ```
     
-## Backup/Shrink/Restore RaspberryPi3 image
+## Backup/Shrink RaspberryPi3 image
 1. Backup
     ```bash
     $ sudo fdisk -l
@@ -80,5 +80,16 @@
     # Note the last value under "End" column
     $ sudo truncate --size=$[(25178111+1)*512] racecar.img
     ```
-
-3. Restore with [Etcher](https://www.balena.io/etcher/)
+## Restore RaspberryPi3 image
+1. Use [Etcher](https://www.balena.io/etcher/) to flash the image on a SD-CARD (min 16GB).
+2. Boot the RPI3. Default username is `racecar` and password is `racecar`. 
+3. (Optional) Resize partition to use the full SD-CARD.
+    1. Open terminal.
+    2. `sudo gparted`, enter password `racecar`.
+    3. Riht-click on /dev/mmcblk0p2 partition, then click "Resize/Move" in the menu.
+    4. Set 0 in "Free space following", then click on "Resize".
+    5. Click on "Apply".
+    
+4. To connect by ethernet or hotspot, as your RPI3 has different hardware, we should update the ethernet and hotspot connection with the right device. In Network Manager (top left), click on "Edit Connections…". 
+    1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save.
+    2. Edit "Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
