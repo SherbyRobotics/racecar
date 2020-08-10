@@ -65,6 +65,7 @@ The RaceCar has many operating modes that allow you to test different functionna
     ```bash
     $ roslaunch racecar_bringup rviz.launch
     ```
+    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop.jpg "rviz" )
 6. Enable the joystick by performing an input combination below to start.
 7. Enjoy!
 
