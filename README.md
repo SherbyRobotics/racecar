@@ -34,6 +34,7 @@ To be able to test our code, there are a few requirements.
 	* [cv-bridge](http://wiki.ros.org/cv_bridge)
 
 ### Quick installation guide for ROS packages
+
 ```
 sudo apt-get install ros-<distro>-rosserial-arduino
 sudo apt-get install ros-<distro>-rosserial
@@ -41,7 +42,8 @@ sudo apt-get install ros-<distro>-joy
 sudo apt-get install ros-<distro>-angles
 sudo apt-get install ros-<distro>-cv-camera
 sudo apt-get install ros-<distro>-cv-bridge
-```	
+```
+
 ## How it works
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Racecar_rqt_graph_teleop.png "teleop" )
 In the graph, you can see a representation of the communication between the nodes and the topics on the base launch file `teleop.launch`. 
@@ -49,16 +51,22 @@ In the graph, you can see a representation of the communication between the node
 The RaceCar has many operating modes that allow you to test different functionnalities. The ROS controller Node, which control commands to the motor and the steering servo, has multiple high-level mode that are selected by joystick inputs (see [Controller modes](#controller-modes) table for more details). For instance, open-loop, closed-loop in velocity, closed-loop in position modes are available for both the propulsion and the steering.  The Arduino has also multiple internal low-level modes (different than the high-level ones!!!) that are selected by the ROS controller Node. Empty operating mode templates are available in the source code for you to test custom control modes.
 
 ## Launch
-1. Connect the Arduino mega 2560 of the RaceCar to the computer.
-2. Flash the Arduino mega 2560 with the firmware file `racecar_propulsion_firmware.ino` (see [arduino firmware](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware)).
-3. Reconnect the Arduino mega 2560 to the USB-hub of the RaceCar.
-4. Connect the Raspberry Pi 3 to the the battery.
-5. Connect the Raspberry Pi 3 to a monitor with a HDMI cable.
-6. With the help of a keyboard, open a terminal using the command `ctrl` + `alt` + `t`.
-7. Launch ROS with the launch file `teleop.launch`. (see [launch file](https://github.com/SherbyRobotics/slash/tree/master/racecar/racecar_bringup/launch)).
-8. Disconnect the HDMI cable and turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
-9. Enable the joystick by performing an input combination to start.
-10. Enjoy!
+1. Follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image) to flash your Raspberry Pi 3 with a pre-built image, or follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/master/images#raspberrypi3-image) to setup from scratch.
+2. Connect the battery to Raspberry Pi 3. If installed as instructions above, you can connect your laptop by Wi-Fi on RaceCar's hotspot. Launch VNC from your laptop and connect to `10.42.0.1` (Raspberry Pi 3's IP). 
+2. Flash the Arduino (need to be done only 1 time):
+    1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi 3 if not already done.
+    2. Flash the Arduino mega 2560 with the firmware file [racecar_propulsion_firmware.ino](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware) using Arduino IDE (select Arduino mega 2560 for target).
+3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
+4. From a terminal (`ctrl` + `alt` + `t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/master/racecar_bringup/launch/teleop.launch):
+    ```bash
+    $ roslaunch racecar_bringup teleop.launch
+    ```
+5. To visualize the racecar in rviz:
+    ```bash
+    $ roslaunch racecar_bringup rviz.launch
+    ```
+6. Enable the joystick by performing an input combination below to start.
+7. Enjoy!
 
 ## High-level Controller Modes
 
