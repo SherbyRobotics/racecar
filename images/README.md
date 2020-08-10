@@ -86,7 +86,7 @@
 3. (Optional) Resize partition to use the full SD-CARD.
     1. Open terminal.
     2. `sudo gparted`, enter password `racecar`.
-    3. Riht-click on /dev/mmcblk0p2 partition, then click "Resize/Move" in the menu.
+    3. Right-click on /dev/mmcblk0p2 partition, then click "Resize/Move" in the menu.
     4. Set 0 in "Free space following", then click on "Resize".
     5. Click on "Apply".
     
