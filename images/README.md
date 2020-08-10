@@ -25,7 +25,19 @@
     ```bash
     $ ssh racecar@192.168.10.1
     ```
-8. Setup Hotspot... todo
+8. Setup Hotspot
+    1. In Network Manager, add new Wi-Fi connection named "Hotspot 10.42.0.1"
+    2. Under Wi-Fi tab:
+        ```
+        SSID: "hotspot_racecar_0" (racecar number)
+        Mode: Hotspot
+        Device: wlan0
+        ```
+    5. Under Wi-Fi Security tab:
+        ```
+        Security: WPA
+        Password: racecar
+        ```
     
 ## Backup/Shrink/Restore RaspberryPi3 image
 1. Backup
