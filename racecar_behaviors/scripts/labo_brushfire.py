@@ -4,7 +4,7 @@ import rospy
 import cv2
 import numpy as np
 from nav_msgs.srv import GetMap
-from libcontrol import *
+from libbehaviors import *
 
 def main():
     rospy.init_node('brushfire')
