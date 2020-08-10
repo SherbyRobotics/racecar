@@ -16,7 +16,7 @@
     ```bash
     $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi3.sh
     $ chmod +x setup_rpi3.sh
-    $ setup_rpi3.sh
+    $ ./setup_rpi3.sh
     ```
 4. Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software)
 5. Open Arduino IDE, from Tools->"Manage Libraries..." menu, install `Bolder_Flight_Systems_MPU9250` library
