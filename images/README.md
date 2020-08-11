@@ -1,7 +1,7 @@
 # Restore RaspberryPi3 image
 1. Download SD-CARD image from [here](https://usherbrooke-my.sharepoint.com/:u:/g/personal/labm2414_usherbrooke_ca/Ec9uozHwyypDlfgORfJjB8AB_DcThqKcrszk1jBV4lFXCw?e=8TvN7r) (3.5 GB, created following this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi3-image) below).
 2. Use [Etcher](https://www.balena.io/etcher/) to flash the image on a SD-CARD (min 16GB). 
-3. Boot the RPI3 with HDMI connected, a mouse and keyboard. Default username is `racecar` and password is `racecar`. 
+3. Boot the RPI3 with HDMI, a mouse and a keyboard connected. Default username is `racecar` and password is `racecar`. 
 4. (Optional) Resize partition to use the full SD-CARD.
     1. Open terminal.
     2. `sudo gparted`, enter password `racecar`.
