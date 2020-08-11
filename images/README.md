@@ -1,3 +1,18 @@
+# Restore RaspberryPi3 image
+1. Use [Etcher](https://www.balena.io/etcher/) to flash the image on a SD-CARD (min 16GB). Download image from [here](https://usherbrooke-my.sharepoint.com/:u:/g/personal/labm2414_usherbrooke_ca/Ec9uozHwyypDlfgORfJjB8AB_DcThqKcrszk1jBV4lFXCw?e=8TvN7r) (created following below [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi3-image)).
+2. Boot the RPI3 with HDMI connected, a mouse and keyboard. Default username is `racecar` and password is `racecar`. 
+3. (Optional) Resize partition to use the full SD-CARD.
+    1. Open terminal.
+    2. `sudo gparted`, enter password `racecar`.
+    3. Right-click on /dev/mmcblk0p2 partition, then click "Resize/Move" in the menu.
+    4. Set 0 in "Free space following", then click on "Resize".
+    5. Click on "Apply".
+    
+4. To connect by ethernet or hotspot, as your RPI3 has different hardware, we should update the ethernet and hotspot connection with the right device. In Network Manager (top left), click on "Edit Connections…". 
+    1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save.
+    2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
+
+
 # Virtual Machine
 1. Install [Ubuntu 18.04 Desktop](https://ubuntu.com/download/alternative-downloads)
 2. Execute [setup_vm.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_vm.sh) script
@@ -6,7 +21,7 @@
     $ setup_vm.sh
     ```
     
-# RaspberryPi3 image
+# Create RaspberryPi3 image
 1. Install [Ubuntu Mate 18.04 for RPI3](https://ubuntu-mate.org/download/) with login name `racecar`
 2. In Network Manager, edit "Wired connection 1" and rename it to "Wired connection 192.168.10.1":
     1. In IPv4 settings, set connection type to Manual instead of Automatic (DHCP)
@@ -84,16 +99,3 @@
     # Note the last value under "End" column
     $ sudo truncate --size=$[(25178111+1)*512] racecar.img
     ```
-## Restore RaspberryPi3 image
-1. Use [Etcher](https://www.balena.io/etcher/) to flash the image on a SD-CARD (min 16GB). Download image from [here](https://usherbrooke-my.sharepoint.com/:u:/g/personal/labm2414_usherbrooke_ca/Ec9uozHwyypDlfgORfJjB8AB_DcThqKcrszk1jBV4lFXCw?e=8TvN7r) (created following this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#raspberrypi3-image)).
-2. Boot the RPI3 with HDMI connected, a mouse and keyboard. Default username is `racecar` and password is `racecar`. 
-3. (Optional) Resize partition to use the full SD-CARD.
-    1. Open terminal.
-    2. `sudo gparted`, enter password `racecar`.
-    3. Right-click on /dev/mmcblk0p2 partition, then click "Resize/Move" in the menu.
-    4. Set 0 in "Free space following", then click on "Resize".
-    5. Click on "Apply".
-    
-4. To connect by ethernet or hotspot, as your RPI3 has different hardware, we should update the ethernet and hotspot connection with the right device. In Network Manager (top left), click on "Edit Connections…". 
-    1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save.
-    2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
