@@ -55,7 +55,7 @@ The RaceCar has many operating modes that allow you to test different functionna
 2. Connect the battery to Raspberry Pi 3. If installed as instructions above, you can connect your laptop by Wi-Fi on RaceCar's hotspot. Launch VNC from your laptop and connect to `10.42.0.1` (Raspberry Pi 3's IP). 
 2. Flash the Arduino (need to be done only 1 time):
     1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi 3 if not already done.
-    2. Flash the Arduino mega 2560 with the firmware file [racecar_propulsion_firmware.ino](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware) using Arduino IDE (select Arduino mega 2560 for target).
+    2. Flash the Arduino mega 2560 with the firmware file [racecar_propulsion_firmware.ino](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
 3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
 4. From a terminal (`ctrl` + `alt` + `t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/master/racecar_bringup/launch/teleop.launch):
     ```bash
