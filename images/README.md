@@ -9,7 +9,7 @@
     4. Set 0 in "Free space following", then click on "Resize".
     5. Click on "Apply".
     
-5. To connect by ethernet or hotspot, as your RPI3 has different hardware, we should update the ethernet and hotspot connection with the right device. In Network Manager (top left), click on "Edit Connections…". 
+5. To connect by ethernet or hotspot, as your RPI3 has different hardware, we should update the ethernet and hotspot connection with the right device. In Network Manager (top right), click on "Edit Connections…". 
     1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save.
     2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
 
