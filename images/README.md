@@ -86,7 +86,7 @@
     ```
 ## Restore RaspberryPi3 image
 1. Use [Etcher](https://www.balena.io/etcher/) to flash the image on a SD-CARD (min 16GB).
-2. Boot the RPI3. Default username is `racecar` and password is `racecar`. 
+2. Boot the RPI3 with HDMI connected, a mouse and keyboard. Default username is `racecar` and password is `racecar`. 
 3. (Optional) Resize partition to use the full SD-CARD.
     1. Open terminal.
     2. `sudo gparted`, enter password `racecar`.
