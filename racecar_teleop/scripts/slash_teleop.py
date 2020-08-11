@@ -81,8 +81,8 @@ class teleop(object):
                 self.cmd_msg.angular.z = 0
                 self.cmd_msg.linear.z  = 0 # Control mode
                 
-            #If both joy pushed
-            elif(joy_msg.buttons[11] and joy_msg.buttons[12]):
+            #If left joy pushed
+            elif(joy_msg.buttons[11]):
                 # Joystick disabled!
                 return;
                 
