@@ -18,7 +18,11 @@
     $ chmod +x setup_rpi3.sh
     $ ./setup_rpi3.sh
     ```
-4. Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software)
+4. Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software) and install:
+    ```bash
+    $ cd arduino-1.8.13
+    $ sudo ./install.sh
+    ```
 5. Open Arduino IDE, from Tools->"Manage Libraries..." menu, install `Bolder_Flight_Systems_MPU9250` library
 6. Reboot
 7. At this point, you can connect by ethernet to RPI3 by VNC at address 192.168.10.1 or by SSH:
