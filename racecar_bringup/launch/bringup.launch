@@ -24,6 +24,7 @@
           <param name="baud" value="$(arg arduino_baud)"/>
       </node>
       <node pkg="racecar_bringup" type="arduino_sensors.py" name="arduino_sensors" output="screen">
+        <param name="publish_tf" value="$(arg publish_tf)"/>
         <remap from="raw_odom" to="prop_sensors"/>
         <remap if="$(arg publish_tf)" from="odom" to="odometry/filtered"/>
       </node>
