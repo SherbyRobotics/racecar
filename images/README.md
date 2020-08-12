@@ -5,7 +5,7 @@
 4. (Optional) Resize partition to use the full SD-CARD.
     1. Open terminal.
     2. `sudo gparted`, enter password `racecar`.
-    3. Right-click on /dev/mmcblk0p2 partition, then click "Resize/Move" in the menu.
+    3. Right-click on `/dev/mmcblk0p2` partition, then click "Resize/Move" in the menu.
     4. Set 0 in "Free space following", then click on "Resize".
     5. Click on "Apply".
     
@@ -13,6 +13,13 @@
     1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save.
     2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
 
+6. Make sure to have latest code:
+    ```bash
+    $ cd ~/catkin_ws/src/racecar
+    $ git pull
+    $ cd ..
+    $ catkin_make
+    ```
 
 # Virtual Machine
 1. Install [Ubuntu 18.04 Desktop](https://ubuntu.com/download/alternative-downloads)
