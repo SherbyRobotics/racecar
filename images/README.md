@@ -17,7 +17,7 @@
     ```bash
     $ cd ~/catkin_ws/src/racecar
     $ git pull
-    $ cd ..
+    $ cd ~/catkin_ws
     $ catkin_make
     ```
 
