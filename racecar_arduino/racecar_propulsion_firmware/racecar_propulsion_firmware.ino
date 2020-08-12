@@ -34,7 +34,7 @@ MPU9250 imu(Wire, 0x68);
 ros::NodeHandle  nodeHandle;
 
 //Publisher 
-const int prop_sensors_msg_length = 18;
+const int prop_sensors_msg_length = 19;
 float prop_sensors_data[ prop_sensors_msg_length ];
 std_msgs::Float32MultiArray prop_sensors_msg;
 ros::Publisher prop_sensors_pub("prop_sensors", &prop_sensors_msg);
@@ -88,7 +88,7 @@ const double batteryV  = 8;
 const double maxAngle  = 40*(2*3.1416)/360;    //max steering angle in rad
 const double rad2pwm   = (pwm_zer_ser-pwm_min_ser)/maxAngle;
 const double volt2pwm  = (pwm_zer_dri-pwm_min_dri)/batteryV;
-const double tick2m    = 0.00000323766; // To confirm
+const double tick2m    = 0.000002752; // To confirm
 
 ///////////////////////////////////////////////////////////////////
 // Memory
@@ -122,6 +122,8 @@ unsigned long time_last_low  = 0;
 unsigned long time_last_high = 0;
 unsigned long time_last_com  = 0; //com watchdog
 
+// For odometry
+signed long enc_last_high   = 0;
 
 ///////////////////////////////////////////////////////////////////
 // Encoder init/read/reset functions
@@ -507,19 +509,20 @@ void loop(){
     prop_sensors_data[5] = enc_now; // raw encoder counts
     prop_sensors_data[6] = ser_ref; // steering angle
     prop_sensors_data[7] = (float)( time_now - time_last_com ); // for com debug
-    prop_sensors_data[8] = (float)dt;
+    prop_sensors_data[8] = (float)dt; // time elapsed since last publish
+    prop_sensors_data[9] = (enc_now - enc_last_high) * tick2m; // distance travelled since last publish
 
     // Read IMU
     imu.readSensor();
-    prop_sensors_data[9] = imu.getAccelX_mss();
-    prop_sensors_data[10] = imu.getAccelY_mss();
-    prop_sensors_data[11] = imu.getAccelZ_mss();
-    prop_sensors_data[12] = imu.getGyroX_rads();
-    prop_sensors_data[13] = imu.getGyroY_rads();
-    prop_sensors_data[14] = imu.getGyroZ_rads();
-    prop_sensors_data[15] = imu.getMagX_uT();
-    prop_sensors_data[16] = imu.getMagY_uT();
-    prop_sensors_data[17] = imu.getMagZ_uT();
+    prop_sensors_data[10] = imu.getAccelX_mss();
+    prop_sensors_data[11] = imu.getAccelY_mss();
+    prop_sensors_data[12] = imu.getAccelZ_mss();
+    prop_sensors_data[13] = imu.getGyroX_rads();
+    prop_sensors_data[14] = imu.getGyroY_rads();
+    prop_sensors_data[15] = imu.getGyroZ_rads();
+    prop_sensors_data[16] = imu.getMagX_uT();
+    prop_sensors_data[17] = imu.getMagY_uT();
+    prop_sensors_data[18] = imu.getMagZ_uT();
     
     prop_sensors_msg.data        = &prop_sensors_data[0];
     prop_sensors_msg.data_length = prop_sensors_msg_length;
@@ -529,6 +532,7 @@ void loop(){
     nodeHandle.spinOnce();
 
     time_last_high = time_now ;
+    enc_last_high = enc_now ;
 
   }
 }

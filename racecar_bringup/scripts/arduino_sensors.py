@@ -34,26 +34,26 @@ class ArduinoSensors:
         self._joints_pub = rospy.Publisher('joint_states', JointState, queue_size=5)
 
     def _raw_odom_cb(self, raw_odom):
-        if len(raw_odom.data) != 18:
-            rospy.logerr("Received data from arduino should have a length of 18! current length=%d", len(raw_odom.data))
+        if len(raw_odom.data) != 19:
+            rospy.logerr("Received data from arduino should have a length of 19! current length=%d, make sure you have the latest arduino firmware installed.", len(raw_odom.data))
             return
         
         elapsed_seconds = raw_odom.data[8]/1000.0
         totalEncDistance = raw_odom.data[0]
-        speed = raw_odom.data[1]
+        speed = raw_odom.data[9]/elapsed_seconds
         distance = speed*elapsed_seconds
         steering_angle = -raw_odom.data[6]
          
          #IMU
-        linear_acceleration_x = raw_odom.data[9]
-        linear_acceleration_y = raw_odom.data[10]
-        linear_acceleration_z = raw_odom.data[11]
-        angular_velocity_x = raw_odom.data[12]
-        angular_velocity_y = raw_odom.data[13]
-        angular_velocity_z = raw_odom.data[14]
-        magnetic_x = raw_odom.data[15]
-        magnetic_y = raw_odom.data[16]
-        magnetic_z = raw_odom.data[17]
+        linear_acceleration_x = raw_odom.data[10]
+        linear_acceleration_y = raw_odom.data[11]
+        linear_acceleration_z = raw_odom.data[12]
+        angular_velocity_x = raw_odom.data[13]
+        angular_velocity_y = raw_odom.data[14]
+        angular_velocity_z = raw_odom.data[15]
+        magnetic_x = raw_odom.data[16]
+        magnetic_y = raw_odom.data[17]
+        magnetic_z = raw_odom.data[18]
 
         if elapsed_seconds <= 0:
             rospy.logwarn("elapsed_seconds is 0.")
