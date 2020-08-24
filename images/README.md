@@ -9,7 +9,7 @@
     4. Set 0 in "Free space following", then click on "Resize".
     5. Click on "Apply".
     
-5. To connect by ethernet or hotspot, as your RPI3 has different hardware, we should update the ethernet and hotspot connection with the right device. In Network Manager (top right), click on "Edit Connections…". 
+5. To [connect by ethernet or hotspot](https://github.com/SherbyRobotics/racecar/tree/master/doc), as your RPI3 has different hardware, we should update the ethernet and hotspot connection with the right device. In Network Manager (top right), click on "Edit Connections…". 
     1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save.
     2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
 
@@ -28,6 +28,8 @@
     $ chmod +x setup_vm.sh
     $ setup_vm.sh
     ```
+    
+3. If you are using a VirtualBox, go in the network interface of the virtual machine, then add a second interface called "Bridged Adapter". This will be used to connect the virtual machine to ROS on the RaceCar (see [ROS on multiple computers](https://github.com/SherbyRobotics/racecar/tree/master/doc) example).
     
 # Create RaspberryPi3 image
 1. Install [Ubuntu Mate 18.04 for RPI3](https://ubuntu-mate.org/download/) with login name `racecar`
