@@ -59,7 +59,7 @@ What you should be seeing (on left is the simulator, on right is RVIZ):
 
 * To charge the Anker battery, use the small USB connector, plug it in the "input" port, then connect the other side to a computer's powered USB or a phone charger 5V. If the battrey is empty, it can take many hours to charge (maybe charge during the night), but it should last long.
     
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_usb_battery "usb_battery" )
+    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_anker_battery "usb_battery" )
     
 * For the Traxxas battrey, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the power board is on left ("Charge"). Connect the wires like in the figure below. **To avoid short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the inverse when removing the wires after charging!)**. On the charger, make sure the battrey type is set to NiMH and the maximum current limit is 3A. Hold « Start » to start the charging. When the battrey is charged, the charger would stop by itself with a sound. Stop the charging manually if it ahs been charging for more than 1 hour. Normally, the charge time is around 30-40 minutes if the battrey is empty. 
     
