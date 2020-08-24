@@ -1,6 +1,7 @@
 * [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
-* [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection)
-* [ROS on multiple computers](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers)
+* [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection-sshvnc)
+* [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros-ip)
+* [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated_environment-gazebo)
 * [Recharging the RaceCar](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#recharging-the-racecar)
 
 # Hardware Connections
@@ -25,7 +26,7 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
    * By Hotspot: set IP to `10.42.0.1`
    * Disable encryption and open the connection.
     
-# ROS on multiple computers
+# ROS on multiple computers (ROS_IP)
 
 If you have ROS on your laptop (ubuntu native or in a virtual machine), to make sure to receive all messages in both directions, set `ROS_IP` environment variable on both the Raspberry Pi and the laptop. Here is an example based on the [main example](https://github.com/SherbyRobotics/racecar#launch) where we will launch RVIZ on the remote computer instead of the Raspberry Pi:
 * From the laptop, connect to RaceCar by its Hotspot (using SSH for this example, but VNC can also be used)
@@ -41,7 +42,7 @@ If you have ROS on your laptop (ubuntu native or in a virtual machine), to make 
     $ roslaunch racecar_bringup rviz.launch
     ```
     
-# Simulated environment
+# Simulated environment (Gazebo)
 
 Without the actual RaceCar, it is still possible to develop using the RaceCar's simulator on your computer ([with dualboot Ubuntu or in a virtual machine](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine)). To do so, we provide a simulated RaceCar for the Gazebo simulator. Launch the simulator:
 
