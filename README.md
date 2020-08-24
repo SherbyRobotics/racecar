@@ -22,27 +22,8 @@ To be able to test our code, there are a few requirements.
 * Logitech Wireless Gamepad F710 (DirectInput Mode)
 
 ### Software
-* Ubuntu 18.04 
-* Main dependencies (baseline):
-	* [rosserial arduino](http://wiki.ros.org/rosserial_arduino)
-	* [rosserial](http://wiki.ros.org/rosserial)
-	* [joy](http://wiki.ros.org/joy)
-	* [MPU](https://www.arduino.cc/reference/en/libraries/bolder-flight-systems-mpu9250/)
-* Other dependencies (all fonctionnalities):
-	* [angle](http://wiki.ros.org/angles)
-	* [cv-camera](http://wiki.ros.org/cv_camera)
-	* [cv-bridge](http://wiki.ros.org/cv_bridge)
-
-### Quick installation guide for ROS packages
-
-```
-sudo apt-get install ros-<distro>-rosserial-arduino
-sudo apt-get install ros-<distro>-rosserial
-sudo apt-get install ros-<distro>-joy
-sudo apt-get install ros-<distro>-angles
-sudo apt-get install ros-<distro>-cv-camera
-sudo apt-get install ros-<distro>-cv-bridge
-```
+* For Raspberry Pi 3 on RaceCar, we provide a RPI3 image with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image) to flash your RPI3. To do it manually, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi3-image).
+* For Desktop/Laptop developement, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 18.04.
 
 ## How it works
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Racecar_rqt_graph_teleop.png "teleop" )
