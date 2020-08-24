@@ -20,6 +20,8 @@
     $ cd ~/catkin_ws
     $ catkin_make
     ```
+    
+    * Note to have Internet on the RaceCar: disconnect from the Hotspot connection and select your preferred Wi-Fi network. To do so remotely, use VNC with the Ethernet connection, then change the Wi-Fi network.
 
 # Virtual Machine
 1. Install [Ubuntu 18.04 Desktop](https://ubuntu.com/download/alternative-downloads)
