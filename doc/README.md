@@ -6,19 +6,19 @@
 
 First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image)). The default login is `racecar` with password `racecar`.
 
-* SSH (command line):
-    ```bash
-    # By ethernet:
-    $ ssh racecar@192.168.10.1
+ * SSH (command line):
+     ```bash
+     # By ethernet:
+     $ ssh racecar@192.168.10.1
     
     # By Hotspot
     $ ssh racecar@10.42.0.1
     ```
     
-* [VNC Viewer](https://www.realvnc.com/en/connect/download/viewer/) (Remote Desktop):
-    * By ethernet: set IP to `192.168.10.1`
-    * By Hotspot: set IP to `10.42.0.1`
-    * Disable encryption and open the connection.
+ * [VNC Viewer](https://www.realvnc.com/en/connect/download/viewer/) (Remote Desktop):
+   * By ethernet: set IP to `192.168.10.1`
+   * By Hotspot: set IP to `10.42.0.1`
+   * Disable encryption and open the connection.
     
 # ROS on multiple computers
 
@@ -39,15 +39,18 @@ If you have ROS on your laptop (ubuntu native or in a virtual machine), to make 
 # Simulated environment
 
 Without the actual RaceCar, it is still possible to develop using the RaceCar's simulator on your computer ([with dualboot Ubuntu or in a virtual machine](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine)). To do so, we provide a simulated RaceCar for the Gazebo simulator. Launch the simulator:
-    ```bash
-    $ roslaunch racecar_gazebo racecar_tunnel.launch joy:=js0
-    ```
-    If you have joystick errors, try js1 or js2. If you are using a virtual machine, make sure the USB device is redirected to the virtual machine (For VirtualBox: Menu->Devices->USB...).
+
+```bash
+$ roslaunch racecar_gazebo racecar_tunnel.launch joy:=js0
+```
+    
+If you have joystick errors, try js1 or js2. If you are using a virtual machine, make sure the USB device is redirected to the virtual machine (for VirtualBox: Menu->Devices->USB...).
     
 Like with the real RaceCar, you can launch rviz like this:
-    ```bash
-    $ roslaunch racecar_bringup rviz.launch
-    ```
+
+```bash
+$ roslaunch racecar_bringup rviz.launch
+```
     
 What you should be seeing (on left is the simulator, on right is RVIZ):
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/gazebo.jpg "gazebo" )
@@ -57,10 +60,10 @@ What you should be seeing (on left is the simulator, on right is RVIZ):
     * a 8.4V Traxxas battery to power the motors and
     * a 5V Anker battrey to power the Raspberry Pi and the LiDAR.
 
-* To charge the Anker battery, use the small USB connector, plug it in the "input" port, then connect the other side to a computer's powered USB or a phone charger 5V. If the battrey is empty, it can take many hours to charge (maybe charge during the night), but it should last long.
+* To charge the Anker battery, use the small USB connector, plug it in the "input" port, then connect the other side to a computer's powered USB or a phone charger 5V. If the battery is empty, it can take many hours to charge (maybe charge during the night), but it should last long.
     
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_anker_battery "usb_battery" )
+    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_anker_battery.jpg "anker_battery" )
     
-* For the Traxxas battrey, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the power board is on left ("Charge"). Connect the wires like in the figure below. **To avoid short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the inverse when removing the wires after charging!)**. On the charger, make sure the battrey type is set to NiMH and the maximum current limit is 3A. Hold « Start » to start the charging. When the battrey is charged, the charger would stop by itself with a sound. Stop the charging manually if it ahs been charging for more than 1 hour. Normally, the charge time is around 30-40 minutes if the battrey is empty. 
+* For the Traxxas battrey, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the power board is on left ("Charge"). Connect the wires like in the figure below. **To avoid short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the inverse when removing the wires after charging!)**. On the charger, make sure the battrey type is set to NiMH and the maximum current limit is 3A. Hold « Start » to start the charging. When the battery is charged, the charger would stop by itself with a sound. Stop the charging manually if it has been charging for more than 1 hour. Normally, the charging time is around 30-40 minutes if the battery is empty. 
     
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_traxxas_battery.jpg "traxxas_battery" )
