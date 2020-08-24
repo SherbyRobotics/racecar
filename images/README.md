@@ -25,6 +25,7 @@
 1. Install [Ubuntu 18.04 Desktop](https://ubuntu.com/download/alternative-downloads)
 2. Execute [setup_vm.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_vm.sh) script
     ```bash
+    $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_vm.sh
     $ chmod +x setup_vm.sh
     $ setup_vm.sh
     ```
