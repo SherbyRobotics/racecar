@@ -1,8 +1,13 @@
+* [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
+* [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection)
+* [ROS on multiple computers](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers)
+* [Recharging the RaceCar](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#recharging-the-racecar)
+
 # Hardware Connections
 
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_connections.jpg "connections" )
 
-# Remote Connection
+# Remote Connection (SSH/VNC)
 
 First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image)). The default login is `racecar` with password `racecar`.
 
