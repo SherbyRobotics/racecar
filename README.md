@@ -27,7 +27,7 @@ To be able to test our code, there are a few requirements.
 	* [rosserial arduino](http://wiki.ros.org/rosserial_arduino)
 	* [rosserial](http://wiki.ros.org/rosserial)
 	* [joy](http://wiki.ros.org/joy)
-	* MPU  --> TODO Mettre le lien vers la librairie arduino nécessaire pour compiler le firmware avec l'IMU
+	* [MPU](https://www.arduino.cc/reference/en/libraries/bolder-flight-systems-mpu9250/)
 * Other dependencies (all fonctionnalities):
 	* [angle](http://wiki.ros.org/angles)
 	* [cv-camera](http://wiki.ros.org/cv_camera)
