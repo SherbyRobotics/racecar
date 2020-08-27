@@ -3,6 +3,7 @@
 * [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
 * [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated-environment-gazebo)
 * [Recharging the RaceCar](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#recharging-the-racecar)
+* [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
 
 # Hardware Connections
 
@@ -70,6 +71,12 @@ What you should be seeing (on left is the simulator, on right is RVIZ):
     
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_anker_battery.jpg "anker_battery" )
     
-* For the Traxxas battery, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the power board is on left ("Charge"). Connect the wires like in the figure below. **To avoid short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the inverse when removing the wires after charging!)**. On the charger, make sure the battery type is set to NiMH and the maximum current limit is 3A. Hold « Start » to start the charging. When the battery is charged, the charger would stop by itself with a sound. Stop the charging manually if it has been charging for more than 1 hour. Normally, the charging time is around 30-40 minutes if the battery is empty. 
+* For the Traxxas battery, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the power board is on left ("Charge"). Connect the wires like in the figure below. **To avoid short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the reverse when removing the wires after charging!)**. On the charger, make sure the battery type is set to NiMH and the maximum current limit is 3A. Hold « Start » to start the charging. When the battery is charged, the charger would stop by itself with a sound. Stop the charging manually if it has been charging for more than 1 hour. Normally, the charging time is around 30-40 minutes if the battery is empty. 
     
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_traxxas_battery.jpg "traxxas_battery" )
+
+# The Killswitch
+
+* The RaceCar features a big red mushroom: the killswitch. When pressed, the motor drive is disabled and the car stops moving. This is a hardware killswitch connected directly to the motor drive. It will disable propulsion regardless of software.
+
+* As it is mounted on the car, you can use it to make sure the car does not start moving unexpectedly. But when the RaceCar moves around, you will have to run after it if you want to make an emergency stop. Make yourself a remote killswitch.
