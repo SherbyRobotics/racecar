@@ -73,7 +73,7 @@ What you should be seeing (on left is the simulator, on right is RVIZ):
     
 * For the Traxxas battery, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the power board is on left ("Charge"). Connect the wires like in the figure below. **To avoid short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the reverse when removing the wires after charging!)**. On the charger, make sure the battery type is set to NiMH and the maximum current limit is 3A. Hold « Start » to start the charging. When the battery is charged, the charger would stop by itself with a sound. Stop the charging manually if it has been charging for more than 1 hour. Normally, the charging time is around 30-40 minutes if the battery is empty. 
     
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_traxxas_battery.jpg "traxxas_battery" )
+    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Charging_Traxxas_with_imax_B6.jpg "traxxas_battery" )
 
 # The Killswitch
 
