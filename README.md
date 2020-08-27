@@ -31,6 +31,7 @@ To be able to test our code, there are a few requirements.
 * [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
 * [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated-environment-gazebo)
 * [Recharging the RaceCar](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#recharging-the-racecar)
+* [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
 
 ## How it works
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Racecar_rqt_graph_teleop.png "teleop" )
