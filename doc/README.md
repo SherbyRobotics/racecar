@@ -83,3 +83,7 @@ What you should be seeing (on left is the simulator, on right is RVIZ):
 
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Killswitch_Header.jpg "Killswitch header" )
 
+    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Simplest_remote_killswitch.jpg "Simplest killswitch" )
+<p align="center"><i>The simplest remote killswitch: a long loop of wire</i></p>
+
+* Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
