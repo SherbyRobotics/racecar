@@ -27,7 +27,7 @@ If the RaceCar doesn't move straight when no steering commands are sent, it is p
     
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_1.jpg "steering step 3" )
 
-5. Adjust this screw (called "Toe" suspension adjustement) to make each wheel straight:
+5. Adjust this screw (called "Toe" suspension adjustement) to make each wheel straight between each other:
     
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_3.jpg "steering step 4" )
 
