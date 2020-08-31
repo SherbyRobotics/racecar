@@ -11,7 +11,24 @@
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_connections.jpg "connections" )
 
 # Steering Offset
-If the RaceCar doesn't move straight when no steering commands are sent, it is possible to adjust the zero steering value by adjusting this steering offset [here](https://github.com/SherbyRobotics/racecar/blob/c2b9be312659f862fb1f99670c1edd1874b51246/racecar_autopilot/scripts/slash_controller.py#L29). 
+If the RaceCar doesn't move straight when no steering commands are sent, it is possible to adjust the steering mechanically and by software. If the the steering offset is small, you may skip the mechanical calibration and just adjust in software.
+
+## Mechanical calibration
+1. Make sure the Arduino is flashed with the default firmware: [racecar_propulsion_firmware.ino](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware). When the RaceCar's power board is activated, the arduino will send a zero steering value.
+2. Unscrew that screw:
+![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_1.jpg "steering step 1" )
+
+3. Adjust the screw indicated by a green circle to make the piece indicated by a red circle be straight:
+![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_2.jpg "steering step 2" )
+
+4. Screw back this screw:
+![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_1.jpg "steering step 3" )
+
+5. Adjust this screw (called "Toe" suspension adjustement) to make each wheel straight:
+![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_3.jpg "steering step 4" )
+
+## Sofware calibration
+Adjust this steering offset [here](https://github.com/SherbyRobotics/racecar/blob/c2b9be312659f862fb1f99670c1edd1874b51246/racecar_autopilot/scripts/slash_controller.py#L29). 
 
 # Remote Connection (SSH/VNC)
 
