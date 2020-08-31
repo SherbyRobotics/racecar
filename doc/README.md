@@ -81,3 +81,5 @@ What you should be seeing (on left is the simulator, on right is RVIZ):
 
 * When the RaceCar moves around, you have to run after it if you want to make an emergency stop. Make yourself a remote killswitch when you are ready to test drive. The switch is connected into a detacheable header on the motor drive. The simplest remote killswitch is a long loop of wire that you hold in your hand. Should the RaceCar go too far away from you, the detachable header will pop out of its socket (as long as you hold firmly your end), opening the circuit.
 
+    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Killswitch_Header.jpg "Killswitch header" )
+
