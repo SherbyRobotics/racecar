@@ -1,14 +1,17 @@
 * [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
+* [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#steering-offset)
 * [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection-sshvnc)
 * [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
 * [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated-environment-gazebo)
 * [Recharging the RaceCar](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#recharging-the-racecar)
 * [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
-* [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#steering-offset)
 
 # Hardware Connections
 
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_connections.jpg "connections" )
+
+# Steering Offset
+If the RaceCar doesn't move straight when no steering commands are sent, it is possible to adjust the zero steering value by adjusting this steering offset [here](https://github.com/SherbyRobotics/racecar/blob/c2b9be312659f862fb1f99670c1edd1874b51246/racecar_autopilot/scripts/slash_controller.py#L29). 
 
 # Remote Connection (SSH/VNC)
 
@@ -88,6 +91,3 @@ What you should be seeing (on left is the simulator, on right is RVIZ):
 <p align="center"><i>The simplest remote killswitch: a long loop of wire</i></p>
 
 * Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
-
-# Steering Offset
-If the RaceCar doesn't move straight when no steering commands are sent, it is possible to adjust the zero steering value by adjusting this steering offset [here](https://github.com/SherbyRobotics/racecar/blob/c2b9be312659f862fb1f99670c1edd1874b51246/racecar_autopilot/scripts/slash_controller.py#L29). 
