@@ -13,14 +13,22 @@
     1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save. Remove "Wired connection 1" if it exists.
     2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
 
-6. Make sure to have latest code:
+6. Make sure to have latest code. Normally we would do:
     ```bash
     $ cd ~/catkin_ws/src/racecar
     $ git pull
     $ cd ~/catkin_ws
     $ catkin_make
     ```
-    
+    but the pre-built image as an old git history causing this error: "fatal: refusing to merge unrelated histories" because of a rebase, do this instead:
+    ```bash
+    $ cd ~/catkin_ws/src
+    $ rm -rf racecar
+    $ git clone https://github.com/SherbyRobotics/racecar
+    $ cd ~/catkin_ws
+    $ catkin_make
+    ```
+     
     * Note to have Internet on the RaceCar: disconnect from the Hotspot connection and select your preferred Wi-Fi network. To do so remotely, use VNC with the Ethernet connection, then change the Wi-Fi network.
 
 # Virtual Machine
