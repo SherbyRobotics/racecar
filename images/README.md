@@ -37,7 +37,7 @@
     ```bash
     $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_vm.sh
     $ chmod +x setup_vm.sh
-    $ setup_vm.sh
+    $ ./setup_vm.sh
     ```
     
 3. If you are using a VirtualBox, go in the network interface of the virtual machine, then add a second interface called "Bridged Adapter". This will be used to connect the virtual machine to ROS on the RaceCar (see [ROS on multiple computers](https://github.com/SherbyRobotics/racecar/tree/master/doc) example).
