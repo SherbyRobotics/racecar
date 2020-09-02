@@ -22,9 +22,8 @@
     ```
     but the pre-built image as an old git history causing this error: "fatal: refusing to merge unrelated histories" because of a rebase, do this instead:
     ```bash
-    $ cd ~/catkin_ws/src
-    $ rm -rf racecar
-    $ git clone https://github.com/SherbyRobotics/racecar
+    $ cd ~/catkin_ws/src/racecar
+    $ git reset --hard origin/master
     $ cd ~/catkin_ws
     $ catkin_make
     ```
