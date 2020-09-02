@@ -72,11 +72,12 @@
         Mode: Hotspot
         Device: wlan0
         ```
-    5. Under Wi-Fi Security tab:
+    3. Under Wi-Fi Security tab:
         ```
         Security: WPA
         Password: racecar
         ```
+    4. If you have still difficulty to connect to Hotspot after rebooting, try changing `Band` to 5 GHz.
     
 ## Backup/Shrink RaspberryPi3 image
 1. Backup
