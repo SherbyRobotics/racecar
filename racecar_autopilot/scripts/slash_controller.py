@@ -26,7 +26,7 @@ class slash_controller(object):
         # Paramters
 
         # Controller        
-        self.steering_offset = 0.15
+        self.steering_offset = 0.15 # To adjust according to the vehicle
         
         self.K_autopilot =  None # TODO: DESIGN LQR
     
@@ -75,20 +75,20 @@ class slash_controller(object):
                 # Open-Loop
                 self.propulsion_cmd = self.propulsion_ref
                 self.arduino_mode   = 1  
-                self.steering_cmd   = self.steering_ref  
+                self.steering_cmd   = self.steering_ref + self.steering_offset
             
             # For compatibility mode 0 needs to be closed-loop velocity
             elif ( self.high_level_mode == 0 ):
                 # Closed-loop velocity on arduino
                 self.propulsion_cmd = self.propulsion_ref
                 self.arduino_mode   = 2  
-                self.steering_cmd   = self.steering_ref  
+                self.steering_cmd   = self.steering_ref + self.steering_offset 
                 
             elif ( self.high_level_mode == 3 ):
                 # Closed-loop position on arduino
                 self.propulsion_cmd = self.propulsion_ref
                 self.arduino_mode   = 3
-                self.steering_cmd   = self.steering_ref  
+                self.steering_cmd   = self.steering_ref + self.steering_offset
                 
             elif ( self.high_level_mode == 4 ):
                 # Reset encoders
