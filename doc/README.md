@@ -1,4 +1,5 @@
 * [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
+* [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#usb-hub-woes)
 * [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#steering-offset)
 * [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection-sshvnc)
 * [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
@@ -11,6 +12,16 @@
 # Hardware Connections
 
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_connections.jpg "connections" )
+
+# USB hub woes
+If the USB hub doesn't seem to work or is not recognized, try the following first before calling it defective:
+
+1. Some of you will be shocked to learn that quality control on the Raspberry Pi assembly line is not very stringent. Way too many brand new Raspberry Pi are shipped with defective micro SD cards, some even have non-functional USB ports. So, first test the USB ports of your Pi by connecting something else directly on them, for example a USB mouse or a USB keyboard. And make them work.
+
+2. You can see four pushbuttons on the hub, one for each USB port. These power on/off each port. Unless the button is lighted up in blue (the yellow arrow below points to one), the associated USB port is disabled.
+
+    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Sabrent_Hub.jpg "Enabling a USB port" )
+    <p align="center"><i>In this picture, the USB port on the right is the only one enabled</i></p>
 
 # Steering Offset
 If the RaceCar doesn't move straight when no steering commands are sent, it is possible to adjust the steering mechanically and by software. If the steering offset is small, you may skip the mechanical calibration and just [adjust in software](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#sofware-calibration).
