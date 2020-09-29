@@ -31,7 +31,9 @@ To be able to test our code, there are a few requirements.
 * [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection-sshvnc)
 * [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
 * [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated-environment-gazebo)
-* [Recharging the RaceCar](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#recharging-the-racecar)
+* [The RaceCar batteries](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-racecar-batteries)
+* [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-anker-battery)
+* [Charging the Traxxas battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-traxxas-battery)
 * [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
 
 ## How it works
