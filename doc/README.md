@@ -76,7 +76,7 @@ If you have ROS on your laptop (ubuntu native or in a virtual machine), to make 
     ```
 * On another terminal on the laptop (use `ifconfig` to get your laptop IP `10.42.0.###`):
     ```bash
-    $ export ROS_MASTER_URI=https://10.42.0.1:11311
+    $ export ROS_MASTER_URI=http://10.42.0.1:11311
     $ export ROS_IP=10.42.0.###
     $ roslaunch racecar_bringup rviz.launch
     ```
