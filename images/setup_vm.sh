@@ -25,11 +25,14 @@ sudo apt install -y ros-melodic-desktop-full \
                     ros-melodic-rosbridge-server  \
                     ros-melodic-web-video-server \
                     ros-melodic-roswww \
+                    ros-melodic-rviz-plugin-tutorials \
                     vim \
                     git \
                     net-tools \
                     nodejs \
-                    sed 
+                    sed \
+                    ntpdate \
+                    ntp
 
 # Phase 2 - Workspace setup
 source /opt/ros/melodic/setup.bash

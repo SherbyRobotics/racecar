@@ -38,6 +38,7 @@ sudo apt install -y ros-melodic-rosbash \
                     ros-melodic-roswww \
                     ros-melodic-ros-control \
                     ros-melodic-rosserial-arduino \
+                    ros-melodic-rviz-plugin-tutorials \
                     python-rosdep \
                     vim \
                     git \
@@ -50,7 +51,9 @@ sudo apt install -y ros-melodic-rosbash \
                     evince \
                     sed \
                     wireshark-qt \
-                    gparted
+                    gparted \
+                    ntpdate \
+                    ntp
 
 # ROS Workspace setup
 source /opt/ros/melodic/setup.bash
