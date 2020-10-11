@@ -26,7 +26,7 @@ class slash_controller(object):
         # Paramters
 
         # Controller        
-        self.steering_offset = 0.15 # To adjust according to the vehicle
+        self.steering_offset = 0.0 # To adjust according to the vehicle
         
         self.K_autopilot =  None # TODO: DESIGN LQR
     
