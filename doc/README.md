@@ -99,6 +99,15 @@ $ roslaunch racecar_bringup rviz.launch
     
 What you should be seeing (on left is the simulator, on right is RVIZ):
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/gazebo.jpg "gazebo" )
+
+If you don't have a joystick, it is possible to add a virtual one in RVIZ directly for convenience. To do that, make sure package `rviz-plugin-tutorials` is installed: 
+```bash
+$ sudo apt-get update
+$ sudo apt install ros-melodic-rviz-plugin-tutorials
+```
+In RVIZ, click on Panels->Add New Panel, then select Teleop plugin. In the new panel, set topic name to `/racecar/cmd_vel_abtr_1`. Click and move the mouse inside the square to send twists to simulated RaceCar:
+![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop_plugin_panel.jpg "racecar_rviz_teleop_plugin_panel" )
+![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop_plugin.jpg "racecar_rviz_teleop_plugin" )
     
 # The RaceCar batteries
 * The RaceCar contains two batteries:
