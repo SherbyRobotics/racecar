@@ -51,3 +51,5 @@ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
 # VMWare GPU acceleration disabling (optional)
 echo "export SVGA_VGPU10=0" >> ~/.bashrc
+
+echo "Installation completed! Open a new terminal to use ROS."
