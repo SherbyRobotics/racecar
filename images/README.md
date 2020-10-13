@@ -31,7 +31,7 @@
     * Note to have Internet on the RaceCar: disconnect from the Hotspot connection and select your preferred Wi-Fi network. To do so remotely, use VNC with the Ethernet connection, then change the Wi-Fi network.
 
 # Virtual Machine
-1. Install [VirtualBox](https://www.virtualbox.org/). Optionally, the VirtualBox Extension Pack can also be installed for UBS2-USB3 support.
+1. Install [VirtualBox](https://www.virtualbox.org/). Optionally, the VirtualBox Extension Pack can also be installed for USB2-USB3 support.
 2. Download [Ubuntu 18.04 Desktop ISO](https://releases.ubuntu.com/18.04.5/ubuntu-18.04.5-desktop-amd64.iso)
 3. Open VirtualBox, create a new image called "Ubuntu 18.04" with at least 4-6 GB of RAM (or 50% of your computer RAM). Click default next options up to hard drive size, which can be set to 20 GB. Before starting the virtual machine, edit its Settings:
     1. System->Processor: set at least 2 to 6 processors (or 50% of your CPUs). 
