@@ -47,7 +47,7 @@
 7. When re-opening a new terminal, ROS will be configured. You can then clone the RaceCar's repository:
     ```bash
     $ cd ~/catkin_ws/src
-    $ gt clone https://github.com/SherbyRobotics/racecar
+    $ git clone https://github.com/SherbyRobotics/racecar
     $ cd ~/catkin_ws
     $ catkin_make
     ```
