@@ -7,7 +7,7 @@ global_costmap:
  
   transform_tolerance: 0.5
   plugins:
-    - {name: static_layer,            type: "costmap_2d::StaticLayer"}
+    - {name: static_layer,            type: "rtabmap_ros::StaticLayer"}
     - {name: inflation_layer,         type: "costmap_2d::InflationLayer"}
 
 
