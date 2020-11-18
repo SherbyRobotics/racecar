@@ -11,7 +11,7 @@
 
 # Hardware Connections
 
-![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_connections.jpg "connections" )
+  <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_connections.jpg" alt="connections" width="800">
 
 # USB hub woes
 If the USB hub doesn't seem to work or is not recognized, try the following first before calling it defective:
@@ -20,7 +20,7 @@ If the USB hub doesn't seem to work or is not recognized, try the following firs
 
 2. You can see four pushbuttons on the hub, one for each USB port. These power on/off each port. Unless the button is lighted up in blue (the yellow arrow below points to one), the associated USB port is disabled.
 
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Sabrent_Hub.jpg "Enabling a USB port" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/Sabrent_Hub.jpg" alt="usb_hub" width="400">
     <p align="center"><i>In this picture, the USB port on the right is the only one enabled</i></p>
 
 # Steering Offset
@@ -30,19 +30,19 @@ If the RaceCar doesn't move straight when no steering commands are sent, it is p
 1. Make sure the Arduino is flashed with the default firmware: [racecar_propulsion_firmware.ino](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware). When the RaceCar's power board is activated, the arduino will send a zero steering value.
 2. Unscrew that screw:
 
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_1.jpg "steering step 1" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_1.jpg" alt="steering_1" width="400">
 
 3. Adjust the screw indicated by a green circle to make the piece indicated by a red circle be straight:
     
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_2.jpg "steering step 2" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_2.jpg" alt="steering_2" width="400">
 
 4. Screw back this screw:
     
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_1.jpg "steering step 3" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_1.jpg" alt="steering_3" width="400">
 
 5. Adjust this screw (called "Toe" suspension adjustement) to make each wheel straight between each other:
     
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_3.jpg "steering step 4" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_3.jpg" alt="steering_4" width="400">
 
 ## Sofware calibration
 Adjust this steering offset [here](https://github.com/SherbyRobotics/racecar/blob/c2b9be312659f862fb1f99670c1edd1874b51246/racecar_autopilot/scripts/slash_controller.py#L29). 
@@ -98,7 +98,8 @@ $ roslaunch racecar_bringup rviz.launch
 ```
     
 What you should be seeing (on left is the simulator, on right is RVIZ):
-![](https://github.com/SherbyRobotics/racecar/blob/master/doc/gazebo.jpg "gazebo" )
+
+  <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/gazebo.jpg" alt="gazebo" width="800">
 
 If you don't have a joystick, it is possible to add a virtual one in RVIZ directly for convenience. To do that, make sure package `rviz-plugin-tutorials` is installed: 
 ```bash
@@ -106,8 +107,9 @@ $ sudo apt-get update
 $ sudo apt install ros-melodic-rviz-plugin-tutorials
 ```
 In RVIZ, click on Panels->Add New Panel, then select Teleop plugin. In the new panel, set topic name to `/racecar/cmd_vel_abtr_1`. Click and move the mouse inside the square to send twists to simulated RaceCar:
-![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop_plugin_panel.jpg "racecar_rviz_teleop_plugin_panel" )
-![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop_plugin.jpg "racecar_rviz_teleop_plugin" )
+
+  <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop_plugin_panel.jpg" alt="racecar_rviz_teleop_plugin_panel" width="300">
+  <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop_plugin.jpg" alt="racecar_rviz_teleop_plugin" width="600">
     
 # The RaceCar batteries
 * The RaceCar contains two batteries:
@@ -117,12 +119,12 @@ In RVIZ, click on Panels->Add New Panel, then select Teleop plugin. In the new p
 # Charging the Anker battery
 * To charge the Anker battery, use the small USB connector, plug it in the "input" port, then connect the other side to a computer's powered USB or a phone charger 5V. If the battery is empty, it can take many hours to charge (maybe charge during the night), but it should last long.
     
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_anker_battery.jpg "anker_battery" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_anker_battery.jpg" alt="anker_battery" width="500">
 
 # Charging the Traxxas battery
 * For the Traxxas battery, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the motor drive is on left ("Charge"). Connect the wires like in the figure below. **To avoid short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the reverse when removing the wires after charging!)**. On the charger, make sure the battery type is set to NiMH and the maximum current limit is 2A. Hold « Start » to start charging. When the battery is charged, the charger should stop by itself with a sound. Stop charging manually if it has been charging for more than 1 hour. Normally, the charging time is around 30-40 minutes if the battery is empty.
 
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Charging_Traxxas_with_imax_B6.jpg "traxxas_battery" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/Charging_Traxxas_with_imax_B6.jpg" alt="traxxas_battery" width="500">
 
 * Sometimes, the charger will "charge" the Traxxas battery for like 20 seconds and then decide it is full. In reality, the battery has not been recharged. Wait a minute and try again (Hold Start). Repeat until the charging cycle starts for real (at least 25 minutes or more).
     
@@ -132,9 +134,9 @@ In RVIZ, click on Panels->Add New Panel, then select Teleop plugin. In the new p
 
 * When the RaceCar moves around, you have to run after it if you want to make an emergency stop. Make yourself a remote killswitch when you are ready to test drive. The switch is connected into a detacheable header on the motor drive. The simplest remote killswitch is a long loop of wire that you hold in your hand. Should the RaceCar go too far away from you, the detachable header will pop out of its socket (as long as you hold firmly your end), opening the circuit.
 
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Killswitch_Header.jpg "Killswitch header" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/Killswitch_Header.jpg" alt="Killswitch header" width="500">
 
-    ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Simplest_remote_killswitch.jpg "Simplest killswitch" )
+    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/Simplest_remote_killswitch.jpg" alt="Simplest Killswitch" width="500">
 <p align="center"><i>The simplest remote killswitch: a long loop of wire</i></p>
 
 * Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
