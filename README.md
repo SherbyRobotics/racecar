@@ -74,7 +74,8 @@ Mode | Input sequence | Function
 4|`LB` + `B`|Closed-loop velocity, closed-loop steering
 5|`LB` + `X`|Closed-loop velocity, closed-loop steering
 6|`LB` + `Y`|Reset encoder command
-7|`LB` + `LT`|Empty template
-8|`LB` + `Button stick left`|Joystick disabled
+7|`LB` + `LT`|Joystick disabled
+8|`LB` + `Button stick left`|Template 
+8|`LB` + `Button stick right`|Template 
 9|`LB` + `Croos key Up/Down`|Template
-10|None|Nothing 
+10|None|Nothing (a zero command is sent to vehicle)

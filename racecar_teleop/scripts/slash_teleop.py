@@ -18,13 +18,22 @@ class teleop(object):
         self.max_vel  = rospy.get_param('~max_vel',   6.0) # Max linear velocity (m/s)
         self.max_volt = rospy.get_param('~max_volt',  8)   # Max voltage is set at 6 volts   
         self.maxStAng = rospy.get_param('~max_angle', 40)  # Supposing +/- 40 degrees max for the steering angle
-        self.cmd2rad   = self.maxStAng*2*3.1416/360     
+        self.cmd2rad   = self.maxStAng*2*3.1416/360
+        self.joystickCompatibilityWarned = False
 
     ####################################### 
         
     def joy_callback( self, joy_msg ):
         """ """
     
+        if len(joy_msg.axes) < 4 or len(joy_msg.buttons) < 7:
+            if not self.joystickCompatibilityWarned:
+                rospy.logwarn("slash_teleop: Received \"%s\" topic doesn't have enough axes (has %d, min=4) and/ro buttons (has %d, min=7). If a Logitech gamepad is used, make sure also it is in D mode. This warning is only shown once. Until then, this node won't publish any \"%s\".", rospy.names.resolve_name("joy"), len(joy_msg.axes), len(joy_msg.buttons), rospy.names.resolve_name("ctl_ref"))
+                self.joystickCompatibilityWarned = True
+            return
+
+        self.joystickCompatibilityWarned = False   # reset in case we switch mode on the gamepad
+
         propulsion_user_input = joy_msg.axes[3]    # Up-down Right joystick 
         steering_user_input   = joy_msg.axes[0]    # Left-right left joystick
         
@@ -75,16 +84,25 @@ class teleop(object):
                 
             #If left trigger is active 
             elif (joy_msg.buttons[6]):
+
+                # Joystick disabled!
+                return;
                 
-                # Template
+            #If right joy pushed
+            elif(joy_msg.buttons[11]):
+
+                 # Template
                 self.cmd_msg.linear.x  = 0
                 self.cmd_msg.angular.z = 0
                 self.cmd_msg.linear.z  = 0 # Control mode
-                
+
             #If left joy pushed
-            elif(joy_msg.buttons[11]):
-                # Joystick disabled!
-                return;
+            elif(joy_msg.buttons[12]):
+
+                 # Template
+                self.cmd_msg.linear.x  = 0
+                self.cmd_msg.angular.z = 0
+                self.cmd_msg.linear.z  = 0 # Control mode
                 
             #If bottom arrow is active
             elif(joy_msg.axes[5]):
