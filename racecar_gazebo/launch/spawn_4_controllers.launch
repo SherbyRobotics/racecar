@@ -4,28 +4,28 @@
   <!-- Optional modules -->
   <arg name="navigation"    default="false"/> <!-- Launch move_base for navigation -->
   
-  <include file="$(find racecar_control)/launch/racecar_control_solution.launch">
+  <include file="$(find racecar_behaviors)/launch/behaviors.launch">
     <arg name="prefix" value="racecar1"/>
     <arg name="slam" value="$(arg navigation)"/>
     <arg name="localization" value="$(arg navigation)"/>
     <arg name="navigation" value="$(arg navigation)"/>
   </include>
   
-  <include file="$(find racecar_control)/launch/racecar_control_solution.launch">
+  <include file="$(find racecar_behaviors)/launch/behaviors.launch">
     <arg name="prefix" value="racecar2"/>
     <arg name="slam" value="$(arg navigation)"/>
     <arg name="localization" value="$(arg navigation)"/>
     <arg name="navigation" value="$(arg navigation)"/>
   </include>
   
-  <include file="$(find racecar_control)/launch/racecar_control_solution.launch">
+  <include file="$(find racecar_behaviors)/launch/behaviors.launch">
     <arg name="prefix" value="racecar3"/>
     <arg name="slam" value="$(arg navigation)"/>
     <arg name="localization" value="$(arg navigation)"/>
     <arg name="navigation" value="$(arg navigation)"/>
   </include>
   
-  <include file="$(find racecar_control)/launch/racecar_control_solution.launch">
+  <include file="$(find racecar_behaviors)/launch/behaviors.launch">
     <arg name="prefix" value="racecar4"/>
     <arg name="slam" value="$(arg navigation)"/>
     <arg name="localization" value="$(arg navigation)"/>

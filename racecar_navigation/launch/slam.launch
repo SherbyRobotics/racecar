@@ -40,6 +40,7 @@
       <param name="Reg/Strategy"              type="string" value="1"/> <!-- 1=ICP -->
       <param name="DbSqlite3/InMemory"        type="string" value="true"/>
       <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
+      <param name="RGBD/ProximityMaxGraphDepth" type="string" value="0"/>
 
       <!-- ICP parameters -->
       <param name="Icp/VoxelSize"                 type="string" value="0.05"/>

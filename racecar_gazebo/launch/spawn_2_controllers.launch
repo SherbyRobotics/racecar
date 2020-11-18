@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <launch>
 
-  <include file="$(find racecar_control)/launch/racecar_control.launch">
+  <include file="$(find racecar_behaviors)/launch/behaviors.launch">
     <arg name="prefix" value="racecar1"/>
   </include>
   
-  <include file="$(find racecar_control)/launch/racecar_control.launch">
+  <include file="$(find racecar_behaviors)/launch/behaviors.launch">
     <arg name="prefix" value="racecar2"/>
   </include>
 
