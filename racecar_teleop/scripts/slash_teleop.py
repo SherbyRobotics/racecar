@@ -18,6 +18,7 @@ class teleop(object):
         self.max_vel  = rospy.get_param('~max_vel',   6.0) # Max linear velocity (m/s)
         self.max_volt = rospy.get_param('~max_volt',  8)   # Max voltage is set at 6 volts   
         self.maxStAng = rospy.get_param('~max_angle', 40)  # Supposing +/- 40 degrees max for the steering angle
+        self.ps4 = rospy.get_param('~ps4', False)  # PlayStation4 controller: speed axis is 4
         self.cmd2rad   = self.maxStAng*2*3.1416/360
         self.joystickCompatibilityWarned = False
 
@@ -25,16 +26,16 @@ class teleop(object):
         
     def joy_callback( self, joy_msg ):
         """ """
-    
-        if len(joy_msg.axes) < 4 or len(joy_msg.buttons) < 7:
+        min_axes = 5 if self.ps4 else 4
+        if len(joy_msg.axes) < min_axes or len(joy_msg.buttons) < 7:
             if not self.joystickCompatibilityWarned:
-                rospy.logwarn("slash_teleop: Received \"%s\" topic doesn't have enough axes (has %d, min=4) and/ro buttons (has %d, min=7). If a Logitech gamepad is used, make sure also it is in D mode. This warning is only shown once. Until then, this node won't publish any \"%s\".", rospy.names.resolve_name("joy"), len(joy_msg.axes), len(joy_msg.buttons), rospy.names.resolve_name("ctl_ref"))
+                rospy.logwarn("slash_teleop: Received \"%s\" topic doesn't have enough axes (has %d, min=%d) and/ro buttons (has %d, min=7). If a Logitech gamepad is used, make sure also it is in D mode. This warning is only shown once. Until then, this node won't publish any \"%s\".", rospy.names.resolve_name("joy"), len(joy_msg.axes), min_axes, len(joy_msg.buttons), rospy.names.resolve_name("ctl_ref"))
                 self.joystickCompatibilityWarned = True
             return
 
         self.joystickCompatibilityWarned = False   # reset in case we switch mode on the gamepad
 
-        propulsion_user_input = joy_msg.axes[3]    # Up-down Right joystick 
+        propulsion_user_input = joy_msg.axes[4 if self.ps4 else 3]    # Up-down Right joystick 
         steering_user_input   = joy_msg.axes[0]    # Left-right left joystick
         
         self.cmd_msg = Twist()             

@@ -2,6 +2,10 @@
 <launch>
 
   <arg name="joy_port"     default="js0"/>    <!-- for /dev/input/js0 -->
+  <arg name="joy_ps4"      default="false"/>
+
+  <arg name="max_vel"      default="6"/>
+  <arg name="max_angle"    default="40"/>
 
   <arg name="prefix"       default="racecar"/>
   <arg name="arduino_port" default="ACM0"/>   <!-- for /dev/ttyACM0 -->
@@ -26,7 +30,11 @@
       <param name="coalesce_interval" value="0.01"/>
     </node>
 
-    <node pkg="racecar_teleop" type="slash_teleop.py" name="teleop"/>
+    <node pkg="racecar_teleop" type="slash_teleop.py" name="teleop">
+      <param name="ps4"       value="$(arg joy_ps4)"/>
+      <param name="max_vel"   value="$(arg max_vel)"/>
+      <param name="max_angle" value="$(arg max_angle)"/>
+    </node>
     <node pkg="racecar_autopilot" type="slash_controller.py" name="controller" output="screen"/>
 
   </group>

@@ -49,7 +49,7 @@
           <param name="camera_id" value="0"/>
           <param name="camera_name" value="front_camera"/>
 
-          <param name="staturation" value="100"/>
+          <param name="saturation" value="100"/>
           <param name="brightness" value="50"/>
           
           <param name="width" value="160"/>

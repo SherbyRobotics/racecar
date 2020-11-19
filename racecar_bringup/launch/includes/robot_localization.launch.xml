@@ -3,7 +3,7 @@
   <arg name="prefix" default="racecar"/>
 
   <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node">
-    <param name="use_mag" value="false"/> 
+    <param name="use_mag" value="false"/> <!-- GRO830: Disable/Enable Magnetometer for orientation estimation -->
     <param name="world_frame" value="enu"/>
     <param name="publish_tf" value="false"/>
   </node>
@@ -26,7 +26,7 @@
 
     <!-- The order of the values is x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az. -->
     
-    <!-- APP5: Modifications below -->
+    <!-- GRO830: Modifications below -->
     <rosparam param="odom0_config">[false, false, false,
                                     false, false, false,
                                     false, false, false,
@@ -39,7 +39,7 @@
                                    false, false, false,
                                    false, false, false,
                                    false, false, false] </rosparam>
-    <!-- APP5: Modifications above -->
+    <!-- GRO830: Modifications above -->
     
     <param name="odom0_differential" value="true"/>
     <param name="imu0_differential" value="false"/>
