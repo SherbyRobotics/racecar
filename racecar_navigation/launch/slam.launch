@@ -41,6 +41,7 @@
       <param name="DbSqlite3/InMemory"        type="string" value="true"/>
       <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
       <param name="RGBD/ProximityMaxGraphDepth" type="string" value="0"/>
+      <param name="RGBD/SavedLocalizationIgnored" type="string" value="true"/>
 
       <!-- ICP parameters -->
       <param name="Icp/VoxelSize"                 type="string" value="0.05"/>
