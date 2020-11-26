@@ -96,14 +96,6 @@ class teleop(object):
                 self.cmd_msg.linear.x  = 0
                 self.cmd_msg.angular.z = 0
                 self.cmd_msg.linear.z  = 0 # Control mode
-
-            #If left joy pushed
-            elif(joy_msg.buttons[12]):
-
-                 # Template
-                self.cmd_msg.linear.x  = 0
-                self.cmd_msg.angular.z = 0
-                self.cmd_msg.linear.z  = 0 # Control mode
                 
             #If bottom arrow is active
             elif(joy_msg.axes[5]):
