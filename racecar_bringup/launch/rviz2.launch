@@ -1,0 +1,7 @@
+<!-- -->
+<launch>
+
+  <node name="rviz1" pkg="rviz" type="rviz" args="-d $(find racecar_bringup)/config/bringup1.rviz"/>
+  <node name="rviz2" pkg="rviz" type="rviz" args="-d $(find racecar_bringup)/config/bringup2.rviz"/>
+
+</launch>
