@@ -2,6 +2,7 @@
 <launch>  
   <arg name="prefix" default="racecar"/>
   <arg name="fixed_frame_id" value="odom"/> <!-- set "map" when a map is used! -->
+  <arg name="debug" default="false"/>
    
   <group ns="$(arg prefix)">
 
@@ -31,6 +32,25 @@
        <param name="object_frame_id" value="$(arg prefix)/object"/>
        <param name="color_hue"       value="10"/>
     </node>
+        
+    <!-- used to debug camera vs scan registration -->
+    <group if="$(arg debug)">
+       <node pkg="nodelet" type="nodelet" name="point_cloud_xyzrgb" args="standalone rtabmap_ros/point_cloud_xyzrgb">
+          <param name="approx_sync"  value="false"/>
+          <remap from="cloud"           to="raspicam_node/registered_cloud"/>
+          <remap from="depth/image"     to="raspicam_node/depth_registered_raw"/>
+          <remap from="rgb/image"       to="raspicam_node/image"/>
+          <remap from="rgb/camera_info" to="raspicam_node/camera_info"/>
+       </node>
+       <node pkg="image_view" type="image_view" name="image_view_detections">
+          <remap from="image"       to="/racecar/image_detections"/>
+       </node>
+       <node pkg="image_view" type="image_view" name="image_view_depth">
+          <remap from="image"       to="raspicam_node/depth_registered"/>
+       </node>
+       <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure"/>
+       <node name="rviz" pkg="rviz" type="rviz" args="-d $(find racecar_bringup)/config/bringup.rviz"/>
+    </group>
         
   </group>
 

@@ -51,6 +51,7 @@
 
           <param name="saturation" value="100"/>
           <param name="brightness" value="50"/>
+          <param name="zoom" value="1"/>
           
           <param name="width" value="160"/>
           <param name="height" value="120"/>
