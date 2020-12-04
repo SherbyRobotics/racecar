@@ -22,6 +22,8 @@ sudo apt install -y ros-melodic-rosbash \
                     ros-melodic-rqt-image-view \
                     ros-melodic-rqt-reconfigure \
                     ros-melodic-rqt-graph \
+                    ros-melodic-image-view \
+                    ros-melodic-depth-image-proc \
                     ros-melodic-joy \
                     ros-melodic-gazebo-ros \
                     ros-melodic-camera-info-manager \
