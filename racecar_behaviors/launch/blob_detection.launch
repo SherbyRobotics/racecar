@@ -1,7 +1,7 @@
 <!-- -->
 <launch>  
   <arg name="prefix" default="racecar"/>
-  <arg name="fixed_frame_id" value="odom"/> <!-- set "map" when a map is used! -->
+  <arg name="fixed_frame_id" default="odom"/> <!-- set "map" when a map is used! -->
   <arg name="debug" default="false"/>
    
   <group ns="$(arg prefix)">
