@@ -13,7 +13,7 @@
 
   <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_connections.jpg" alt="connections" width="800">
 
-**WARNING**: Make sure the RPI3 is unpowered when you connect and deconnect the raspicam. The connector is very sensitive and small sparks could happen making the camera unusable. See also this [post](https://stackoverflow.com/questions/31354280/raspberry-camera-error-mmal-no-data-received-from-sensor).
+**WARNING**: Make sure the RPI3 is unpowered when you connect and deconnect the raspicam. The connector is very sensitive and small sparks could happen making the camera unusable. See also this [post](https://stackoverflow.com/questions/31354280/raspberry-camera-error-mmal-no-data-received-from-sensor). Also make sure you **shutdown properly** the RPI3 (`sudo halt`) before unplugging the power. If the RPI3 is talking to camera while you unplug the power, it may corrupt the camera.
 
 # USB hub woes
 If the USB hub doesn't seem to work or is not recognized, try the following first before calling it defective:
