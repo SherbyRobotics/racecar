@@ -4,7 +4,13 @@ project(racecar_behaviors)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED dynamic_reconfigure)
+find_package(catkin REQUIRED COMPONENTS 
+  dynamic_reconfigure
+  roscpp
+  rospy
+  laser_geometry
+  sensor_msgs
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -97,7 +103,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES racecar_control
-#  CATKIN_DEPENDS other_catkin_pkg
+   CATKIN_DEPENDS roscpp rospy laser_geometry sensor_msgs
 #  DEPENDS system_lib
 )
 
@@ -107,8 +113,10 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
-
+include_directories(
+# include
+  ${catkin_INCLUDE_DIRS}
+)
 ## Declare a C++ library
 # add_library(racecar_control
 #   src/${PROJECT_NAME}/racecar_control.cpp
@@ -130,6 +138,10 @@ catkin_package(
 # target_link_libraries(racecar_control_node
 #   ${catkin_LIBRARIES}
 # )
+
+add_executable(racecar_behaviors_laserscan_to_pointcloud src/laserscan_to_pointcloud_node.cpp)
+target_link_libraries(racecar_behaviors_laserscan_to_pointcloud ${catkin_LIBRARIES})
+set_target_properties(racecar_behaviors_laserscan_to_pointcloud PROPERTIES OUTPUT_NAME "laserscan_to_pointcloud")
 
 #############
 ## Install ##
@@ -165,6 +177,13 @@ catkin_package(
 #   # myfile2
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
+
+install(TARGETS 
+   racecar_behaviors_laserscan_to_pointcloud
+   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 #############
 ## Testing ##

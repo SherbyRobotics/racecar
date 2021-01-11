@@ -12,6 +12,7 @@
   <arg name="arduino_baud" default="115200"/>
   <arg name="lidar_port"   default="USB0"/>   <!-- for /dev/ttyUSB0 -->
   <arg name="sensors"      default="true"/>   <!-- start lidar, camera -->
+  <arg name="image_rate"   default="10"/>
   
   <include file="$(find racecar_bringup)/launch/bringup.launch">
     <arg name="prefix"       value="$(arg prefix)"/>
@@ -19,12 +20,13 @@
     <arg name="arduino_baud" value="$(arg arduino_baud)"/>
     <arg name="lidar_port"   value="$(arg lidar_port)"/>
     <arg name="sensors"      value="$(arg sensors)"/>
+    <arg name="image_rate"   value="$(arg image_rate)"/>
   </include>
 
   <group ns="$(arg prefix)">
   
     <!-- Arbitration node for twists coming from the joystick and the web client-->
-    <node pkg="racecar_bringup" type="cmd_vel_arbitration.py" name="cmd_vel_arbitration">     
+    <node pkg="racecar_bringup" type="cmd_vel_arbitration" name="cmd_vel_arbitration">     
       <remap from="cmd_vel_output" to="cmd_vel"/>
     </node>
 
@@ -35,7 +37,7 @@
       <param name="coalesce_interval" value="0.01"/>
     </node>
 
-    <node pkg="racecar_teleop" type="slash_teleop.py" name="teleop">
+    <node pkg="racecar_teleop" type="slash_teleop" name="teleop">
       <remap from="ctl_ref" to="cmd_vel_abtr_0"/>  <!-- Highest priority -->
       <param name="ps4"       value="$(arg joy_ps4)"/>
       <param name="max_vel"   value="$(arg max_vel)"/>

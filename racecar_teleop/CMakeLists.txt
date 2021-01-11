@@ -10,7 +10,8 @@ project(racecar_teleop)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   rospy
-  std_msgs
+  roscpp
+  sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -105,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES racecar_teleop
-#  CATKIN_DEPENDS geometry_msgs rospy std_msgs
+   CATKIN_DEPENDS geometry_msgs rospy roscpp sensor_msgs
 #  DEPENDS system_lib
 )
 
@@ -150,6 +151,10 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
+add_executable(racecar_teleop_slash_teleop src/slash_teleop_node.cpp)
+target_link_libraries(racecar_teleop_slash_teleop ${catkin_LIBRARIES})
+set_target_properties(racecar_teleop_slash_teleop PROPERTIES OUTPUT_NAME "slash_teleop")
+
 #############
 ## Install ##
 #############
@@ -159,10 +164,10 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-catkin_install_python(PROGRAMS
-  scripts/slash_teleop.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+#catkin_install_python(PROGRAMS
+#  scripts/my_script.py
+#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 
 ## Mark executables and/or libraries for installation
 # install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
@@ -170,6 +175,12 @@ catkin_install_python(PROGRAMS
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
+install(TARGETS 
+   racecar_teleop_slash_teleop
+   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/

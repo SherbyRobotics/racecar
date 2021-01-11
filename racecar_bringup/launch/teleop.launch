@@ -30,7 +30,7 @@
       <param name="coalesce_interval" value="0.01"/>
     </node>
 
-    <node pkg="racecar_teleop" type="slash_teleop.py" name="teleop">
+    <node pkg="racecar_teleop" type="slash_teleop" name="teleop">
       <param name="ps4"       value="$(arg joy_ps4)"/>
       <param name="max_vel"   value="$(arg max_vel)"/>
       <param name="max_angle" value="$(arg max_angle)"/>

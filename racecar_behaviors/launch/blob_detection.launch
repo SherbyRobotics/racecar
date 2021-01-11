@@ -9,9 +9,8 @@
     <!-- uncompress raspicam image -->
     <node pkg="image_transport" type="republish" name="republish_raspicam" args="compressed in:=raspicam_node/image raw out:=raspicam_node/image"/>
     <!-- convert scan to a point cloud -->
-    <node pkg="racecar_behaviors" type="laserscan_to_pointcloud.py" name="laserscan_to_pointcloud">
-       <remap from="converted_pc" to="scan_cloud"/>
-       <remap from="/scan" to="scan"/>
+    <node pkg="racecar_behaviors" type="laserscan_to_pointcloud" name="laserscan_to_pointcloud">
+       <remap from="cloud" to="scan_cloud"/>
     </node>
     <!-- register scan to camera -->
     <node pkg="rtabmap_ros" type="pointcloud_to_depthimage" name="pointcloud_to_depthimage">

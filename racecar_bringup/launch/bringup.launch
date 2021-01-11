@@ -7,6 +7,7 @@
     <arg name="lidar_port"   default="USB0"/>  <!-- for /dev/ttyUSB0 -->
     <arg name="sensors"      default="true"/>  <!-- start lidar, camera -->
     <arg name="publish_tf"   default="true"/>  <!-- publish odometry TF -->
+    <arg name="image_rate"   default="5"/>
    
     <group ns="$(arg prefix)">
           
@@ -23,7 +24,7 @@
           <param name="port" value="/dev/tty$(arg arduino_port)"/>
           <param name="baud" value="$(arg arduino_baud)"/>
       </node>
-      <node pkg="racecar_bringup" type="arduino_sensors.py" name="arduino_sensors" output="screen">
+      <node pkg="racecar_bringup" type="arduino_sensors" name="arduino_sensors" output="screen">
         <param name="publish_tf" value="$(arg publish_tf)"/>
         <remap from="raw_odom" to="prop_sensors"/>
         <remap if="$(arg publish_tf)" from="odom" to="odometry/filtered"/>
@@ -55,7 +56,7 @@
           
           <param name="width" value="160"/>
           <param name="height" value="120"/>
-          <param name="framerate" value="10"/>
+          <param name="framerate" value="$(arg image_rate)"/>
       </node>
                
     </group>
