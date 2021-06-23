@@ -8,6 +8,7 @@
 * [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-anker-battery)
 * [Charging the Traxxas battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-traxxas-battery)
 * [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
+* [Debug camera and lidar](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#debug-camera-and-lidar)
 
 # Hardware Connections
 
@@ -142,3 +143,19 @@ In RVIZ, click on Panels->Add New Panel, then select Teleop plugin. In the new p
 <p align="center"><i>The simplest remote killswitch: a long loop of wire</i></p>
 
 * Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
+
+# Debug camera and lidar
+Those tests can be done from the original [RPI image](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image) without any other installations.
+
+ * To test camera alone, do in a terminal:
+   ```bash
+   $ raspistill -f
+   ```
+   If the camera is not broken, you should see a full screen camera preview of about 5 sec.
+
+* To test the lidar, do in a terminal:
+   ```bash
+   $ roslaunch rplidar_ros test_rplidar.launch
+   ```
+    Make sure the power connector of the lidar is connected in the Anker battery and the other usb connector is on the RPI. You should see in the terminal range values printed over and over ("inf" values mean no obstacles detected, make sure they are not all "inf"). To better visualize lidar data, open a new terminal, type "rviz", set Fixed Frame to "laser", click Add, select "By topic", then select LaserScan with /scan topic. The lidar should be shown with red points in the 3D view (in the LaserScan options, set style to Points to better see the points).
+    
