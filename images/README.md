@@ -36,7 +36,7 @@
 3. Open VirtualBox, create a new image called "Ubuntu 20.04" with at least 4-6 GB of RAM (or 50% of your computer RAM). Click default next options up to hard drive size, which can be set to 20 GB. Before starting the virtual machine, edit its Settings:
     1. System->Processor: set at least 2 to 6 processors (or 50% of your CPUs). 
 	2. Network->Adapter 2: Enable it, attached to "Bridged Adapter" with your wireless network adapter. This will be used to connect the virtual machine to ROS on the RaceCar (see [ROS on multiple computers](https://github.com/SherbyRobotics/racecar/tree/master/doc) example).
-4. Start the virtual machine, it will ask for an ISO file, select the Ubuntu 18.04 Desktop ISO file previously downloaded. Install Ubuntu with all default settings.
+4. Start the virtual machine, it will ask for an ISO file, select the Ubuntu 20.04 Desktop ISO file previously downloaded. Install Ubuntu with all default settings.
 5. After installation, the virtual machine will reboot, connect to your account and in VirtualBox's Devices menu, select "Insert Guest Additions CD Image...", click on "Run" button to install them. After installation, reboot the virtual machine. You can then enable the shared clipboard (Devices->Shared Clipboard) and resize the window as you wish.
 6. To install automatically the RaceCar's developement environment, open a terminal and execute thoses commands (make sure the virtual machine has access to Internet):
     ```bash
@@ -52,18 +52,28 @@
     $ catkin_make
     ```
 
-# Create RaspberryPi3 image
-1. Install [Ubuntu Mate 18.04 for RPI3](https://ubuntu-mate.org/download/) with login name `racecar`
-2. In Network Manager, edit "Wired connection 1" and rename it to "Wired connection 192.168.10.1":
+# Create RaspberryPi image
+
+1. Install [Ubuntu Mate 20.04](https://ubuntu-mate.org/download/) with login name `racecar`:
+    1. For RPI3, select 32 bits image for RPI3
+    2. For RPI4, select 64 bits image for RPI4
+3. In Network Manager, edit "Wired connection 1" and rename it to "Wired connection 192.168.10.1":
     1. In IPv4 settings, set connection type to Manual instead of Automatic (DHCP)
     2. Add address `192.168.10.1` with mask `24`, leave Gateaway field empty
     3. Click Save
-3. Execute [setup_rpi3.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3.sh) script
-    ```bash
-    $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi3.sh
-    $ chmod +x setup_rpi3.sh
-    $ ./setup_rpi3.sh
-    ```
+4. Execute install script:
+    1. For RPI3, execute [setup_rpi3_ubuntu2004_noetic.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3_ubuntu2004_noetic.sh)
+        ```bash
+        $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi3_ubuntu2004_noetic.sh
+        $ chmod +x setup_rpi3_ubuntu2004_noetic.sh
+        $ ./setup_rpi3_ubuntu2004_noetic.sh
+        ```
+    2. For RPI4, execute [setup_rpi4_ubuntu2004_noetic.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi4_ubuntu2004_noetic.sh)
+        ```bash
+        $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi4_ubuntu2004_noetic.sh
+        $ chmod +x setup_rpi4_ubuntu2004_noetic.sh
+        $ ./setup_rpi4_ubuntu2004_noetic.sh
+        ```
 4. Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software) and install:
     ```bash
     $ cd arduino-1.8.13
@@ -71,7 +81,7 @@
     ```
 5. Open Arduino IDE, from Tools->"Manage Libraries..." menu, install `Bolder_Flight_Systems_MPU9250` library
 6. Reboot
-7. At this point, you can connect by ethernet to RPI3 by VNC at address 192.168.10.1 or by SSH:
+7. At this point, you can connect by ethernet to RPI by VNC at address 192.168.10.1 or by SSH:
     ```bash
     $ ssh racecar@192.168.10.1
     ```
@@ -90,7 +100,7 @@
         ```
     4. If you have still difficulty to connect to Hotspot after rebooting, try changing `Band` to 5 GHz.
     
-## Backup/Shrink RaspberryPi3 image
+## Backup/Shrink RaspberryPi image
 1. Backup
     ```bash
     $ sudo fdisk -l
