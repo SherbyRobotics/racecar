@@ -25,6 +25,7 @@ sudo apt install -y ros-noetic-desktop-full \
                     ros-noetic-rtabmap-ros \
                     ros-noetic-rosbridge-server  \
                     ros-noetic-rviz-plugin-tutorials \
+                    ros-noetic-async-web-server-cpp \
                     vim \
                     git \
                     net-tools \
@@ -35,8 +36,7 @@ sudo apt install -y ros-noetic-desktop-full \
                     python3-rosdep \
                     python-is-python3 \
                     python3-selenium \
-                    ffmpeg \
-                    ros-noetic-async-web-server-cpp
+                    ffmpeg
 
 # Phase 2 - Workspace setup
 source /opt/ros/noetic/setup.bash
