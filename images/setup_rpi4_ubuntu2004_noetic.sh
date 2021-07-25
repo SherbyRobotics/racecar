@@ -95,6 +95,8 @@ catkin_make
 mkdir -p ~/Arduino/libraries
 cd ~/Arduino/libraries
 rosrun rosserial_arduino make_libraries.py .
+# Version 1.8.15
+sudo snap install arduino
 
 # Init SSH keys
 sudo dpkg-reconfigure openssh-server
