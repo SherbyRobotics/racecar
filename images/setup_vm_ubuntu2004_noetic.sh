@@ -24,8 +24,6 @@ sudo apt install -y ros-noetic-desktop-full \
                     ros-noetic-ackermann-msgs \
                     ros-noetic-rtabmap-ros \
                     ros-noetic-rosbridge-server  \
-                    ros-noetic-web-video-server \
-                    ros-noetic-roswww \
                     ros-noetic-rviz-plugin-tutorials \
                     vim \
                     git \
@@ -33,7 +31,8 @@ sudo apt install -y ros-noetic-desktop-full \
                     nodejs \
                     sed \
                     ntpdate \
-                    ntp
+                    ntp \
+                    python3-rosdep
 
 # Phase 2 - Workspace setup
 source /opt/ros/noetic/setup.bash
@@ -42,11 +41,22 @@ mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
 catkin_init_workspace
 
-# Phase 3- ROS Build
+# Phase 3- ROS Build empty workspace
 cd ~/catkin_ws
 catkin_make
 
-# Phase 4 - For automatic sourcing of ROS scripts when starting a new session
+# Phase 4- ROS Build dependencies
+cd ~/catkin_ws/src
+git clone https://github.com/tork-a/roswww.git
+git clone https://github.com/RobotWebTools/web_video_server.git
+sudo rosdep init
+rosdep update
+cd ~/catkin_ws
+rosdep install roswww
+rosdep install web_video_server
+catkin_make
+
+# Phase 5 - For automatic sourcing of ROS scripts when starting a new session
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
