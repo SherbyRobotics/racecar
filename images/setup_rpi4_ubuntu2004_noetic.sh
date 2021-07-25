@@ -25,6 +25,7 @@ sudo apt install -y ros-noetic-rosbash \
                     ros-noetic-image-view \
                     ros-noetic-depth-image-proc \
                     ros-noetic-joy \
+                    ros-noetic-gazebo-ros \
                     ros-noetic-camera-info-manager \
                     ros-noetic-rosserial-python \
                     ros-noetic-imu-filter-madgwick \
@@ -102,10 +103,16 @@ sudo /lib/systemd/systemd-sysv-install enable ssh
 
 # Install VNC server
 cd ~/Downloads
-wget https://www.realvnc.com/download/file/vnc.files/VNC-Server-6.7.2-Linux-ARM.deb
-sudo dpkg -i VNC-Server-6.7.2-Linux-ARM.deb
-sudo systemctl start vncserver-x11-serviced.service
+wget https://archive.raspberrypi.org/debian/pool/main/r/realvnc-vnc/realvnc-vnc-server_6.7.2.43081_arm64.deb
+sudo dpkg -i realvnc-vnc-server_6.7.2.43081_arm64.deb
+cd /usr/lib/aarch64-linux-gnu
+sudo ln libvcos.so /usr/lib/libvcos.so.0
+sudo ln libvchiq_arm.so /usr/lib/libvchiq_arm.so.0
+sudo ln libbcm_host.so /usr/lib/libbcm_host.so.0
+sudo systemctl enable vncserver-virtuald.service
 sudo systemctl enable vncserver-x11-serviced.service
+sudo systemctl start vncserver-virtuald.service
+sudo systemctl start vncserver-x11-serviced.service
 
 # Setup DHCP server 192.168.10.1
 # Make sure the address above is set as IpV4->"Manual" in Network Manager
@@ -124,8 +131,8 @@ sudo bash -c 'echo "subnet 192.168.10.0 netmask 255.255.255.0 {
         range   192.168.10.110   192.168.10.200;
 }" >> /etc/dhcp/dhcpd.conf' 
 
-sudo service isc-dhcp-server.service start
-sudo service isc-dhcp-server.service enable
+sudo systemctl start isc-dhcp-server.service
+sudo systemctl enable isc-dhcp-server.service
 
 # raspi-config: enable camera, fix headless resolution
 cp /boot/config.txt config.txt
@@ -139,4 +146,3 @@ sudo adduser $USER dialout
 sudo apt-get clean
 
 echo "Reboot needed!"
-
