@@ -62,7 +62,7 @@
     2. Add address `192.168.10.1` with mask `24`, leave Gateaway field empty
     3. Click Save
 4. Execute install script:
-    1. For RPI3, execute [setup_rpi3_ubuntu1804_melodic.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3_ubuntu2004_noetic.sh)
+    1. For RPI3, execute [setup_rpi3_ubuntu1804_melodic.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3_ubuntu1804_melodic.sh)
         ```bash
         $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi3_ubuntu1804_melodic.sh
         $ chmod +x setup_rpi3_ubuntu1804_melodic.sh
