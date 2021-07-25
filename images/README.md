@@ -68,7 +68,7 @@
         $ chmod +x setup_rpi3_ubuntu1804_melodic.sh
         $ ./setup_rpi3_ubuntu1804_melodic.sh
         ```
-	* Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software) and install:
+	    * Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software) and install:
             ```bash
             $ cd arduino-1.8.13
             $ sudo ./install.sh
