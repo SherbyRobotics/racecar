@@ -26,6 +26,7 @@ sudo apt install -y ros-noetic-rosbash \
                     ros-noetic-depth-image-proc \
                     ros-noetic-joy \
                     ros-noetic-gazebo-ros \
+                    ros-noetic-xacro \
                     ros-noetic-camera-info-manager \
                     ros-noetic-rosserial-python \
                     ros-noetic-imu-filter-madgwick \
