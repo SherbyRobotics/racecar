@@ -134,10 +134,13 @@ sudo bash -c 'echo "subnet 192.168.10.0 netmask 255.255.255.0 {
 sudo systemctl start isc-dhcp-server.service
 sudo systemctl enable isc-dhcp-server.service
 
-# raspi-config: enable camera, fix headless resolution
-cp /boot/config.txt config.txt
-patch config.txt ~/catkin_ws/src/racecar/images/config.txt.patch
-sudo cp config.txt /boot/config.txt
+# raspi-config: fix headless 
+sudo bash -c 'echo "
+# To support headless VNC
+hdmi_force_hotplug=1
+hdmi_drive=1
+hdmi_group=2
+hdmi_mode=16" >> /boot/firmware/config.txt' 
 
 # Add user to 'dialout' group to have permissions on /dev/ttyACM0
 sudo adduser $USER dialout
