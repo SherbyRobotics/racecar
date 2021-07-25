@@ -91,12 +91,12 @@ git clone https://github.com/SherbyRobotics/racecar.git
 cd ~/catkin_ws
 catkin_make
 
-# Create ros_lib for arduino
-mkdir -p ~/Arduino/libraries
-cd ~/Arduino/libraries
-rosrun rosserial_arduino make_libraries.py .
-# Version 1.8.15
+# Install Arduino IDE Version 1.8.15
 sudo snap install arduino
+# Create ros_lib for arduino
+mkdir -p ~/snap/arduino/current/Arduino/libraries
+cd ~/snap/arduino/current/Arduino/libraries
+rosrun rosserial_arduino make_libraries.py .
 
 # Init SSH keys
 sudo dpkg-reconfigure openssh-server
