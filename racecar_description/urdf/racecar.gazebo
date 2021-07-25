@@ -85,7 +85,7 @@
       </ray>
       <plugin name="gazebo_ros_hokuyo_controller" filename="libgazebo_ros_laser.so">
         <topicName>scan</topicName>
-        <frameName>base_laser</frameName>
+        <frameName>$(arg prefix)/base_laser</frameName>
       </plugin>
     </sensor>
   </gazebo>
@@ -120,7 +120,7 @@
         <cameraName>raspicam_node</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>camera_optical_link</frameName>
+        <frameName>$(arg prefix)/camera_optical_link</frameName>
         <hackBaseline>0</hackBaseline><!-- set this to 0.12 for the second camera -->
         <distortionK1>0.0</distortionK1>
         <distortionK2>0.0</distortionK2>
