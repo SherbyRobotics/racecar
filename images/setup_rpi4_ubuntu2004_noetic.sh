@@ -25,7 +25,6 @@ sudo apt install -y ros-noetic-rosbash \
                     ros-noetic-image-view \
                     ros-noetic-depth-image-proc \
                     ros-noetic-joy \
-                    ros-noetic-gazebo-ros \
                     ros-noetic-camera-info-manager \
                     ros-noetic-rosserial-python \
                     ros-noetic-imu-filter-madgwick \
@@ -36,8 +35,6 @@ sudo apt install -y ros-noetic-rosbash \
                     ros-noetic-ackermann-msgs \
                     ros-noetic-rtabmap-ros \
                     ros-noetic-rosbridge-server  \
-                    ros-noetic-web-video-server \
-                    ros-noetic-roswww \
                     ros-noetic-ros-control \
                     ros-noetic-rosserial-arduino \
                     ros-noetic-rviz-plugin-tutorials \
