@@ -32,7 +32,8 @@ sudo apt install -y ros-noetic-desktop-full \
                     sed \
                     ntpdate \
                     ntp \
-                    python3-rosdep
+                    python3-rosdep \
+                    python-is-python3
 
 # Phase 2 - Workspace setup
 source /opt/ros/noetic/setup.bash
