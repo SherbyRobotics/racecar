@@ -54,31 +54,31 @@
 
 # Create RaspberryPi image
 
-1. Install [Ubuntu Mate 20.04](https://ubuntu-mate.org/download/) with login name `racecar`:
-    1. For RPI3, select 32 bits image for RPI3
-    2. For RPI4, select 64 bits image for RPI4
+1. Install [Ubuntu Mate](https://ubuntu-mate.org/download/) with login name `racecar`:
+    1. For RPI3, because of some [issues](https://ubuntu-mate.community/t/ubuntu-mate-20-04-1-first-boot-hung-on-rpi-3/23748/3), download Ubuntu 18.04 armhf (32 bits) image from [here](https://releases.ubuntu-mate.org/archived/bionic/armhf/).
+    2. For RPI4, select Ubutu 20.04 64 bits image for RPI4
 3. In Network Manager, edit "Wired connection 1" and rename it to "Wired connection 192.168.10.1":
     1. In IPv4 settings, set connection type to Manual instead of Automatic (DHCP)
     2. Add address `192.168.10.1` with mask `24`, leave Gateaway field empty
     3. Click Save
 4. Execute install script:
-    1. For RPI3, execute [setup_rpi3_ubuntu2004_noetic.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3_ubuntu2004_noetic.sh)
+    1. For RPI3, execute [setup_rpi3_ubuntu1804_melodic.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi3_ubuntu2004_noetic.sh)
         ```bash
-        $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi3_ubuntu2004_noetic.sh
-        $ chmod +x setup_rpi3_ubuntu2004_noetic.sh
-        $ ./setup_rpi3_ubuntu2004_noetic.sh
+        $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi3_ubuntu1804_melodic.sh
+        $ chmod +x setup_rpi3_ubuntu1804_melodic.sh
+        $ ./setup_rpi3_ubuntu1804_melodic.sh
         ```
+	* Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software) and install:
+            ```bash
+            $ cd arduino-1.8.13
+            $ sudo ./install.sh
+            ```
     2. For RPI4, execute [setup_rpi4_ubuntu2004_noetic.sh](https://github.com/SherbyRobotics/racecar/blob/master/images/setup_rpi4_ubuntu2004_noetic.sh)
         ```bash
         $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/master/images/setup_rpi4_ubuntu2004_noetic.sh
         $ chmod +x setup_rpi4_ubuntu2004_noetic.sh
         $ ./setup_rpi4_ubuntu2004_noetic.sh
         ```
-4. Download [Arduino IDE 1.8 for Linux ARM 32 bits](https://www.arduino.cc/en/main/software) and install:
-    ```bash
-    $ cd arduino-1.8.13
-    $ sudo ./install.sh
-    ```
 5. Open Arduino IDE, from Tools->"Manage Libraries..." menu, install `Bolder_Flight_Systems_MPU9250` library
 6. Reboot
 7. At this point, you can connect by ethernet to RPI by VNC at address 192.168.10.1 or by SSH:
