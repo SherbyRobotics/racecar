@@ -11,8 +11,6 @@ class teleop(object):
     teleoperation
     """
     def __init__(self):
-
-        self.sub_joy   = rospy.Subscriber("joy", Joy , self.joy_callback , queue_size=1)
         self.pub_cmd   = rospy.Publisher("ctl_ref", Twist , queue_size=1  ) 
 
         self.max_vel  = rospy.get_param('~max_vel',   6.0) # Max linear velocity (m/s)
@@ -21,6 +19,9 @@ class teleop(object):
         self.ps4 = rospy.get_param('~ps4', False)  # PlayStation4 controller: speed axis is 4
         self.cmd2rad   = self.maxStAng*2*3.1416/360
         self.joystickCompatibilityWarned = False
+        
+        # Always create subscribers last
+        self.sub_joy   = rospy.Subscriber("joy", Joy , self.joy_callback , queue_size=1)
 
     ####################################### 
         
