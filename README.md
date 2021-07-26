@@ -44,10 +44,10 @@ In the graph, you can see a representation of the communication between the node
 The RaceCar has many operating modes that allow you to test different functionnalities. The ROS controller Node, which control commands to the motor and the steering servo, has multiple high-level mode that are selected by joystick inputs (see [Controller modes](#controller-modes) table for more details). For instance, open-loop, closed-loop in velocity, closed-loop in position modes are available for both the propulsion and the steering.  The Arduino has also multiple internal low-level modes (different than the high-level ones!!!) that are selected by the ROS controller Node. Empty operating mode templates are available in the source code for you to test custom control modes.
 
 ## Launch
-1. Follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image) to flash your Raspberry Pi 3 with a pre-built image, or follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/master/images#raspberrypi3-image) to setup from scratch.
-2. Connect the battery to Raspberry Pi 3. If installed as instructions above, you can connect your laptop by Wi-Fi on RaceCar's hotspot. Launch VNC from your laptop and connect to `10.42.0.1` (Raspberry Pi 3's IP). 
+1. Follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi-image) to flash your Raspberry Pi with a pre-built image, or follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image) to setup from scratch.
+2. Connect the battery to Raspberry Pi. If installed as instructions above, you can connect your laptop by Wi-Fi on RaceCar's hotspot. Launch VNC from your laptop and connect to `10.42.0.1` (Raspberry Pi's IP). 
 2. Flash the Arduino (need to be done only 1 time):
-    1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi 3 if not already done.
+    1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi if not already done.
     2. Flash the Arduino mega 2560 with the firmware file [racecar_propulsion_firmware.ino](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
 3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
 4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/master/racecar_bringup/launch/teleop.launch):
