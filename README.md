@@ -22,8 +22,8 @@ To be able to test our code, there are a few requirements.
 * Logitech Wireless Gamepad F710 (DirectInput Mode)
 
 ### Software
-* For Raspberry Pi 3 on RaceCar, we provide a RPI3 image with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image) to flash your RPI3. To do it manually, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi3-image).
-* For Desktop/Laptop development, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 18.04.
+* For Raspberry Pi 3 on RaceCar, we provide RPI3 and RPI4 images with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi-image) to flash your RPI. To do it manually, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image).
+* For Desktop/Laptop development, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 20.04.
 
 ### Documentation
 * [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
