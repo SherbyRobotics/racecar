@@ -1,15 +1,17 @@
-# Restore RaspberryPi3 image
-1. Download SD-CARD image from [here](https://usherbrooke-my.sharepoint.com/:u:/g/personal/labm2414_usherbrooke_ca/Ec9uozHwyypDlfgORfJjB8AB_DcThqKcrszk1jBV4lFXCw?e=4hJxvF) (3.5 GB, created following this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi3-image) below).
+# Restore RaspberryPi image
+1. Download the following SD-CARD image for RPI3 or RPI4 (created following this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image) below):
+    * RPI3: [racecar_a21_rpi3_melodic.zip](https://usherbrooke-my.sharepoint.com/:u:/g/personal/labm2414_usherbrooke_ca/ERA4amhZbm1MshTv2ZT2buYBFTL_TK0wzKTO5jHhPGlUkA?e=dOXxwo) (3.28GB)
+    * RPI4: [racecar_a21_rpi4_noetic.zip](https://usherbrooke-my.sharepoint.com/:u:/g/personal/labm2414_usherbrooke_ca/EUaHswHlke5KnEU54Dm_E1YBRABgXDmlh6pOE6w8mp5C6Q?e=uU8lnF) (3.98GB)
 2. Use [Etcher](https://www.balena.io/etcher/) to flash the image on a SD-CARD (min 16GB). 
-3. Boot the RPI3 with HDMI, a mouse and a keyboard connected. Default username is `racecar` and password is `racecar`. 
+3. Boot the RPI with HDMI, a mouse and a keyboard connected. Default username is `racecar` and password is `racecar`. 
 4. (Optional) Resize partition to use the full SD-CARD.
     1. Open terminal.
     2. `sudo gparted`, enter password `racecar`.
-    3. Right-click on `/dev/mmcblk0p2` partition, then click "Resize/Move" in the menu.
+    3. Right-click on the main partition (`/dev/mmcblk0p2`), then click "Resize/Move" in the menu.
     4. Set 0 in "Free space following", then click on "Resize".
     5. Click on "Apply".
     
-5. To [connect by ethernet or hotspot](https://github.com/SherbyRobotics/racecar/tree/master/doc), as your RPI3 has different hardware, we should update the ethernet and hotspot connection with the right device. In Network Manager (top right), click on "Edit Connections…". 
+5. To [connect by ethernet or hotspot](https://github.com/SherbyRobotics/racecar/tree/master/doc), as your RPI has different hardware, you may have to update the ethernet and hotspot connections with the right device if not working already out-of-the-box. In Network Manager (top right), click on "Edit Connections…". 
     1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save. Remove "Wired connection 1" if it exists.
     2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
 
@@ -20,14 +22,6 @@
     $ cd ~/catkin_ws
     $ catkin_make
     ```
-    but the pre-built image as an old git history causing this error: "fatal: refusing to merge unrelated histories" because of a rebase, do this instead:
-    ```bash
-    $ cd ~/catkin_ws/src/racecar
-    $ git reset --hard origin/master
-    $ cd ~/catkin_ws
-    $ catkin_make
-    ```
-     
     * Note to have Internet on the RaceCar: disconnect from the Hotspot connection and select your preferred Wi-Fi network. To do so remotely, use VNC with the Ethernet connection, then change the Wi-Fi network.
 
 # Virtual Machine
