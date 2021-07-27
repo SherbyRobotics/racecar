@@ -13,7 +13,7 @@
     
 5. To [connect by ethernet or hotspot](https://github.com/SherbyRobotics/racecar/tree/master/doc), as your RPI has different hardware, you may have to update the ethernet and hotspot connections with the right device if not working already out-of-the-box. In Network Manager (top right), click on "Edit Connections…". 
     1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save. Remove "Wired connection 1" if it exists.
-    2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save.
+    2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save. Change SSID name of the connection with ID of your racecar. The default password `racecar0`can also be changed. 
 
 6. Make sure to have latest code. Normally we would do:
     ```bash
@@ -90,7 +90,7 @@
     3. Under Wi-Fi Security tab:
         ```
         Security: WPA
-        Password: racecar
+        Password: racecar0
         ```
     4. If you have still difficulty to connect to Hotspot after rebooting, try changing `Band` to 5 GHz.
     
