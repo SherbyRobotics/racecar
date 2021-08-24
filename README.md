@@ -64,16 +64,34 @@ The RaceCar has many operating modes that allow you to test different functionna
 
 ## High-level Controller Modes
 
-Note: LB is used as a deadman switch and must be always pressed for the car to operate. Make sure the switch mode behind the gamepad is on D and not X. 
+The high-level mode is the operating mode of the "controller" node running on the rasberry pi. The high-level mode is selected in the "teleop" node, that translate joystick buttons into a "ctl_ref" message. The mode is placed in the "ctl_ref.linear.z" channel.
 
-Mode | Input sequence | Function
+Joystick inputs: LB is used as a deadman switch and must be always pressed for the car to operate. Make sure the switch mode behind the gamepad is on D and not X. 
+
+High-level Mode | Input buttons | Function
 -|-|-
-1|`LB`| Closed-loop velocity, open-loop steering
-2|`LB` + `RB`|Fully Open-loop
-3|`LB` + `A`|Closed-loop position, open-loop steering
-4|`LB` + `B`|Closed-loop velocity, closed-loop steering
+-1|None| Disabled
+0|`LB`| Closed-loop velocity, open-loop steering
+1|`LB` + `RB`|Fully Open-loop
+2|`LB` + `RT`|Closed-loop position, open-loop steering
+3|`LB` + `A`|Closed-loop velocity, closed-loop steering
+4|`LB` + `B`|Closed-loop position, closed-loop steering
 5|`LB` + `X`|Closed-loop velocity, closed-loop steering
 6|`LB` + `Y`|Reset encoder command
-7|`LB` + `LT`|Joystick disabled
-8|`LB` + `Croos key Up/Down`|Template
-9|None|Nothing (a zero command is sent to vehicle)
+7|`LB` + `LY`|Empty Template
+8|`LB` + `Croos key Up/Down`| Empty Template
+NaN|`LB` + `LT`|Joystick-based control disabled (no ctl_ref published)
+
+
+## Low-level Controller Modes (Arduino modes)
+
+The low-level mode is the operating mode of the Arduino. The low-level mode is selected in the "controller" node running on the rasberry pi. The mode is placed in the "prop_cmd.linear.z" channel.
+
+Low-level Mode | Function
+-|-
+0|Disabled
+1|Open-loop PWM control
+2|Closed-loop velocity (based on wheel-encoder feedback)
+2|Closed-loop position (based on wheel-encoder feedback)
+4|Reset encoder command
+
