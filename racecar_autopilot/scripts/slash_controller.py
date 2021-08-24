@@ -69,8 +69,7 @@ class slash_controller(object):
             
         else:
 
-            # Controllers HERE            
-            
+            # APP2 (open-loop steering) Controllers Bellow          
             if  ( self.high_level_mode == 1 ):
                 # Open-Loop
                 self.propulsion_cmd = self.propulsion_ref
@@ -84,57 +83,80 @@ class slash_controller(object):
                 self.arduino_mode   = 2  
                 self.steering_cmd   = self.steering_ref + self.steering_offset 
                 
-            elif ( self.high_level_mode == 3 ):
+            elif ( self.high_level_mode == 2 ):
                 # Closed-loop position on arduino
                 self.propulsion_cmd = self.propulsion_ref
                 self.arduino_mode   = 3
                 self.steering_cmd   = self.steering_ref + self.steering_offset
+            
+            # APP4 (closed-loop steering) controllers bellow
+            elif ( self.high_level_mode == 3 or self.high_level_mode == 5  ):
+                # Closed-loop velocity and steering
+            
+                #########################################################
+                # TODO: COMPLETEZ LE CONTROLLER
+                
+                # Auto-pilot # 1 
+                
+                # x = [ ?,? ,.... ]
+                # r = [ ?,? ,.... ]
+                # u = [ servo_cmd , prop_cmd ]
+
+                x = None
+                r = None
+                
+                u = self.controller1( x , r )
+
+                self.steering_cmd   = u[1] + self.steering_offset
+                self.propulsion_cmd = u[0]     
+                self.arduino_mode   = 0    # Mode ??? on arduino
+                # TODO: COMPLETEZ LE CONTROLLER
+                #########################################################
                 
             elif ( self.high_level_mode == 4 ):
+                # Closed-loop position and steering
+            
+                #########################################################
+                # TODO: COMPLETEZ LE CONTROLLER
+                
+                # Auto-pilot # 1 
+                
+                # x = [ ?,? ,.... ]
+                # r = [ ?,? ,.... ]
+                # u = [ servo_cmd , prop_cmd ]
+                
+                x = None
+                r = None
+                
+                u = self.controller2( x , r )
+
+                self.steering_cmd   = u[1] + self.steering_offset
+                self.propulsion_cmd = u[0]     
+                self.arduino_mode   = 0 # Mode ??? on arduino
+                # TODO: COMPLETEZ LE CONTROLLER
+                #########################################################
+                
+            elif ( self.high_level_mode == 6 ):
                 # Reset encoders
                 self.propulsion_cmd = 0
                 self.arduino_mode   = 4  
                 self.steering_cmd   = 0  
-                
-            elif ( self.high_level_mode == 5 ):
-                
-                #TODO
-                
-                # Auto-pilot # 1 
-                
-                # y = ???
-                # r = 0
-                # u = [ servo_cmd , prop_cmd ]
-
-                # TODO: COMPLETEZ LE CONTROLLER
-                y = None
-                r = None
-                
-                u = self.controller1( y , r )
-
-                self.steering_cmd   = u[1] + self.steering_offset
-                self.propulsion_cmd = u[0]     
-                self.arduino_mode   = 0 # TODO Mode ??? on arduino
 
                 
-            elif ( self.high_level_mode == 6 ):
-                
-                #TODO
-                
-                # Auto-pilot # 2
-                # y = ??
-                # r = 0
-                # u = [ servo_cmd , prop_cmd ]
+            elif ( self.high_level_mode == 7 ):
+                # Template for custom controllers
             
-                # TODO: COMPLETEZ LE CONTROLLER
-                y = None
-                r = None
+                self.steering_cmd   = 0 + self.steering_offset
+                self.propulsion_cmd = 0     
+                self.arduino_mode   = 0 # Mode ??? on arduino 
                 
-                u = self.controller2( y , r )
-
-                self.steering_cmd   = u[1] + self.steering_offset
-                self.propulsion_cmd = u[0] 
-                self.arduino_mode   = 0 # TODO Mode ??? on arduino
+                
+            elif ( self.high_level_mode == 8 ):
+                # Template for custom controllers
+            
+                self.steering_cmd   = 0 + self.steering_offset
+                self.propulsion_cmd = 0    
+                self.arduino_mode   = 0 # Mode ??? on arduino
         
         self.send_arduino()
 
@@ -144,9 +166,9 @@ class slash_controller(object):
 
         # Control Law TODO
 
-        u = np.array([ 0 , 0 ])
+        u = np.array([ 0 , 0 ]) # placeholder
         
-        #u = np.dot( self.K_autopilot , (r - y) )
+        #u = np.dot( self.K_autopilot , (r - x) )
         
         return u
 
@@ -155,9 +177,9 @@ class slash_controller(object):
 
         # Control Law TODO
 
-        #u = np.dot( self.K_parking , (r - y) )
-
-        u = np.array([ 0 , 0 ])
+        u = np.array([ 0 , 0 ]) # placeholder
+        
+        #u = np.dot( self.K_parking , (r - x) )
         
         return u
 
@@ -174,11 +196,15 @@ class slash_controller(object):
 
         self.laser_y     = msg.linear.y  
         self.laser_theta = msg.angular.z
+        
+        
+    ####################################### 
+    def read_arduino( self, msg):
 
-        # timing here
-        self.timed_controller( None )
-      
-      
+        # Read feedback from arduino
+        self.velocity       = msg.data[1]
+        self.position       = msg.data[0]
+        
     ##########################################################################################
     def send_arduino(self):
  
@@ -193,14 +219,6 @@ class slash_controller(object):
 
       # Publish cmd msg
       self.pub_cmd.publish(cmd_prop)
-
-
-    ####################################### 
-    def read_arduino( self, msg):
-
-        # Read feedback from arduino
-        self.velocity       = msg.data[1]
-        self.position       = msg.data[0]
         
         
     ####################################### 

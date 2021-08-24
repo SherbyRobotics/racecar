@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="arduino_port" default="/dev/ttyACM0"/>
+  <arg name="arduino_baud" default="115200"/>
+
+  <node pkg="joy" type="joy_node" name="joy" >
+    <param name="deadzone" value="0.0" />
+    <param name="autorepeat_rate" value="5"/>
+  </node>
+
+  <node pkg="racecar_teleop" type="slash_teleop.py" name="teleop"/>
+
+  <node pkg="racecar_autopilot" type="slash_controller.py" name="controller" output="screen"/>
+
+  <node pkg="rosserial_python" type="serial_node.py" name="arduino" >
+    <param name="port" value="$(arg arduino_port)"/>
+    <param name="baud" value="$(arg arduino_baud)"/>
+  </node>
+
+</launch>
