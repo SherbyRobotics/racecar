@@ -26,7 +26,7 @@
 
 # Virtual Machine
 1. Install [VirtualBox](https://www.virtualbox.org/). Optionally, the VirtualBox Extension Pack can also be installed for USB2-USB3 support.
-2. Download [Ubuntu 20.04 Desktop ISO](https://releases.ubuntu.com/focal/ubuntu-20.04.2.0-desktop-amd64.iso)
+2. Download Ubuntu 20.04 LTS (Focal Fossa) [64-bit PC (AMD64) desktop image](https://releases.ubuntu.com/focal)
 3. Open VirtualBox, create a new image called "Ubuntu 20.04" with at least 4-6 GB of RAM (or 50% of your computer RAM). Click default next options up to hard drive size, which can be set to 20 GB. Before starting the virtual machine, edit its Settings:
     1. System->Processor: set at least 2 to 6 processors (or 50% of your CPUs). 
 	2. Network->Adapter 2: Enable it, attached to "Bridged Adapter" with your wireless network adapter. This will be used to connect the virtual machine to ROS on the RaceCar (see [ROS on multiple computers](https://github.com/SherbyRobotics/racecar/tree/master/doc) example).
