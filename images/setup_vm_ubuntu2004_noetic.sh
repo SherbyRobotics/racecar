@@ -48,6 +48,7 @@ catkin_init_workspace
 # Phase 3- ROS Build empty workspace
 cd ~/catkin_ws
 catkin_make
+source ~/catkin_ws/devel/setup.bash
 
 # Phase 4- ROS Build dependencies
 cd ~/catkin_ws/src
