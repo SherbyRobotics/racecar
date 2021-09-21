@@ -38,12 +38,9 @@ To be able to test our code, there are a few requirements.
 * [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
 
 ## How it works
-Most basic working mode:
+In the graph, you can see a representation of the communication between the nodes and the topics of the most basic working mode:
 ![134103581-986b1f90-49de-4c44-837e-c3292f4de27f](https://user-images.githubusercontent.com/16725496/134103763-9a2e7839-77fe-411a-9f8b-ce5df9a0cd32.jpg)
 using the base launch file [cruisecontrol.launch](https://github.com/SherbyRobotics/racecar/blob/master/racecar_bringup/launch/cruisecontrol.launch). 
-
-![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Racecar_rqt_graph_teleop.png "teleop" )
-In the graph, you can see a representation of the communication between the nodes and the topics on the base launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/blob/master/racecar_bringup/launch/teleop.launch). 
 
 The RaceCar has many operating modes that allow you to test different functionnalities. The ROS controller Node, which control commands to the motor and the steering servo, has multiple high-level mode that are selected by joystick inputs (see [Controller modes](#controller-modes) table for more details). For instance, open-loop, closed-loop in velocity, closed-loop in position modes are available for both the propulsion and the steering.  The Arduino has also multiple internal low-level modes (different than the high-level ones!!!) that are selected by the ROS controller Node. Empty operating mode templates are available in the source code for you to test custom control modes.
 
