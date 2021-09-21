@@ -38,6 +38,10 @@ To be able to test our code, there are a few requirements.
 * [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
 
 ## How it works
+Most basic working mode:
+![134103581-986b1f90-49de-4c44-837e-c3292f4de27f](https://user-images.githubusercontent.com/16725496/134103763-9a2e7839-77fe-411a-9f8b-ce5df9a0cd32.jpg)
+using the base launch file [cruisecontrol.launch](https://github.com/SherbyRobotics/racecar/blob/master/racecar_bringup/launch/cruisecontrol.launch). 
+
 ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/Racecar_rqt_graph_teleop.png "teleop" )
 In the graph, you can see a representation of the communication between the nodes and the topics on the base launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/blob/master/racecar_bringup/launch/teleop.launch). 
 
@@ -95,4 +99,3 @@ Low-level Mode | Function
 2|Closed-loop position (based on wheel-encoder feedback)
 4|Reset encoder command
 
-![Screenshot from 2021-09-20 22-23-47](https://user-images.githubusercontent.com/16725496/134103581-986b1f90-49de-4c44-837e-c3292f4de27f.png)
