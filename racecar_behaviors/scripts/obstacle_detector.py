@@ -16,12 +16,12 @@ class ObstacleDetector:
     
         # Because the lidar is oriented backward on the racecar, 
         # if we want the middle value of the ranges to be forward:
-        l2 = len(msg.ranges)/2;
+        l2 = int(len(msg.ranges)/2);
         ranges = msg.ranges[l2:len(msg.ranges)] + msg.ranges[0:l2]
         
         # Obstacle front?
         obstacleDetected = False
-        for i in range(l2-l2/8, l2+l2/8) :
+        for i in range(l2-int(l2/8), l2+int(l2/8)) :
             if np.isfinite(ranges[i]) and ranges[i]>0 and ranges[i] < self.distance:
                 obstacleDetected = True
                 break
