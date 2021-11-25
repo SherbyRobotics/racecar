@@ -41,7 +41,7 @@ def scan_cb(msg):
     # we can access the point list with an index, each element is a namedtuple
     # we can access the elements by name, the generator does not yield namedtuples!
     # if we convert it to a list and back this possibility is lost
-    print(point_list[len(point_list)/2].x)
+    print(point_list[int(len(point_list)/2)].x)
 
 
 

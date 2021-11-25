@@ -71,9 +71,6 @@ class BlobDetector:
         self.info_sub = message_filters.Subscriber('camera_info', CameraInfo)
         self.ts = message_filters.TimeSynchronizer([self.image_sub, self.depth_sub, self.info_sub], 10)
         self.ts.registerCallback(self.image_callback)
-
-    def __del__(self):
-        self.file.close()
         
     def config_callback(self, config, level):
         rospy.loginfo("""Reconfigure Request: {color_hue}, {color_saturation}, {color_value}, {color_range}, {border}""".format(**config))
@@ -156,7 +153,7 @@ class BlobDetector:
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
                 print(e)
                 return
-            (transMap, rotMap) = multiply_transforms((transMap, rotMap), (transObj, rotObj))
+            (transMap, rotMap) = multiply_transforms(transMap, rotMap, transObj, rotObj)
             
             # Compute object pose in base frame
             try:
@@ -165,7 +162,7 @@ class BlobDetector:
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
                 print(e)
                 return
-            (transBase, rotBase) = multiply_transforms((transBase, rotBase), (transObj, rotObj))
+            (transBase, rotBase) = multiply_transforms(transBase, rotBase, transObj, rotObj)
             
             distance = np.linalg.norm(transBase[0:2])
             angle = np.arcsin(transBase[1]/transBase[0])
