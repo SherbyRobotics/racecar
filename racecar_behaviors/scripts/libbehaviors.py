@@ -13,7 +13,7 @@ def quaternion_to_yaw(quat):
     (roll, pitch, yaw) = euler_from_quaternion([quat.x, quat.y, quat.z, quat.w])
     return yaw
     
-def multiply_transforms((trans1, rot1), (trans2, rot2)):
+def multiply_transforms(trans1, rot1, trans2, rot2):
     trans1_mat = tf.transformations.translation_matrix(trans1)
     rot1_mat   = tf.transformations.quaternion_matrix(rot1)
     mat1 = np.dot(trans1_mat, rot1_mat)

@@ -14,7 +14,7 @@ def main():
         get_map = rospy.ServiceProxy(prefix + '/get_map', GetMap)
         response = get_map()
     except (rospy.ServiceException) as e:
-        print "Service call failed: %s"%e
+        print("Service call failed: %s"%e)
         return
     
     rospy.loginfo("Got map=%dx%d resolution=%f", response.map.info.height, response.map.info.width, response.map.info.resolution)    
