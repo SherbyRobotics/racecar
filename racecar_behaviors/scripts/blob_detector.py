@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import message_filters
 import tf
+import tf2_ros
 from racecar_behaviors.cfg import BlobDetectorConfig
 from dynamic_reconfigure.server import Server
 from std_msgs.msg import String, ColorRGBA
@@ -150,7 +151,7 @@ class BlobDetector:
             try:
                 self.listener.waitForTransform(self.map_frame_id, image.header.frame_id, image.header.stamp, rospy.Duration(0.5))
                 (transMap,rotMap) = self.listener.lookupTransform(self.map_frame_id, image.header.frame_id, image.header.stamp)
-            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
+            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException, tf2_ros.TransformException) as e:
                 print(e)
                 return
             (transMap, rotMap) = multiply_transforms(transMap, rotMap, transObj, rotObj)
@@ -159,7 +160,7 @@ class BlobDetector:
             try:
                 self.listener.waitForTransform(self.frame_id, image.header.frame_id, image.header.stamp, rospy.Duration(0.5))
                 (transBase,rotBase) = self.listener.lookupTransform(self.frame_id, image.header.frame_id, image.header.stamp)
-            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
+            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException, tf2_ros.TransformException) as e:
                 print(e)
                 return
             (transBase, rotBase) = multiply_transforms(transBase, rotBase, transObj, rotObj)
