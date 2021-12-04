@@ -39,14 +39,33 @@
           <param name="approx_sync"  value="false"/>
           <remap from="cloud"           to="raspicam_node/registered_cloud"/>
           <remap from="depth/image"     to="raspicam_node/depth_registered_raw"/>
-          <remap from="rgb/image"       to="raspicam_node/image"/>
+          <remap from="rgb/image"       to="raspicam_node/image_rect_color"/>
           <remap from="rgb/camera_info" to="raspicam_node/camera_info"/>
        </node>
        <node pkg="image_view" type="image_view" name="image_view_detections">
           <remap from="image"       to="/racecar/image_detections"/>
+          <param name="autosize"    value="true"/>
+          <param name="window_name" value="objects"/>
        </node>
        <node pkg="image_view" type="image_view" name="image_view_depth">
           <remap from="image"       to="raspicam_node/depth_registered"/>
+          <param name="autosize"    value="true"/>
+          <param name="window_name" value="lidar"/>
+       </node>
+       <node pkg="image_view" type="image_view" name="image_view_image">
+          <remap from="image"       to="raspicam_node/image"/>
+          <param name="autosize"    value="true"/>
+          <param name="window_name" value="raw"/>
+       </node>
+       <group ns="raspicam_node">
+          <node pkg="image_proc" type="image_proc" name="image_proc_rectify">
+             <remap from="image_raw" to="image"/>
+          </node>
+       </group>
+       <node pkg="image_view" type="image_view" name="image_view_rectified">
+          <remap from="image"       to="raspicam_node/image_rect_color"/>
+          <param name="autosize"    value="true"/>
+          <param name="window_name" value="rectified"/>
        </node>
        <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure"/>
        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find racecar_bringup)/config/bringup.rviz"/>

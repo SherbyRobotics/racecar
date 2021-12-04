@@ -68,11 +68,11 @@ def main():
     while not rospy.is_shutdown():
         # If nothing received, we send zero
         arbitration.cmd_vel_callback(twist, 8) # lowest priority
-        r.sleep()
+        try:
+            r.sleep()
+        except rospy.ROSInterruptException:
+            pass
 
 if __name__ == '__main__':
-    try:
-        main()
-    except rospy.ROSInterruptException:
-        pass
+    main()
 
