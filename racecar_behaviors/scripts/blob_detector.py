@@ -131,7 +131,7 @@ class BlobDetector:
                                 
                     if depth > 0 and (closestObject[2]==0 or depth<closestObject[2]):
                         closestObject[0] = x*depth
-                        closestObject[1] = y*depth
+                        closestObject[1] = 0 # to be same height than camera
                         closestObject[2] = depth
 
         # We process only the closest object detected
