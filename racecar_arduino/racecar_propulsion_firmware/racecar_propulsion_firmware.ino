@@ -507,12 +507,12 @@ void loop(){
     prop_sensors_data[3] = dri_cmd; // drive set point in volts
     prop_sensors_data[4] = dri_pwm; // drive set point in pwm
     prop_sensors_data[5] = enc_now; // raw encoder counts
-    prop_sensors_data[6] = ser_ref; // steering angle
+    prop_sensors_data[6] = ser_ref; // steering angle (don't remove/change, used for GRO830)
     prop_sensors_data[7] = (float)( time_now - time_last_com ); // for com debug
-    prop_sensors_data[8] = (float)dt; // time elapsed since last publish
-    prop_sensors_data[9] = (enc_now - enc_last_high) * tick2m; // distance travelled since last publish
+    prop_sensors_data[8] = (float)dt; // time elapsed since last publish (don't remove/change, used for GRO830)
+    prop_sensors_data[9] = (enc_now - enc_last_high) * tick2m; // distance travelled since last publish (don't remove/change, used for GRO830)
 
-    // Read IMU
+    // Read IMU (don't remove/change, used for GRO830)
     imu.readSensor();
     prop_sensors_data[10] = imu.getAccelX_mss();
     prop_sensors_data[11] = imu.getAccelY_mss();
