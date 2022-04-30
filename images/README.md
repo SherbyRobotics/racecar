@@ -50,7 +50,7 @@
 
 1. Install [Ubuntu Mate](https://ubuntu-mate.org/download/) with login name `racecar`:
     1. For RPI3, because of some [issues](https://ubuntu-mate.community/t/ubuntu-mate-20-04-1-first-boot-hung-on-rpi-3/23748/3), download Ubuntu 18.04 armhf (32 bits) image from [here](https://releases.ubuntu-mate.org/archived/bionic/armhf/).
-    2. For RPI4, select Ubutu 20.04 64 bits image for RPI4
+    2. For RPI4, select Ubuntu 20.04 64 bits image for RPI4 ([direct link](https://ubuntu-mate.org/download/arm64/focal/))
 3. In Network Manager, edit "Wired connection 1" and rename it to "Wired connection 192.168.10.1":
     1. In IPv4 settings, set connection type to Manual instead of Automatic (DHCP)
     2. Add address `192.168.10.1` with mask `24`, leave Gateaway field empty
