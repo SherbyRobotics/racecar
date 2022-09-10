@@ -13,6 +13,7 @@ format_commande = ">4s"
 format_RPOS = ">fff4x"
 format_OBSF = ">I4x4x4x"
 format_RBID = ">I4x4x4x"
+format_UDP = ">fffI"
 
 def quaternion_to_yaw(quat):
     # Uses TF transforms to convert a quaternion to a rotation angle around Z.
@@ -81,11 +82,21 @@ class ROSMonitor:
             conn.close() # close the connection
 
     def br_loop(self):
-        # Init your socket here :
-        # self.br_socket = socket.Socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # br_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        while True:
-            pass
+        HOST = '192.168.0.255'
+        PORT = 65431
+
+        server = socket(AF_INET, SOCK_DGRAM,) #UDP
+        server.setsockopt(SOL_SOCKET, SO_BROADCAST,1)
+
+        server.settimeout(0.2)
+        
+
+        while True: 
+            msg = sruct.pack(format_UDP,self.pos[0], self.pos[1], self.pos[2], self.id)
+            server.sendto(msg,(HOST,PORT))
+            print("msg Sent!")
+            sleep(1.0)
+    
 
     # Subscriber callback:
     def scan_cb(self, msg):
