@@ -4,6 +4,7 @@ import rospy
 from socket import *
 import threading
 import struct
+from time import sleep
 
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
@@ -39,11 +40,11 @@ class ROSMonitor:
 
         # Thread for RemoteRequest handling:       
         self.rr_thread = threading.Thread(target=self.rr_loop)
-        self.rr_thread.start()
         
         # Thread for Broadcast handling:
         self.br_thread = threading.Thread(target=self.br_loop)
         self.br_thread.start()
+        self.rr_thread.start()
 
         print("ROSMonitor started.")
 
@@ -82,19 +83,19 @@ class ROSMonitor:
             conn.close() # close the connection
 
     def br_loop(self):
-        HOST = '192.168.0.255'
+        HOST = '192.168.10.255'
         PORT = 65431
 
-        server = socket(AF_INET, SOCK_DGRAM,) #UDP
+        server = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP) #UDP
         server.setsockopt(SOL_SOCKET, SO_BROADCAST,1)
 
         server.settimeout(0.2)
         
 
         while True: 
-            msg = sruct.pack(format_UDP,self.pos[0], self.pos[1], self.pos[2], self.id)
+            msg = struct.pack(format_UDP,self.pos[0], self.pos[1], self.pos[2], self.id)
             server.sendto(msg,(HOST,PORT))
-            print("msg Sent!")
+            print(msg)
             sleep(1.0)
     
 
