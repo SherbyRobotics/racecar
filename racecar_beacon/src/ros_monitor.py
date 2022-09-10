@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 
 import rospy
-import socket
+from socket import *
 import threading
+import struct
 
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from tf.transformations import euler_from_quaternion
+
+format_commande = ">4s"
+format_RPOS = ">fff4x"
+format_OBSF = ">I4x4x4x"
+format_RBID = ">I4x4x4x"
 
 def quaternion_to_yaw(quat):
     # Uses TF transforms to convert a quaternion to a rotation angle around Z.
@@ -39,10 +45,40 @@ class ROSMonitor:
         print("ROSMonitor started.")
 
     def rr_loop(self):
-        # Init your socket here :
-        #self.rr_socket = socket.Socket(...)
+        HOST = '127.0.0.1'
+        PORT = 65432
+
+        s = socket(AF_INET, SOCK_STREAM)
+        s.bind((HOST, PORT))
+        
         while True:
-            pass
+            s.listen(1)
+            (conn, addr) = s.accept() # returns new socket and addr. client
+
+            while True: # forever
+                data = conn.recv(1024) # receive data from client
+                if not data: break # stop if client stopped
+
+                data = struct.unpack(format, data)
+                data = data[0]
+                request = data.decode("ascii")
+
+                if request == "RPOS":
+                    dataRPOS = struct.pack(format_RPOS, self.pos)
+                    conn.send(dataRPOS)
+
+                elif request == "OBSF":
+                    dataOBSF = struct.pack(format_OBSF, self.obstacle)
+                    conn.send(dataOBSF)
+
+                elif request == "RBID":
+                    dataRBID = struct.pack(format_RBID, self.pos)
+                    conn.send(dataRBID)
+
+                elif request == "exit":
+                    break
+
+            conn.close() # close the connection
 
     def br_loop(self):
         # Init your socket here :
