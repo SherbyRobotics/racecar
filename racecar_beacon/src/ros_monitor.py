@@ -36,16 +36,19 @@ class ROSMonitor:
         self.remote_request_port = rospy.get_param("remote_request_port", 65432)
         self.pos_broadcast_port  = rospy.get_param("pos_broadcast_port", 65431)
 
-        # Thread for RemoteRequest handling:
+        # Thread for RemoteRequest handling:       
         self.rr_thread = threading.Thread(target=self.rr_loop)
-
+        self.rr_thread.start()
+        
         # Thread for Broadcast handling:
         self.br_thread = threading.Thread(target=self.br_loop)
+        self.br_thread.start()
 
         print("ROSMonitor started.")
 
     def rr_loop(self):
-        HOST = '127.0.0.1'
+
+        HOST = '192.168.10.1'
         PORT = 65432
 
         s = socket(AF_INET, SOCK_STREAM)
@@ -59,12 +62,12 @@ class ROSMonitor:
                 data = conn.recv(1024) # receive data from client
                 if not data: break # stop if client stopped
 
-                data = struct.unpack(format, data)
+                data = struct.unpack(format_commande, data)
                 data = data[0]
                 request = data.decode("ascii")
 
                 if request == "RPOS":
-                    dataRPOS = struct.pack(format_RPOS, self.pos)
+                    dataRPOS = struct.pack(format_RPOS, self.pos[0], self.pos[1], self.pos[2])
                     conn.send(dataRPOS)
 
                 elif request == "OBSF":
@@ -72,11 +75,8 @@ class ROSMonitor:
                     conn.send(dataOBSF)
 
                 elif request == "RBID":
-                    dataRBID = struct.pack(format_RBID, self.pos)
+                    dataRBID = struct.pack(format_RBID, self.id)
                     conn.send(dataRBID)
-
-                elif request == "exit":
-                    break
 
             conn.close() # close the connection
 
