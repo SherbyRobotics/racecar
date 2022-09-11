@@ -26,8 +26,8 @@ def quaternion_to_yaw(quat):
 class ROSMonitor:
     def __init__(self):
         # Add your subscriber here (odom? laserscan?):
-        self.sub_odom = rospy.Subscriber("/odometry/filtered", Odometry, self.odo_cb)
-        self.sub_laser = rospy.Subscriber("/scan", LaserScan, self.scan_cb)
+        self.sub_odom = rospy.Subscriber("/racecar/odometry/filtered", Odometry, self.odo_cb)
+        self.sub_laser = rospy.Subscriber("/racecar/scan", LaserScan, self.scan_cb)
 
         # Current robot state:
         self.id = 0xabcd
@@ -40,9 +40,13 @@ class ROSMonitor:
 
         # Thread for RemoteRequest handling:       
         self.rr_thread = threading.Thread(target=self.rr_loop)
+        self.rr_thread.daemon = True
         
         # Thread for Broadcast handling:
         self.br_thread = threading.Thread(target=self.br_loop)
+        self.br_thread.daemon = True
+
+        #Start threads
         self.br_thread.start()
         self.rr_thread.start()
 
@@ -50,11 +54,12 @@ class ROSMonitor:
 
     def rr_loop(self):
 
-        HOST = '192.168.10.1'
+        HOST = '10.0.1.21'
         PORT = 65432
 
         s = socket(AF_INET, SOCK_STREAM)
         s.bind((HOST, PORT))
+        print("bind completed")
         
         while True:
             s.listen(1)
@@ -83,11 +88,12 @@ class ROSMonitor:
             conn.close() # close the connection
 
     def br_loop(self):
-        HOST = '192.168.10.255'
+        HOST = '10.0.1.255'
         PORT = 65431
 
         server = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP) #UDP
         server.setsockopt(SOL_SOCKET, SO_BROADCAST,1)
+        print("broadcast started")
 
         server.settimeout(0.2)
         

@@ -8,7 +8,7 @@ format_RPOS = ">fff4x"
 format_OBSF = ">I4x4x4x"
 format_RBID = ">I4x4x4x"
 
-HOST = '192.168.10.1'
+HOST = '10.0.1.21'
 # This process should listen to a different port than the PositionBroadcast client.
 PORT = 65432
 

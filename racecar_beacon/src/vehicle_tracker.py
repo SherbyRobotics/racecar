@@ -4,7 +4,6 @@ import struct
 
 format_UDP= ">fffI"
 
-HOST = '192.168.10.12'
 # This process should listen to a different port than the PositionBroadcast client.
 PORT = 65431
 
@@ -15,5 +14,5 @@ client.bind(("", PORT)) # connect to server (block until accepted)
 
 while True:
     data, addr = client.recvfrom(1024)
-    data = struct.unpack(format_UDP,data)
+    data = struct.unpack(format_UDP, data)
     print('x: '+ str(data[0]) +' y: '+ str(data[1]) +' Theta: '+ str(data[2]) +'ID: '+ hex(data[3]))
