@@ -101,7 +101,7 @@ class ROSMonitor:
         while True: 
             msg = struct.pack(format_UDP,self.pos[0], self.pos[1], self.pos[2], self.id)
             server.sendto(msg,(HOST,PORT))
-            print(msg)
+            #print(msg)
             sleep(1.0)
     
 
@@ -109,9 +109,11 @@ class ROSMonitor:
     def scan_cb(self, msg):
         self.obstacle = False
         dist = msg.ranges
+        min_dist = msg.range_min
         for i in range(len(dist)):
             if dist[i] < 1:
-                self.obstacle = True
+                if dist[i] > min_dist:
+                    self.obstacle = True
                 break
     
     # Subscriber callback:
