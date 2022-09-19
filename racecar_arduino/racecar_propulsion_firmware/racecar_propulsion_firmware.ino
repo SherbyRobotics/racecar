@@ -28,7 +28,7 @@
 Servo steeringServo;
 
 // IMU
-MPU9250 imu(Wire, 0x68);
+ MPU9250 imu(Wire, 0x68);
 
 // ROS
 ros::NodeHandle  nodeHandle;
@@ -52,6 +52,12 @@ const int ser_pin = 9;      // Servo
 const int dri_pwm_pin     = 6 ;  // H bridge drive pwm
 const int dri_dir_pin     = 42; //
 
+
+// debug
+long timer_debug = 0;
+long time_micros = 0;
+long time_micros_last = 0;
+
 ///////////////////////////////////////////////////////////////////
 // Parameters
 ///////////////////////////////////////////////////////////////////
@@ -69,7 +75,7 @@ const float pos_ki     =  0.0;
 const float pos_ei_sat =  10000.0; 
 
 // Loop period 
-const unsigned long time_period_low   = 2;    // 500 Hz for internal PID loop
+const unsigned long time_period_low   = 1;    // 500 Hz for internal PID loop
 const unsigned long time_period_high  = 10;   // 100 Hz  for ROS communication
 const unsigned long time_period_com   = 1000; // 1000 ms = max com delay (watchdog)
 
@@ -297,7 +303,7 @@ void cmdCallback ( const geometry_msgs::Twist&  twistMsg ){
 ///////////////////////////////////////////////////////////////////
 // Controller One tick
 ///////////////////////////////////////////////////////////////////
-void ctl(){
+void ctl(int dt_low){
   
   ///////////////////////////////////////////////
   // STEERING CONTROL
@@ -320,7 +326,7 @@ void ctl(){
   // Velocity computation
 
   //TODO: VOUS DEVEZ COMPLETEZ LA DERIVEE FILTRE ICI
-  float vel_raw = (enc_now - enc_old) * tick2m / time_period_low * 1000;
+  float vel_raw = (enc_now - enc_old) * tick2m / dt_low * 1000;
   float alpha   = 0; // TODO
   float vel_fil = vel_raw;    // Filter TODO
   
@@ -447,12 +453,12 @@ void setup(){
   set_pwm(0);
 
   // Initialize IMU
-  imu.begin();
+/*  imu.begin();
   imu.setAccelRange(MPU9250::ACCEL_RANGE_2G);
   imu.setGyroRange(MPU9250::GYRO_RANGE_250DPS);
   imu.setDlpfBandwidth(MPU9250::DLPF_BANDWIDTH_41HZ);
   imu.setSrd(9); //100 Hz update rate
-  
+  */
   //
   delay(3000) ;
   
@@ -467,6 +473,7 @@ void setup(){
 void loop(){
   
   time_now = millis();
+  time_micros = micros();
 
   /////////////////////////////////////////////////////////////
   // Watchdog: stop the car if no recent communication from ROS
@@ -485,10 +492,12 @@ void loop(){
   ///////////////////////////////////////
 
   if (( time_now - time_last_low ) > time_period_low ) {
-    
-    ctl(); // one control tick
+
+    ctl(time_now - time_last_low); // one control tick
+    timer_debug = time_micros - time_micros_last ; ///
 
     time_last_low = time_now ;
+    time_micros_last = time_micros ;
   }
 
   ////////////////////////////////////////
@@ -508,7 +517,7 @@ void loop(){
     prop_sensors_data[4] = dri_pwm; // drive set point in pwm
     prop_sensors_data[5] = enc_now; // raw encoder counts
     prop_sensors_data[6] = ser_ref; // steering angle (don't remove/change, used for GRO830)
-    prop_sensors_data[7] = (float)( time_now - time_last_com ); // for com debug
+    prop_sensors_data[7] = (float)( timer_debug /*time_last_com */); // for com debug
     prop_sensors_data[8] = (float)dt; // time elapsed since last publish (don't remove/change, used for GRO830)
     prop_sensors_data[9] = (enc_now - enc_last_high) * tick2m; // distance travelled since last publish (don't remove/change, used for GRO830)
 
@@ -523,6 +532,7 @@ void loop(){
     prop_sensors_data[16] = imu.getMagX_uT();
     prop_sensors_data[17] = imu.getMagY_uT();
     prop_sensors_data[18] = imu.getMagZ_uT();
+    
     
     prop_sensors_msg.data        = &prop_sensors_data[0];
     prop_sensors_msg.data_length = prop_sensors_msg_length;
