@@ -65,16 +65,16 @@ class teleop(object):
             #If button A is active 
             elif(joy_msg.buttons[1]):   
                 # Closed-loop velocity, Closed-loop steering 
-                self.cmd_msg.linear.x  = propulsion_user_input * self.max_vel #[m/s]
-                self.cmd_msg.angular.z = steering_user_input # [m]
-                self.cmd_msg.linear.z  = 3  # Control mode
+                self.cmd_msg.linear.x  = 2.25
+                self.cmd_msg.angular.z = steering_user_input * self.cmd2rad
+                self.cmd_msg.linear.z  = 0  # Control mode
                 
             #If button B is active 
             elif(joy_msg.buttons[2]):   
                 # Closed-loop position, Closed-loop steering 
-                self.cmd_msg.linear.x  = propulsion_user_input # [m]
-                self.cmd_msg.angular.z = steering_user_input # [m]
-                self.cmd_msg.linear.z  = 4  # Control mode
+                self.cmd_msg.linear.x  = 1.5
+                self.cmd_msg.angular.z = steering_user_input * self.cmd2rad
+                self.cmd_msg.linear.z  = 2  # Control mode
                 
             #If button x is active 
             elif(joy_msg.buttons[0]):   
@@ -98,16 +98,16 @@ class teleop(object):
             #If right joy pushed
             elif(joy_msg.buttons[11]):
                  # Template for a custom mode
-                self.cmd_msg.linear.x  = 0
-                self.cmd_msg.angular.z = 0
-                self.cmd_msg.linear.z  = 7 # Control mode
+                self.cmd_msg.linear.x  = 5
+                self.cmd_msg.angular.z = steering_user_input # [m]
+                self.cmd_msg.linear.z  = 1  # Control mode
                 
             #If bottom arrow is active
             elif(joy_msg.axes[5]):
                 # Template for a custom mode
-                self.cmd_msg.linear.x  = 0
-                self.cmd_msg.angular.z = 0
-                self.cmd_msg.linear.z  = 8 # Control mode
+                self.cmd_msg.linear.x  = 7
+                self.cmd_msg.angular.z = steering_user_input # [m]
+                self.cmd_msg.linear.z  = 1  # Control mode
 
             # Defaults operation
             # No active button
