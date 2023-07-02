@@ -14,7 +14,7 @@
        <remap from="/scan" to="scan"/>
     </node>
     <!-- register scan to camera -->
-    <node pkg="rtabmap_ros" type="pointcloud_to_depthimage" name="pointcloud_to_depthimage">
+    <node pkg="rtabmap_util" type="pointcloud_to_depthimage" name="pointcloud_to_depthimage">
        <param name="fixed_frame_id"  value="$(arg prefix)/odom"/>
        <param name="fill_holes_size" value="2"/>
        <remap from="camera_info" to="raspicam_node/camera_info"/>
@@ -35,7 +35,7 @@
         
     <!-- used to debug camera vs scan registration -->
     <group if="$(arg debug)">
-       <node pkg="nodelet" type="nodelet" name="point_cloud_xyzrgb" args="standalone rtabmap_ros/point_cloud_xyzrgb">
+       <node pkg="nodelet" type="nodelet" name="point_cloud_xyzrgb" args="standalone rtabmap_util/point_cloud_xyzrgb">
           <param name="approx_sync"  value="false"/>
           <remap from="cloud"           to="raspicam_node/registered_cloud"/>
           <remap from="depth/image"     to="raspicam_node/depth_registered_raw"/>
