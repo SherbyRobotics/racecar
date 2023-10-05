@@ -11,7 +11,7 @@
   <group ns="$(arg prefix)">
     
     <!-- Mapping: -->
-    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg rtabmap_args) --uerror">
+    <node name="rtabmap" pkg="rtabmap_slam" type="rtabmap" output="screen" args="$(arg rtabmap_args) --uerror">
       <param name="database_path" type="string" value="$(arg database_path)"/>
       <param name="frame_id" type="string" value="$(arg prefix)/base_footprint"/>
       <param name="map_frame_id" type="string" value="$(arg prefix)/map"/>
