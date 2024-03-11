@@ -152,6 +152,8 @@ In RVIZ, click on Panels->Add New Panel, then select Teleop plugin. In the new p
     <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/Charging_Traxxas_with_imax_B6.jpg" alt="traxxas_battery" width="500">
 
 * Sometimes, the charger will "charge" the Traxxas battery for like 20 seconds and then decide it is full. In reality, the battery has not been recharged. Wait a minute and try again (Hold Start). Repeat until the charging cycle starts for real (at least 25 minutes or more).
+
+* If it still doesn't want to charge, you must perform a Discharge/Charge cycle. Set the Discharge rate at 100mA and the Charge rate at the usual 2A.
     
 # The Killswitch
 
