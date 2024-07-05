@@ -154,6 +154,21 @@ In RVIZ, click on Panels->Add New Panel, then select Teleop plugin. In the new p
 * Sometimes, the charger will "charge" the Traxxas battery for like 20 seconds and then decide it is full. In reality, the battery has not been recharged. Wait a minute and try again (Hold Start). Repeat until the charging cycle starts for real (at least 25 minutes or more).
 
 * If it still doesn't want to charge, you must perform a Discharge/Charge cycle. Set the Discharge rate at 100mA and the Charge rate at the usual 2A.
+
+```
+If the charger is not already in NiMH Mode:
+- Press "Batt. Type" until you get "Program Select NiMH Batt"
+
+To set the charger into Discharge -> Charge Mode:
+
+- Press "Start"
+- If the Current is other than 2.0A, press "Start" once and adjust value with "Dec." and "Inc.", then press "Start" once to confirm
+- Press "Inc." until you find "NiMH Discharge"
+- Press "Start" to adjust values: 0.1A and 1.2V
+- Press "Inc." Until you find "NiMH Cycle"
+- Press "Start" to adjust cycle to "DCHG>CHG" (discharge, then charge)
+- Hold "Start" until the charger commences the cycle. You must hold it for quite a few seconds...
+```
     
 # The Killswitch
 
