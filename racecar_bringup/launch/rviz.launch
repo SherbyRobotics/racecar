@@ -1,9 +1,0 @@
-<!-- -->
-<launch>
-
-  <arg name="use_sim_time"  default="false"/>
-  <param if="$(arg use_sim_time)" name="use_sim_time" value="true"/>
-
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find racecar_bringup)/config/bringup.rviz"/>
-
-</launch>

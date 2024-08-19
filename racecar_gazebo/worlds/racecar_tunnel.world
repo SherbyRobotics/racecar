@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.4">
 <world name="racecar_tunnel">
-
-  <include>
-    <uri>model://sun</uri>
-  </include>
-
   <gui>
     <camera name='main'>
       <pose>0 0 10 0 1.571 0</pose>
@@ -40,10 +35,9 @@
           </plane>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Grey</name>
-          </script>
+          <ambient>0.3 0.3 0.3 1.0</ambient>
+          <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          <specular>0.01 0.01 0.01 1.0</specular>
         </material>
       </visual>
     </link>
@@ -68,10 +62,9 @@
           </sphere>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Purple</name>
-          </script>
+          <ambient>1 0 1 1</ambient>
+          <diffuse>1 0 1 1</diffuse>
+          <specular>1 0 1 1</specular>
         </material>
       </visual>
     </link>
@@ -96,10 +89,9 @@
           </sphere>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Purple</name>
-          </script>
+          <ambient>1 0 1 1</ambient>
+          <diffuse>1 0 1 1</diffuse>
+          <specular>1 0 1 1</specular>
         </material>
       </visual>
     </link>
@@ -124,10 +116,9 @@
           </sphere>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Purple</name>
-          </script>
+          <ambient>1 0 1 1</ambient>
+          <diffuse>1 0 1 1</diffuse>
+          <specular>1 0 1 1</specular>
         </material>
       </visual>
     </link>
@@ -152,10 +143,9 @@
           </sphere>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Purple</name>
-          </script>
+          <ambient>1 0 1 1</ambient>
+          <diffuse>1 0 1 1</diffuse>
+          <specular>1 0 1 1</specular>
         </material>
       </visual>
     </link>

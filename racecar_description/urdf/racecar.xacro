@@ -56,7 +56,7 @@
     </inertial>
     <visual>
       <xacro:left_rear_wheel_geometry />
-      <material name="black" />
+      <material name="Black" />
     </visual>
     <collision>robot
       <xacro:left_wheels_collision_geometry />
@@ -81,7 +81,7 @@
     </inertial>
     <visual>
       <xacro:right_rear_wheel_geometry />
-      <material name="black" />
+      <material name="Black" />
     </visual>
     <collision>
       <xacro:right_wheels_collision_geometry />
@@ -106,7 +106,7 @@
     </inertial>
     <visual>
       <xacro:left_steering_hinge_geometry />
-      <material name="grey" />
+      <material name="DarkGrey" />
     </visual>
   </link>
 
@@ -128,7 +128,7 @@
     </inertial>
     <visual>
       <xacro:right_steering_hinge_geometry />
-      <material name="grey" />
+      <material name="DarkGrey" />
     </visual>
   </link>
 
@@ -150,7 +150,7 @@
     </inertial>
     <visual>
       <xacro:left_front_wheel_geometry />
-      <material name="black" />
+      <material name="Black" />
     </visual>
     <collision>
       <xacro:left_wheels_collision_geometry />
@@ -175,7 +175,7 @@
     </inertial>
     <visual>
       <xacro:right_front_wheel_geometry />
-      <material name="black" />
+      <material name="Black" />
     </visual>
     <collision>
       <xacro:right_wheels_collision_geometry />
@@ -207,7 +207,7 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <mesh filename="package://racecar_description/meshes/hokuyo.dae"/>
-        <material name="grey" />
+        <material name="DarkGrey" />
       </geometry>
     </visual>
   </link>
@@ -238,7 +238,7 @@
       <geometry>
         <box size="0.033 0.03 0.030"/>
       </geometry>
-      <material name="red"/>
+      <material name="Red"/>
     </visual>
   </link>
   <joint name="camera_joint" type="fixed">

@@ -50,18 +50,55 @@
 <!-- Gazebo plugins -->
 
 <gazebo>
-  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-    <robotNamespace>$(arg prefix)</robotNamespace>
-    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+  <plugin name="ignition::gazebo::systems::AckermannSteering" filename="libignition-gazebo-ackermann-steering-system">
+    <left_joint>left_front_wheel_joint</left_joint>
+    <right_joint>right_front_wheel_joint</right_joint>
+    <left_steering_joint>left_steering_hinge_joint</left_steering_joint>
+    <right_steering_joint>right_steering_hinge_joint</right_steering_joint>
+    <wheel_separation>0.25</wheel_separation>
+    <kingpin_width>0.23</kingpin_width>
+    <wheel_base>0.325</wheel_base>
+    <steering_limit>0.667</steering_limit>
+    <topic>$(arg prefix)/cmd_vel</topic>
+    <child_frame_id>racecar/base_footprint</child_frame_id>
+    <publish_tf>false</publish_tf>
+  </plugin>
+
+  <plugin filename="libignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
+    <render_engine>ogre2</render_engine>
+  </plugin>  
+
+  <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu">
+    <topic>imu</topic>
+    <imu_noise_density>0.0</imu_noise_density>
+    <imu_random_walk>0.0</imu_random_walk>
+    <orientation_noise_density>0.0</orientation_noise_density>
+    <orientation_random_walk>0.0</orientation_random_walk>
+    <gravity>0 0 -9.81</gravity>
+    <initial_orientation_as_reference>false</initial_orientation_as_reference>
+  </plugin>
+
+  <plugin filename="ignition-gazebo-joint-state-publisher-system"
+             name="ignition::gazebo::systems::JointStatePublisher">
+    <ignition_frame_id>odom</ignition_frame_id>
+    <topic>/joint_states</topic>
+  </plugin>
+
+  <plugin filename="ignition-gazebo-odometry-publisher-system"
+                name="ignition::gazebo::systems::OdometryPublisher">
+            <odom_topic>$(arg prefix)/odom</odom_topic>
+            <tf_topic>$(arg prefix)/odom/tf</tf_topic>
+            <robot_base_frame>$(arg prefix)/base_footprint</robot_base_frame>
+            <odom_frame>$(arg prefix)/odom</odom_frame>
   </plugin>
 </gazebo>
-
   <!-- hokuyo -->
 <xacro:unless value="$(optenv DISABLE_GAZEBO_LASER false)">
   <gazebo reference="$(arg prefix)/base_laser">
     <material>Gazebo/Grey</material>
-    <sensor type="ray" name="hokuyo_sensor">
+    <sensor type="gpu_lidar" name="hokuyo_sensor">
       <pose>0 0 0.0124 0 0 0</pose>
+      <topic>$(arg prefix)/scan</topic>
       <visualize>false</visualize>
       <update_rate>10</update_rate>
       <ray>
@@ -83,10 +120,7 @@
           <stddev>0.01</stddev>
         </noise>
       </ray>
-      <plugin name="gazebo_ros_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>scan</topicName>
-        <frameName>$(arg prefix)/base_laser</frameName>
-      </plugin>
+      <ignition_frame_id>$(arg prefix)/base_laser</ignition_frame_id>
     </sensor>
   </gazebo>
 </xacro:unless>
@@ -95,54 +129,31 @@
 <xacro:unless value="$(optenv DISABLE_GAZEBO_CAMERA false)">
   <gazebo reference="$(arg prefix)/camera_link">
     <sensor type="camera" name="camera_sensor">
+      <topic>$(arg prefix)/camera</topic>
       <update_rate>10.0</update_rate>
       <!-- math.atan(320 / 687.8065795898438) * 2 -->
-      <camera name="camera">
-        <horizontal_fov>1.5</horizontal_fov>
-        <image>
-          <width>160</width>
-          <height>120</height>
-          <format>B8G8R8</format>
-        </image>
-        <clip>
-          <near>0.02</near>
-          <far>300</far>
-        </clip>
-        <noise>
-          <type>gaussian</type>
-          <mean>0.0</mean>
-          <stddev>0.007</stddev>
-        </noise>
-      </camera>
-      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>30.0</updateRate>
-        <cameraName>raspicam_node</cameraName>
-        <imageTopicName>image_raw</imageTopicName>
-        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>$(arg prefix)/camera_optical_link</frameName>
-        <hackBaseline>0</hackBaseline><!-- set this to 0.12 for the second camera -->
-        <distortionK1>0.0</distortionK1>
-        <distortionK2>0.0</distortionK2>
-        <distortionK3>0.0</distortionK3>
-        <distortionT1>0.0</distortionT1>
-        <distortionT2>0.0</distortionT2>
-      </plugin>
+      <horizontal_fov>1.5</horizontal_fov>
+      <image>
+        <width>160</width>
+        <height>120</height>
+        <format>B8G8R8</format>
+      </image>
+      <clip>
+        <near>0.02</near>
+        <far>300</far>
+      </clip>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.007</stddev>
+      </noise>
     </sensor>
   </gazebo>
 </xacro:unless>
 
 <gazebo reference="$(arg prefix)/imu_link">
   <sensor name="imu_sensor" type="imu">
-    <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-      <topicName>imu/data</topicName>
-      <bodyName>$(arg prefix)/imu_link</bodyName>
-      <updateRateHZ>100</updateRateHZ>
-      <gaussianNoise>0.01</gaussianNoise>
-      <xyzOffset>0 0 0</xyzOffset>
-      <rpyOffset>0 0 0</rpyOffset>
-      <frameName>$(arg prefix)/imu_link</frameName>
-    </plugin>
+    <topic>$(arg prefix)/imu</topic>
   </sensor>
 </gazebo>
 

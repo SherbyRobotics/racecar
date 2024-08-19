@@ -7,7 +7,7 @@
     <shadows>0</shadows>
   </scene>
 
-  <include>
+  <!--include>
     <uri>model://sun</uri>
     <pose>0.0 0.0 15.0 0 0 0</pose>
     <cast_shadows>false</cast_shadows>
@@ -17,7 +17,7 @@
       <quadratic>0.0</quadratic>
       <range>100</range>
     </attenuation>
-  </include>
+  </include-->
 
   <light type="point" name="Light 1">
               <pose>0 0 15 0 0 0</pose>
