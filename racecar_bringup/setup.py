@@ -26,7 +26,7 @@ setup(
     entry_points={
         'console_scripts': [
             'test = racecar_bringup.test:main',
-            'cmd_vel_arb = racecar_bringup.cmd_vel_arbitration:main',
+            'cmd_vel_arbitration = racecar_bringup.cmd_vel_arbitration:main',
             'arduino_sensors = racecar_bringup.arduino_sensors:main',
         ],
     },
