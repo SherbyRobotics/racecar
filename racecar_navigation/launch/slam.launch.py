@@ -45,7 +45,7 @@ def launch_setup(context, *args, **kwargs):
             {'Icp/VoxelSize': '0.05'},
             {'Icp/MaxCorrespondenceDistance': '0.1'},
             {'use_sim_time': True if use_sim_time == 'true' else False},
-            {'Mem/IncrementalMemory': localization},
+            {'Mem/IncrementalMemory': 'false' if localization == 'true' else 'true'},
         ],
         remappings=[
             ('/scan', f'/{prefix}/scan'),
@@ -76,4 +76,3 @@ def generate_launch_description():
         delete_db_arg,
         OpaqueFunction(function=launch_setup)
     ])
-

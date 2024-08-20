@@ -60,7 +60,7 @@
     <wheel_base>0.325</wheel_base>
     <steering_limit>0.667</steering_limit>
     <topic>$(arg prefix)/cmd_vel</topic>
-    <child_frame_id>racecar/base_footprint</child_frame_id>
+    <child_frame_id>$(arg prefix)/base_footprint</child_frame_id>
     <publish_tf>false</publish_tf>
   </plugin>
 

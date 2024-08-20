@@ -18,8 +18,12 @@ def launch_setup(context, *args, **kwargs):
 
     # Parse robot description from xacro
     robot_description_file = os.path.join(racecar_description, 'urdf', 'racecar.xacro')
+
     robot_description_config = xacro.process_file(robot_description_file)
     robot_description = {'robot_description': robot_description_config.toxml()}
+
+    robot_description_config2 = xacro.process_file(robot_description_file, mappings={'robot_name' : "voiture_rapide", 'prefix': "voiture_rapide", 'color': 'Red'})
+    robot_description2 = {'robot_description': robot_description_config2.toxml()}
 
     # Ros2 bridge
     bridge_config = os.path.join(racecar_description, 'config', 'ros_bridge.yaml')
@@ -31,6 +35,17 @@ def launch_setup(context, *args, **kwargs):
         name='robot_state_publisher',
         output='both',
         parameters=[robot_description],
+        # namespace=prefix
+    )
+
+    robot_state_publisher2 = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher2',
+        output='both',
+        parameters=[robot_description2],
+        remappings=[('robot_description', 'robot_description2')],
+        # namespace=prefix
     )
 
     # Bridge 
@@ -43,14 +58,30 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Spawn
-    spawn = Node(
+    spawn1 = Node(
         package='ros_gz_sim',
         executable='create',
         arguments=[
-            '-entity', 'robot',
+            '-name', 'racecar',
             '-topic', 'robot_description',
+            '-x', '1.5',
+            '-y', '0.75',
         ],
         output='screen',
+        # namespace=prefix
+    )
+
+    spawn2 = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-name', 'racecar2',
+            '-topic', 'robot_description2',
+            '-x', '1.5',
+            '-y', '-0.25',
+        ],
+        output='screen',
+        # namespace=prefix
     )
 
     cmd_vel_arb = Node(
@@ -58,6 +89,13 @@ def launch_setup(context, *args, **kwargs):
         executable='cmd_vel_arb',
         remappings=[(f'/{prefix}/cmd_vel_output', f'/{prefix}/cmd_vel')],
         namespace=prefix
+    )
+
+    cmd_vel_arb2 = Node(
+        package='racecar_bringup',
+        executable='cmd_vel_arb',
+        remappings=[(f'/{prefix}2/cmd_vel_output', f'/{prefix}2/cmd_vel')],
+        namespace=prefix+'2'
     )
 
     joystick = Node(
@@ -86,9 +124,12 @@ def launch_setup(context, *args, **kwargs):
 
     return [
         robot_state_publisher,
-        bridge,
-        spawn,
+        robot_state_publisher2,
+        # bridge,
+        spawn1,
+        spawn2,
         cmd_vel_arb,
+        cmd_vel_arb2,
         joystick,
         teleop,
         gaz_control
