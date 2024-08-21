@@ -11,7 +11,6 @@ def generate_launch_description():
     rosbridge_server_pkg_share_dir = get_package_share_directory('rosbridge_server')
     web_video_server_pkg_share_dir = get_package_share_directory('web_video_server')
     racecar_web_interface_pkg_share_dir = get_package_share_directory('racecar_web_interface')
-    roswww_pkg_share_dir = get_package_share_directory('roswww')
     
     port_argument = DeclareLaunchArgument(
         'port', default_value='9090',
