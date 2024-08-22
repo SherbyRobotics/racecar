@@ -10,9 +10,9 @@ Software sources for the UdeS 1/10th autonomous car platform
 
 ## Technologies
 The project is created with:
-* Python 2.7 or 3.6
+* Python 3.8
 * Arduino programming language
-* [ROS](http://wiki.ros.org/ROS/Installation)
+* [ROS 2](https://docs.ros.org/en/humble/Installation.html)
 
 ## Requirements
 To be able to test our code, there are a few requirements.
@@ -23,14 +23,14 @@ To be able to test our code, there are a few requirements.
 
 ### Software
 * For Raspberry Pi on RaceCar, we provide RPI3 and RPI4 images with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi-image) to flash your RPI. To do it manually, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image).
-* For Desktop/Laptop development, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 20.04.
+* For Desktop/Laptop development, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 22.04.
 
 ### Documentation
 * [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
 * [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#usb-hub-woes)
 * [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#steering-offset)
 * [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection-sshvnc)
-* [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
+* [ROS2 on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
 * [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated-environment-gazebo)
 * [The RaceCar batteries](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-racecar-batteries)
 * [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-anker-battery)
@@ -53,11 +53,11 @@ The RaceCar has many operating modes that allow you to test different functionna
 3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
 4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/master/racecar_bringup/launch/teleop.launch):
     ```bash
-    $ roslaunch racecar_bringup teleop.launch
+    $ ros2 launch racecar_bringup teleop.launch
     ```
 5. To visualize the racecar in rviz:
     ```bash
-    $ roslaunch racecar_bringup rviz.launch
+    $ ros2 launch racecar_bringup rviz.launch
     ```
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop.jpg "rviz" )
 6. Enable the joystick by performing an input combination below to start.
