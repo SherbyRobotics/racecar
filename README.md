@@ -12,7 +12,7 @@ Software sources for the UdeS 1/10th autonomous car platform
 The project is created with:
 * Python 2.7 or 3.6
 * Arduino programming language
-* [ROS](https://docs.ros.org/en/humble/Installation.html))
+* [ROS]((https://docs.ros.org/en/humble/Installation.html))
 
 ## Requirements
 To be able to test our code, there are a few requirements.
