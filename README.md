@@ -53,11 +53,11 @@ The RaceCar has many operating modes that allow you to test different functionna
 3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
 4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/master/racecar_bringup/launch/teleop.launch):
     ```bash
-    $ roslaunch racecar_bringup teleop.launch
+    $ ros2 launch racecar_bringup teleop.launch
     ```
 5. To visualize the racecar in rviz:
     ```bash
-    $ roslaunch racecar_bringup rviz.launch
+    $ ros2 launch racecar_bringup rviz.launch
     ```
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop.jpg "rviz" )
 6. Enable the joystick by performing an input combination below to start.
