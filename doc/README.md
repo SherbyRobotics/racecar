@@ -2,7 +2,7 @@
 * [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#usb-hub-woes)
 * [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#steering-offset)
 * [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection-sshvnc)
-* [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
+* [ROS2 on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
 * [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated-environment-gazebo)
 * [The RaceCar batteries](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-racecar-batteries)
 * [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-anker-battery)
@@ -90,20 +90,20 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
    * By Hotspot: set IP to `10.42.0.1`
    * Disable encryption and open the connection.
     
-# ROS on multiple computers (ROS_IP)
+# ROS2 on multiple computers (ROS_IP)
 
 If you have ROS on your laptop (ubuntu native or in a virtual machine), to make sure to receive all messages in both directions, set `ROS_IP` environment variable on both the Raspberry Pi and the laptop. Here is an example based on the [main example](https://github.com/SherbyRobotics/racecar#launch) where we will launch RVIZ on the remote computer instead of the Raspberry Pi:
 * From the laptop, connect to RaceCar by its Hotspot (using SSH for this example, but VNC can also be used)
     ```bash
     (Laptop) $ ssh racecar@10.42.0.1
     (RPI3)   $ export ROS_IP=10.42.0.1
-    (RPI3)   $ roslaunch racecar_bringup teleop.launch
+    (RPI3)   $ ros2 launch racecar_bringup teleop.launch
     ```
 * On another terminal on the laptop (use `ifconfig` to get your laptop IP `10.42.0.###`):
     ```bash
     $ export ROS_MASTER_URI=http://10.42.0.1:11311
     $ export ROS_IP=10.42.0.###
-    $ roslaunch racecar_bringup rviz.launch
+    $ ros2 launch racecar_bringup rviz.launch
     ```
     
 # Simulated environment (Gazebo)
