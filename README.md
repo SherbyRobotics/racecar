@@ -22,8 +22,7 @@ To be able to test our code, there are a few requirements.
 * Logitech Wireless Gamepad F710 (DirectInput Mode)
 
 ### Software
-* For Raspberry Pi on RaceCar, we provide RPI3 and RPI4 images with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi-image) to flash your RPI. To do it manually, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image).
-* For Desktop/Laptop development, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 22.04.
+* For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi-image) to flash your RPI. To do it manually, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image).
 
 ### Documentation
 * [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
@@ -40,16 +39,16 @@ To be able to test our code, there are a few requirements.
 ## How it works
 In the graph, you can see a representation of the communication between the nodes and the topics of the most basic working mode:
 ![134103581-986b1f90-49de-4c44-837e-c3292f4de27f](https://user-images.githubusercontent.com/16725496/134103763-9a2e7839-77fe-411a-9f8b-ce5df9a0cd32.jpg)
-using the base launch file [cruisecontrol.launch](https://github.com/SherbyRobotics/racecar/blob/master/racecar_bringup/launch/cruisecontrol.launch). 
+using the base launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/blob/dev-ian/racecar_bringup/launch/teleop.launch.py). 
 
 The RaceCar has many operating modes that allow you to test different functionnalities. The ROS controller Node, which control commands to the motor and the steering servo, has multiple high-level mode that are selected by joystick inputs (see [Controller modes](#controller-modes) table for more details). For instance, open-loop, closed-loop in velocity, closed-loop in position modes are available for both the propulsion and the steering.  The Arduino has also multiple internal low-level modes (different than the high-level ones!!!) that are selected by the ROS controller Node. Empty operating mode templates are available in the source code for you to test custom control modes.
 
 ## Launch
 1. Follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi-image) to flash your Raspberry Pi with a pre-built image, or follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image) to setup from scratch.
-2. Connect the battery to Raspberry Pi. If installed as instructions above, you can connect your laptop by Wi-Fi on RaceCar's hotspot. Launch VNC from your laptop and connect to `10.42.0.1` (Raspberry Pi's IP). 
+2. Connect the battery to Raspberry Pi.
 2. Flash the Arduino (need to be done only 1 time):
     1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi if not already done.
-    2. Flash the Arduino mega 2560 with the firmware file [racecar_propulsion_firmware.ino](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
+    2. Flash the Arduino mega 2560 with the firmware file [Controller.ino](https://github.com/SherbyRobotics/racecar/blob/dev-ian/racecar_arduino/Controller/Controller.ino) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
 3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
 4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/master/racecar_bringup/launch/teleop.launch):
     ```bash
@@ -57,7 +56,7 @@ The RaceCar has many operating modes that allow you to test different functionna
     ```
 5. To visualize the racecar in rviz:
     ```bash
-    $ ros2 launch racecar_bringup rviz.launch
+    $ ros2 launch racecar_navigation rviz.launch
     ```
     ![](https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop.jpg "rviz" )
 6. Enable the joystick by performing an input combination below to start.
