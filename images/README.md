@@ -16,9 +16,9 @@
 
 6. Make sure to have latest code. Normally we would do:
     ```bash
-    $ cd ~/catkin_ws/src/racecar
+    $ cd ~/ros2_ws/src/racecar
     $ git pull
-    $ cd ~/catkin_ws
-    $ catkin_make
+    $ cd ~/ros2_ws
+    $ colcon build
     ```
     * Note to have Internet on the RaceCar: disconnect from the Hotspot connection and select your preferred Wi-Fi network. To do so remotely, use VNC with the Ethernet connection, then change the Wi-Fi network.
