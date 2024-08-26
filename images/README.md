@@ -1,6 +1,6 @@
 # Restore RaspberryPi image
 1. Download the following SD-CARD image for RPI4 (created following this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image) below):
-    * RPI4: [racecar_ros2_ubuntu22 1]([https://tinyurl.com/RacecarRos2Ubuntu2204]) (5.05GB)
+    * RPI4: [racecar_ros2_ubuntu22 1](https://tinyurl.com/RacecarRos2Ubuntu2204) (5.05GB)
 2. Use [Etcher](https://www.balena.io/etcher/) to flash the image on a SD-CARD (min 16GB). 
 3. Boot the RPI with HDMI, a mouse and a keyboard connected. Default username is `racecar` and password is `racecar`. 
 4. (Optional) Resize partition to use the full SD-CARD.
