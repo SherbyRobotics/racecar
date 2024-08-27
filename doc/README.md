@@ -1,14 +1,12 @@
-* [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
-* [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#usb-hub-woes)
-* [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#steering-offset)
-* [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection-sshvnc)
-* [ROS on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
-* [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated-environment-gazebo)
-* [The RaceCar batteries](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-racecar-batteries)
-* [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-anker-battery)
-* [Charging the Traxxas battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-traxxas-battery)
-* [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
-* [Debug camera and lidar](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#debug-camera-and-lidar)
+* [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#hardware-connections)
+* [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#usb-hub-woes)
+* [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#steering-offset)
+* [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#remote-connection-sshvnc)
+* [The RaceCar batteries](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#the-racecar-batteries)
+* [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#charging-the-anker-battery)
+* [Charging the Traxxas battery](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#charging-the-traxxas-battery)
+* [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#the-killswitch)
+  
 
 # Hardware Connections
 
