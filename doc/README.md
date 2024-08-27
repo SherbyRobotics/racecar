@@ -90,52 +90,6 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
    * By Hotspot: set IP to `10.42.0.1`
    * Disable encryption and open the connection.
     
-# ROS on multiple computers (ROS_IP)
-
-If you have ROS on your laptop (ubuntu native or in a virtual machine), to make sure to receive all messages in both directions, set `ROS_IP` environment variable on both the Raspberry Pi and the laptop. Here is an example based on the [main example](https://github.com/SherbyRobotics/racecar#launch) where we will launch RVIZ on the remote computer instead of the Raspberry Pi:
-* From the laptop, connect to RaceCar by its Hotspot (using SSH for this example, but VNC can also be used)
-    ```bash
-    (Laptop) $ ssh racecar@10.42.0.1
-    (RPI3)   $ export ROS_IP=10.42.0.1
-    (RPI3)   $ roslaunch racecar_bringup teleop.launch
-    ```
-* On another terminal on the laptop (use `ifconfig` to get your laptop IP `10.42.0.###`):
-    ```bash
-    $ export ROS_MASTER_URI=http://10.42.0.1:11311
-    $ export ROS_IP=10.42.0.###
-    $ roslaunch racecar_bringup rviz.launch
-    ```
-    
-# Simulated environment (Gazebo)
-
-Without the actual RaceCar, it is still possible to develop using the RaceCar's simulator on your computer ([with dualboot Ubuntu or in a virtual machine](https://github.com/SherbyRobotics/racecar/tree/master/images#virtual-machine)). To do so, we provide a simulated RaceCar for the Gazebo simulator. Launch the simulator:
-
-```bash
-$ roslaunch racecar_gazebo racecar_tunnel.launch joy:=js0
-```
-    
-If you have joystick errors, try js1 or js2. If you are using a virtual machine, make sure the USB device is redirected to the virtual machine (for VirtualBox: Menu->Devices->USB...).
-    
-Like with the real RaceCar, you can launch rviz like this:
-
-```bash
-$ roslaunch racecar_bringup rviz.launch
-```
-    
-What you should be seeing (on left is the simulator, on right is RVIZ):
-
-  <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/gazebo.jpg" alt="gazebo" width="800">
-
-If you don't have a joystick, it is possible to add a virtual one in RVIZ directly for convenience. To do that, make sure package `rviz-plugin-tutorials` is installed: 
-```bash
-$ sudo apt-get update
-$ sudo apt install ros-melodic-rviz-plugin-tutorials
-```
-In RVIZ, click on Panels->Add New Panel, then select Teleop plugin. In the new panel, set topic name to `/racecar/cmd_vel_abtr_1`. Click and move the mouse inside the square to send twists to simulated RaceCar:
-
-  <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop_plugin_panel.jpg" alt="racecar_rviz_teleop_plugin_panel" width="300">
-  <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_rviz_teleop_plugin.jpg" alt="racecar_rviz_teleop_plugin" width="600">
-    
 # The RaceCar batteries
 * The RaceCar contains two batteries:
     * a 5V Anker battery to power the Raspberry Pi and the LiDAR;
@@ -183,18 +137,3 @@ To set the charger into Discharge -> Charge Mode:
 
 * Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
 
-# Debug camera and lidar
-Those tests can be done from the original [RPI image](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image) without any other installations.
-
- * To test camera alone, do in a terminal:
-   ```bash
-   $ raspistill -f
-   ```
-   If the camera is not broken, you should see a full screen camera preview of about 5 sec.
-
-* To test the lidar, do in a terminal:
-   ```bash
-   $ roslaunch rplidar_ros test_rplidar.launch
-   ```
-    Make sure the power connector of the lidar is connected in the Anker battery and the other usb connector is on the RPI. You should see in the terminal range values printed over and over ("inf" values mean no obstacles detected, make sure they are not all "inf"). To better visualize lidar data, open a new terminal, type "rviz", set Fixed Frame to "laser", click Add, select "By topic", then select LaserScan with /scan topic. The lidar should be shown with red points in the 3D view (in the LaserScan options, set style to Points to better see the points).
-    
