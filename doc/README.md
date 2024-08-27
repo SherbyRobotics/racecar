@@ -74,7 +74,7 @@ Adjust this steering offset [here](https://github.com/SherbyRobotics/racecar/blo
 
 # Remote Connection (SSH/VNC)
 
-First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section]([(https://github.com/SherbyRobotics/racecar/tree/ros2/images)])). The default login is `racecar` with password `racecar`.
+First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](https://github.com/SherbyRobotics/racecar/tree/ros2/images)). The default login is `racecar` with password `racecar`.
 
  * SSH (command line):
      ```bash
