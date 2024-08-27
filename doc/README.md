@@ -50,7 +50,7 @@ If the USB hub doesn't seem to work or is not recognized, try the following firs
 If the RaceCar doesn't move straight when no steering commands are sent, it is possible to adjust the steering mechanically and by software. If the steering offset is small, you may skip the mechanical calibration and just [adjust in software](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#sofware-calibration).
 
 ## Mechanical calibration
-1. Make sure the Arduino is flashed with the default firmware: [racecar_propulsion_firmware.ino](https://github.com/SherbyRobotics/racecar/tree/master/racecar_arduino/racecar_propulsion_firmware). When the RaceCar's power board is activated, the arduino will send a zero steering value.
+1. Make sure the Arduino is flashed with the default firmware: [Controller.ino](https://github.com/SherbyRobotics/racecar/blob/ros2/racecar_arduino/Controller/Controller.ino). When the RaceCar's power board is activated, the arduino will send a zero steering value.
 2. Unscrew that screw:
 
     <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/steering_1.jpg" alt="steering_1" width="400">
