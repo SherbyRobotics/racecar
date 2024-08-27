@@ -184,7 +184,7 @@ To set the charger into Discharge -> Charge Mode:
 * Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
 
 # Debug camera and lidar
-Those tests can be done from the original [RPI image](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image) without any other installations.
+Those tests can be done from the original [RPI image](https://github.com/SherbyRobotics/racecar/tree/ros2/images) without any other installations.
 
  * To test camera alone, do in a terminal:
    ```bash
