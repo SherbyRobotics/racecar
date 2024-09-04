@@ -47,7 +47,7 @@ If the USB hub doesn't seem to work or is not recognized, try the following firs
     <p align="center"><i>In this picture, the USB port on the right is the only one enabled</i></p>
 
 # Steering Offset
-If the RaceCar doesn't move straight when no steering commands are sent, it is possible to adjust the steering mechanically and by software. If the steering offset is small, you may skip the mechanical calibration and just [adjust in software](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#sofware-calibration).
+If the RaceCar doesn't move straight when no steering commands are sent, it is possible to adjust the steering mechanically and by software. If the steering offset is small, you may skip the mechanical calibration and just [adjust in software](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#sofware-calibration).
 
 ## Mechanical calibration
 1. Make sure the Arduino is flashed with the default firmware: [Controller.ino](https://github.com/SherbyRobotics/racecar/blob/ros2/racecar_arduino/Controller/Controller.ino). When the RaceCar's power board is activated, the arduino will send a zero steering value.
@@ -72,7 +72,7 @@ Adjust this steering offset [here](https://github.com/SherbyRobotics/racecar/blo
 
 # Remote Connection (SSH/VNC)
 
-First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi3-image)). The default login is `racecar` with password `racecar`.
+First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](https://github.com/SherbyRobotics/racecar/tree/ros2/images#restore-raspberrypi3-image)). The default login is `racecar` with password `racecar`.
 
  * SSH (command line):
      ```bash
@@ -96,12 +96,12 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
 # Charging the Anker battery
 * To charge the Anker battery, use the small USB connector, plug it in the "input" port, then connect the other side to a computer's powered USB or a phone charger 5V. If the battery is empty, it can take many hours to charge (maybe charge during the night), but it should last long.
     
-    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/racecar_anker_battery.jpg" alt="anker_battery" width="500">
+    <img src="https://github.com/SherbyRobotics/racecar/blob/ros2/doc/racecar_anker_battery.jpg" alt="anker_battery" width="500">
 
 # Charging the Traxxas battery
 * For the Traxxas battery, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the motor drive is on left ("Charge"). Connect the wires like in the figure below. **To avoid short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the reverse when removing the wires after charging!)**. On the charger, make sure the battery type is set to NiMH and the maximum current limit is 2A. Hold « Start » to start charging. When the battery is charged, the charger should stop by itself with a sound. Stop charging manually if it has been charging for more than 1 hour. Normally, the charging time is around 30-40 minutes if the battery is empty.
 
-    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/Charging_Traxxas_with_imax_B6.jpg" alt="traxxas_battery" width="500">
+    <img src="https://github.com/SherbyRobotics/racecar/blob/ros2/doc/Charging_Traxxas_with_imax_B6.jpg" alt="traxxas_battery" width="500">
 
 * Sometimes, the charger will "charge" the Traxxas battery for like 20 seconds and then decide it is full. In reality, the battery has not been recharged. Wait a minute and try again (Hold Start). Repeat until the charging cycle starts for real (at least 25 minutes or more).
 
@@ -128,9 +128,9 @@ To set the charger into Discharge -> Charge Mode:
 
 * When the RaceCar moves around, you have to run after it if you want to make an emergency stop. Make yourself a remote killswitch when you are ready to test drive. The switch is connected into a detacheable header on the motor drive. The simplest remote killswitch is a long loop of wire that you hold in your hand. Should the RaceCar go too far away from you, the detachable header will pop out of its socket (as long as you hold firmly your end), opening the circuit.
 
-    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/Killswitch_Header.jpg" alt="Killswitch header" width="500">
+    <img src="https://github.com/SherbyRobotics/racecar/blob/ros2/doc/Killswitch_Header.jpg" alt="Killswitch header" width="500">
 
-    <img src="https://github.com/SherbyRobotics/racecar/blob/master/doc/Simplest_remote_killswitch.jpg" alt="Simplest Killswitch" width="500">
+    <img src="https://github.com/SherbyRobotics/racecar/blob/ros2/doc/Simplest_remote_killswitch.jpg" alt="Simplest Killswitch" width="500">
 <p align="center"><i>The simplest remote killswitch: a long loop of wire</i></p>
 
 * Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
