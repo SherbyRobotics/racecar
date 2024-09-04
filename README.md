@@ -50,7 +50,7 @@ The RaceCar has many operating modes that allow you to test different functionna
     1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi if not already done.
     2. Flash the Arduino mega 2560 with the firmware file [Controller.ino](https://github.com/SherbyRobotics/racecar/blob/dev-ian/racecar_arduino/Controller/Controller.ino) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
 3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
-4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/ros2/racecar_bringup/launch/teleop.launch):
+4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/ros2/racecar_bringup/launch/teleop.launch.py):
     ```bash
     $ ros2 launch racecar_bringup teleop.launch
     ```
