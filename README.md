@@ -22,19 +22,19 @@ To be able to test our code, there are a few requirements.
 * Logitech Wireless Gamepad F710 (DirectInput Mode)
 
 ### Software
-* For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/master/images#restore-raspberrypi-image) to flash your RPI. To do it manually, see this [section](https://github.com/SherbyRobotics/racecar/tree/master/images#create-raspberrypi-image).
+* For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/ros2/images#restore-raspberrypi-image) to flash your RPI.
 
 ### Documentation
-* [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#hardware-connections)
-* [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#usb-hub-woes)
-* [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#steering-offset)
-* [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#remote-connection-sshvnc)
-* [ROS2 on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#ros-on-multiple-computers-ros_ip)
-* [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#simulated-environment-gazebo)
-* [The RaceCar batteries](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-racecar-batteries)
-* [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-anker-battery)
-* [Charging the Traxxas battery](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#charging-the-traxxas-battery)
-* [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/master/doc/README.md#the-killswitch)
+* [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#hardware-connections)
+* [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#usb-hub-woes)
+* [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#steering-offset)
+* [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#remote-connection-sshvnc)
+* [ROS2 on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#ros-on-multiple-computers-ros_ip)
+* [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#simulated-environment-gazebo)
+* [The RaceCar batteries](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#the-racecar-batteries)
+* [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#charging-the-anker-battery)
+* [Charging the Traxxas battery](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#charging-the-traxxas-battery)
+* [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#the-killswitch)
 
 ## How it works
 In the graph, you can see a representation of the communication between the nodes and the topics of the most basic working mode:
