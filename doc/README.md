@@ -24,17 +24,20 @@ First, get some metric Allen Keys so you can mount your ArduinoMega and your Ras
 
 * Mount your Rapberry Pi4 on its 4 studs. Do not overtighten the screws, they are fragile. Its USB ports must face toward the back of the RaceCar.
 
-   * Connect the flex cable of the RaspiCAM (#6) in J3 "CAMERA". Beware of the orientation.
+* Connect the flex cable of the RaspiCAM (#6) in J3 "CAMERA". Beware of the orientation.
 
 * Connect the Logitech Controller's USB dongle into the USB hub (#10).
 * Connect the USB hub (#10) into one USB-A port of the Pi4.
 * USB cable #12: Connect into ArduinoMega USB-B and Pi4 USB-A.
-* USB cable #14: Connect into Pi4 USB3 and LIDAR (#2) Micro-USB.
 * USB cable #16: Connect into LIDAR (#2) round connector and USB Power Pack (#5) USB-A.
 
 Finally, **CONNECT ONLY WHEN READY TO POWER UP YOUR Raspberry Pi**:
 
 * USB cable #13: Connect into USB Power Pack (#5) USB-A and Pi4 USB-C.
+
+And once the PI is booted:
+
+* USB cable #14: Connect into Pi4 USB3 and LIDAR (#2) Micro-USB.
 
 # USB hub woes
 If the USB hub doesn't seem to work or is not recognized, try the following first before calling it defective:
