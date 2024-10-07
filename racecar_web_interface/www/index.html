@@ -23,7 +23,7 @@ Client-side:
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
 
-    <title>Laboratoire S5-GIF250</title>
+    <title>Laboratoire S5-GRO525</title>
 
 </head>
 
@@ -83,7 +83,7 @@ Client-side:
                 // These lines create a topic object as defined by roslibjs
                 cmdVelTopic = new ROSLIB.Topic({
                     ros : rbServer,
-                    name : '/racecar/cmd_vel_abtr_2',
+                    name : '/prop_cmd',
                     messageType : 'geometry_msgs/Twist'
                 });
             });
@@ -104,7 +104,7 @@ Client-side:
             linear : {
                 x : 0.0,
                 y : 0.0,
-                z : 0.0
+                z : 2.0 // SET Control mode to 2
             },
             angular : {
                 x : 0.0,
