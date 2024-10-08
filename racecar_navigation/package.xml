@@ -15,8 +15,6 @@
   <depend>ackermann_msgs</depend>
   <depend>racecar_bringup</depend>
   <depend>racecar_behaviors</depend>
-  <depend>move_base</depend>
-  <depend>global_planner</depend>
   <depend>teb_local_planner</depend>
 
   <export>

@@ -20,11 +20,6 @@ def generate_launch_description():
     
 
     # Launch rosbridge_websocket_launch.xml from rosbridge_server package
-    bringup_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([racecar_bringup_pkg_share_dir, '/launch/bringup.launch.py'])
-    )
-
-    # Launch rosbridge_websocket_launch.xml from rosbridge_server package
     rosbridge_launch = IncludeLaunchDescription(
         XMLLaunchDescriptionSource([rosbridge_server_pkg_share_dir, '/launch/rosbridge_websocket_launch.xml']),
         launch_arguments={'port': '9090'}.items()
@@ -36,11 +31,10 @@ def generate_launch_description():
        executable='web_video_server',
         name='web_video_server',
         output='screen',
-        parameters=[{'address': '10.42.0.1'}]  # Set the address parameter to "10.42.0.1"
+        # parameters=[{'address': '10.42.0.1'}]  # Set the address parameter to "10.42.0.1"
     )
 
     return LaunchDescription([
-        bringup_launch,
     	port_argument,
         rosbridge_launch,
         web_video_server_node,

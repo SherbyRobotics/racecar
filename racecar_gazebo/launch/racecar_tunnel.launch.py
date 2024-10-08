@@ -4,6 +4,7 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch.actions import AppendEnvironmentVariable
 
 def generate_launch_description():
     # Package Directories    
@@ -11,13 +12,17 @@ def generate_launch_description():
     racecar_gazebo = get_package_share_directory('racecar_gazebo')
 
     world_name = os.path.join(get_package_share_directory('racecar_gazebo'), 'worlds', 'racecar_tunnel.world')
+    models_path = os.path.join(get_package_share_directory('racecar_gazebo'), 'models')
+
+    addEnvVariable = AppendEnvironmentVariable("IGN_GAZEBO_RESOURCE_PATH",models_path)
+    print(models_path)
 
     # Inside generate_launch_description() function
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': f'-r {world_name}'}.items(),
+        launch_arguments={'gz_args': f'-r -s {world_name}'}.items(),
     )
 
     # Include spawn launch file
@@ -26,6 +31,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        addEnvVariable,
         gazebo,
         spawn,
     ])

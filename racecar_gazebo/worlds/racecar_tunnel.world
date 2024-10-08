@@ -152,7 +152,7 @@
   </model>
   
   <include>
-    <uri>model://racecar_gazebo/models/MIT_Tunnel</uri>
+    <uri>model://MIT_Tunnel</uri>
     <pose>6 20 0 0 0 0</pose>
   </include>
 

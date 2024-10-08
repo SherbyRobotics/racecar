@@ -49,7 +49,7 @@
 <xacro:macro name="chassis_geometry">
   <origin xyz="0 0 0.05" rpy="0 0 0" />
   <geometry>
-    <mesh filename="package://racecar_description/meshes/chassis.STL" />
+    <mesh filename="file://$(find racecar_description)/meshes/chassis.STL" />
   </geometry>
 </xacro:macro>
 
@@ -57,42 +57,42 @@
 <xacro:macro name="left_rear_wheel_geometry">
   <origin xyz="0 0 0" rpy="0 0 0" />
   <geometry>
-    <mesh filename="package://racecar_description/meshes/left_rear_wheel.STL" />
+    <mesh filename="file://$(find racecar_description)/meshes/left_rear_wheel.STL" />
   </geometry>
 </xacro:macro>
 
 <xacro:macro name="right_rear_wheel_geometry">
   <origin xyz="0 0 0" rpy="0 0 0" />
   <geometry>
-    <mesh filename="package://racecar_description/meshes/right_rear_wheel.STL" />
+    <mesh filename="file://$(find racecar_description)/meshes/right_rear_wheel.STL" />
   </geometry>
 </xacro:macro>
 
 <xacro:macro name="left_front_wheel_geometry">
   <origin xyz="0 0 0" rpy="0 0 0" />
   <geometry>
-    <mesh filename="package://racecar_description/meshes/left_front_wheel.STL" />
+    <mesh filename="file://$(find racecar_description)/meshes/left_front_wheel.STL" />
   </geometry>
 </xacro:macro>
 
 <xacro:macro name="right_front_wheel_geometry">
   <origin xyz="0 0 0" rpy="0 0 0" />
   <geometry>
-    <mesh filename="package://racecar_description/meshes/right_front_wheel.STL" />
+    <mesh filename="file://$(find racecar_description)/meshes/right_front_wheel.STL" />
   </geometry>
 </xacro:macro>
 
 <xacro:macro name="left_steering_hinge_geometry">
   <origin xyz="0 0 0" rpy="0 0 0" />
   <geometry>
-    <mesh filename="package://racecar_description/meshes/left_steering_hinge.STL" />
+    <mesh filename="file://$(find racecar_description)/meshes/left_steering_hinge.STL" />
   </geometry>
 </xacro:macro>
 
 <xacro:macro name="right_steering_hinge_geometry">
   <origin xyz="0 0 0" rpy="0 0 0" />
   <geometry>
-    <mesh filename="package://racecar_description/meshes/right_steering_hinge.STL" />
+    <mesh filename="file://$(find racecar_description)/meshes/right_steering_hinge.STL" />
   </geometry>
 </xacro:macro>
 
