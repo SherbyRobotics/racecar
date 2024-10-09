@@ -206,7 +206,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://racecar_description/meshes/hokuyo.dae"/>
+        <mesh filename="file://$(find racecar_description)/meshes/hokuyo.dae"/>
         <material name="DarkGrey" />
       </geometry>
     </visual>
