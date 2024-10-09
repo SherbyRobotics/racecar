@@ -87,6 +87,11 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
     # By Hotspot
     $ ssh racecar@10.42.0.1
     ```
+ * [VScode remote ssh](https://code.visualstudio.com/docs/remote/ssh) :
+
+    VScode remote ssh extension allows you to open a remote folder on any remote machine, virtual machine, or container with a running SSH server and take full advantage of VS Code's feature set. This lets you modify the files directly in the RaspberryPi on the VScode application from your computer.
+    
+    
     
  * [VNC Viewer](https://www.realvnc.com/en/connect/download/viewer/) (Remote Desktop):
    * By ethernet: set IP to `192.168.10.1`
