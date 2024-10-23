@@ -23,11 +23,9 @@ sudo apt update
 sudo apt upgrade
 
 sudo apt install ros-${ROS_DISTRO}-desktop -y
-sudo rosdep init
-sudo rosdep update --rosdistro $ROS_DISTRO
-source /opt/ros/${ROS_DISTRO}/setup.bash
 
-sudo rosdep install --from-paths src --ignore-src -y
+# Source ROS
+source /opt/ros/${ROS_DISTRO}/setup.bash
 echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
 
