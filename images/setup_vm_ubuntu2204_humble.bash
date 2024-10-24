@@ -1,5 +1,17 @@
+#!/bin/bash
+
 # set distro
 export ROS_DISTRO=humble
+
+#################### install utils ############################################
+
+sudo apt update
+sudo apt install net-tools -y
+sudo apt install nmap -y 
+sudo apt install htop -y
+
+#################### install ROS ############################################
+
 
 # locale  # check for UTF-8
 sudo apt update && sudo apt install locales -y 
@@ -28,6 +40,25 @@ sudo apt install ros-${ROS_DISTRO}-desktop -y
 source /opt/ros/${ROS_DISTRO}/setup.bash
 echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
+#################### setup repos ############################################
 
+cd ~/.
+mkdir -p ros_ws/src
+cd ~/ros_ws/src
+
+git clone -b ros2 https://github.com/chameau5050/web_video_server
+git clone -b ros2 https://github.com/rst-tu-dortmund/costmap_converter.git
+git clone -b ros2-master https://github.com/rst-tu-dortmund/teb_local_planner.git
+git clone -b ros2 https://github.com/SherbyRobotics/racecar.git
+
+cd ~/ros_ws
+
+sudo rosdep init
+rosdep update 
+rosdep install --rosdistro=${ROS_DISTRO} --from-paths src --ignore-src -y
+source /opt/ros/${ROS_DISTRO}/setup.bash
+colcon build --symlink-install
+
+echo "source ~/ros_ws/install/setup.bash" >> ~/.bashrc
 
 
