@@ -24,6 +24,10 @@ To be able to test our code, there are a few requirements.
 ### Software
 * For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/ros2/images#restore-raspberrypi-image) to flash your RPI.
 
+* For Desktop/Laptop development, see this [section](https://github.com/SherbyRobotics/racecar/tree/ros2/images#creating-a-virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 22.04
+
+* Click here to [download the default virtual machine](https://usherbrooke-my.sharepoint.com/:u:/g/personal/lali3401_usherbrooke_ca/ET_KS0N6qFpPjCdlN4sOIrYBsIMreMN1X6O5qblisWM_Rw?e=6nY1pi), see this [section](https://github.com/SherbyRobotics/racecar/tree/ros2/images/images#importing-a-virtual-machine) for how to import it in Virtual box
+
 ### Documentation
 * [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#hardware-connections)
 * [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#usb-hub-woes)
