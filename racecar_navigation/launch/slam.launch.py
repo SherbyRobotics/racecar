@@ -10,7 +10,7 @@ def launch_setup(context, *args, **kwargs):
     localization = LaunchConfiguration('localization').perform(context)
     database_path = LaunchConfiguration('database_path').perform(context)
     odom_correction = LaunchConfiguration('odom_correction').perform(context)
-    use_sim_time = LaunchConfiguration('use_sim_time').perform(context)
+    use_sim_time = LaunchConfiguration('use_sim_time')
     delete_db = LaunchConfiguration('delete_db').perform(context)
 
     rtabmap_node = Node(
@@ -44,7 +44,7 @@ def launch_setup(context, *args, **kwargs):
             {'RGBD/SavedLocalizationIgnored': 'true'},
             {'Icp/VoxelSize': '0.05'},
             {'Icp/MaxCorrespondenceDistance': '0.1'},
-            {'use_sim_time': True if use_sim_time == 'true' else False},
+            {'use_sim_time': use_sim_time},
             {'Mem/IncrementalMemory': 'false' if localization == 'true' else 'true'},
         ],
         remappings=[

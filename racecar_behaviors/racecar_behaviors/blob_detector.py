@@ -17,7 +17,7 @@ import tf2_ros
 from tf2_ros import Buffer, TransformListener
 import tf_transformations
 from visualization_msgs.msg import Marker
-from libbehaviors import *
+from racecar_behaviors.libbehaviors import *
 
 class BlobDetector(Node):
     def __init__(self):
