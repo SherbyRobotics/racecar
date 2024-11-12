@@ -86,14 +86,14 @@ def launch_setup(context, *args, **kwargs):
 
     cmd_vel_arb = Node(
         package='racecar_bringup',
-        executable='cmd_vel_arb',
+        executable='cmd_vel_arbitration',
         remappings=[(f'/{prefix}/cmd_vel_output', f'/{prefix}/cmd_vel')],
         namespace=prefix
     )
 
     cmd_vel_arb2 = Node(
         package='racecar_bringup',
-        executable='cmd_vel_arb',
+        executable='cmd_vel_arbitration',
         remappings=[(f'/{prefix}2/cmd_vel_output', f'/{prefix}2/cmd_vel')],
         namespace=prefix+'2'
     )
@@ -111,7 +111,7 @@ def launch_setup(context, *args, **kwargs):
 
     teleop = Node(
             package='racecar_teleop',
-            executable='racecar_teleop',
+            executable='slash_teleop',
             name='racecar_teleop',
             remappings=[(f'/{prefix}/ctl_ref', f'/{prefix}/cmd_vel_abtr_0')],
             namespace=prefix   
@@ -125,7 +125,7 @@ def launch_setup(context, *args, **kwargs):
     return [
         robot_state_publisher,
         robot_state_publisher2,
-        # bridge,
+        bridge,
         spawn1,
         spawn2,
         cmd_vel_arb,

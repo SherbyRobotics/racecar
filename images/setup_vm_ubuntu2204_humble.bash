@@ -47,8 +47,13 @@ mkdir -p ros_ws/src
 cd ~/ros_ws/src
 
 git clone -b ros2 https://github.com/chameau5050/web_video_server
-git clone -b ros2 https://github.com/rst-tu-dortmund/costmap_converter.git
+git clone -b humble https://github.com/rst-tu-dortmund/costmap_converter.git
+
 git clone -b ros2-master https://github.com/rst-tu-dortmund/teb_local_planner.git
+cd teb_local_planner
+git checkout 630a22e88dc9fd45be726a762edbb5b776bef231
+cd ..
+
 git clone -b ros2 https://github.com/SherbyRobotics/racecar.git
 
 cd ~/ros_ws

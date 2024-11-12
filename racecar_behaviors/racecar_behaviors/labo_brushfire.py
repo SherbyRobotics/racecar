@@ -6,7 +6,7 @@ from rclpy.node import Node
 import cv2
 import numpy as np
 from nav_msgs.srv import GetMap
-from libbehaviors import brushfire
+from racecar_behaviors.libbehaviors import brushfire
 
 class Brushfire(Node):
     def __init__(self):
