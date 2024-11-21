@@ -24,14 +24,15 @@ def launch_setup(context, *args, **kwargs):
         package='racecar_behaviors',
         executable='laserscan_to_pointcloud',
         name='laserscan_to_pointcloud',
-        remappings=[('/scan', '/racecar/scan'), ('converted_pc', 'scan_cloud')]
+        remappings=[('/scan', '/racecar/scan'), ('converted_pc', 'scan_cloud')],
+        arguments=["--ros-args", "--log-level", 'laserscan_to_pointcloud:=warn']
     )
 
     pointcloud_to_depthimage_node = Node(
         package='rtabmap_util',
         executable='pointcloud_to_depthimage',
         name='pointcloud_to_depthimage',
-        parameters=[{'fixed_frame_id': 'racecar/odom', 'fill_holes_size': 2}],
+        parameters=[{'fixed_frame_id': 'racecar/odom', 'fill_holes_size': 4, 'topic_queue_size': 10}],
         remappings=[('camera_info', 'racecar/camera_info'), ('cloud', 'scan_cloud'),
                     ('image', 'raspicam_node/depth_registered'), ('image_raw', 'raspicam_node/depth_registered_raw')]
     )

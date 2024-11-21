@@ -147,6 +147,7 @@
         <mean>0.0</mean>
         <stddev>0.007</stddev>
       </noise>
+      <ignition_frame_id>$(arg prefix)/camera_optical_link</ignition_frame_id>
     </sensor>
   </gazebo>
 </xacro:unless>
