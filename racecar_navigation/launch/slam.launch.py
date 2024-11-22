@@ -48,7 +48,7 @@ def launch_setup(context, *args, **kwargs):
             {'Mem/IncrementalMemory': 'false' if localization == 'true' else 'true'},
         ],
         remappings=[
-            ('/scan', f'/{prefix}/scan'),
+            ('scan', f'{prefix}/scan'),
             ('grid_map', 'map'),
             ('move_base', 'move_base')
         ]
