@@ -2,10 +2,10 @@
 <sdf version="1.4">
 <world name="racecar_tunnel">
 
-  <include>
+  <!-- <include>
     <uri>model://sun</uri>
     <pose>0 0 10 -0.11 -0.5 0</pose>
-  </include>
+  </include> -->
 
   <gui>
     <camera name='main'>
@@ -45,6 +45,9 @@
             <uri>file://media/materials/scripts/gazebo.material</uri>
             <name>Gazebo/Grey</name>
           </script>
+          <ambient>0.3 0.3 0.3 1.0</ambient>
+          <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          <specular>0.01 0.01 0.01 1.0</specular>
         </material>
       </visual>
     </link>
@@ -73,6 +76,9 @@
             <uri>file://media/materials/scripts/gazebo.material</uri>
             <name>Gazebo/Blue</name>
           </script>
+          <ambient>1 0 1 1</ambient>
+          <diffuse>1 0 1 1</diffuse>
+          <specular>1 0 1 1</specular>
         </material>
       </visual>
     </link>
@@ -101,6 +107,9 @@
             <uri>file://media/materials/scripts/gazebo.material</uri>
             <name>Gazebo/Blue</name>
           </script>
+          <ambient>1 0 1 1</ambient>
+          <diffuse>1 0 1 1</diffuse>
+          <specular>1 0 1 1</specular>
         </material>
       </visual>
     </link>
@@ -108,7 +117,7 @@
   
   
   <include>
-    <uri>model://racecar_gazebo/models/tunnel_genie</uri>
+    <uri>model://tunnel_genie</uri>
     <pose>7 -11 0 0 0 0</pose>
   </include>
 
