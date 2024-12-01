@@ -3,6 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
+from rclpy.duration import Duration
 
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
@@ -10,7 +11,7 @@ import numpy as np
 from std_msgs.msg import String, ColorRGBA
 from std_srvs.srv import Empty
 from sensor_msgs.msg import Image, CameraInfo
-from geometry_msgs.msg import Twist, Point
+from geometry_msgs.msg import Twist, Point, TransformStamped
 import message_filters
 
 import tf2_ros
@@ -27,18 +28,12 @@ class BlobDetector(Node):
         self.map_frame_id = self.declare_parameter('map_frame_id', 'map').value
         self.frame_id = self.declare_parameter('frame_id', 'base_link').value
         self.object_frame_id = self.declare_parameter('object_frame_id', 'object').value
-        self.max_distance = self.declare_parameter('max_distance', 5).value
-        self.max_speed = self.declare_parameter('max_speed', 1).value
-        self.max_steering = self.declare_parameter('max_steering', 0.37).value
-        self.picture_distance = self.declare_parameter('picture_distance', 2).value
         self.color_hue = self.declare_parameter('color_hue', 160).value  # 160=purple, 100=blue, 10=Orange
         self.color_range = self.declare_parameter('color_range', 10).value
         self.color_saturation = self.declare_parameter('color_saturation', 50).value
         self.color_value = self.declare_parameter('color_value', 0).value
         self.border = self.declare_parameter('border', 10).value
 
-
-        self.objects_saved = []
         self.wait_time = 0
 
         params = cv2.SimpleBlobDetector_Params()
@@ -80,14 +75,12 @@ class BlobDetector(Node):
         qos = QoSProfile(depth=10)
         self.image_pub = self.create_publisher(Image, 'image_detections', qos)
         self.object_pub = self.create_publisher(String, 'object_detected', qos)
-        self.marker_pub = self.create_publisher(Marker, 'marker', qos)
-        self.twist_pub = self.create_publisher(Twist, 'cmd_vel', qos)
-        self.image_sub = self.create_subscription(Image, 'image', self.image_callback, 10)
-        self.depth_sub = self.create_subscription(Image, 'depth', self.depth_callback, 10)
-        self.info_sub = self.create_subscription(CameraInfo, 'camera_info', self.info_callback, 10)
 
-        self.depth = Image()
-        self.info = CameraInfo()
+        self.image_sub = message_filters.Subscriber(self, Image, 'image')
+        self.depth_sub = message_filters.Subscriber(self, Image, 'depth')
+        self.info_sub = message_filters.Subscriber(self, CameraInfo, 'camera_info')
+        self.ts = message_filters.TimeSynchronizer([self.image_sub, self.depth_sub, self.info_sub], 10)
+        self.ts.registerCallback(self.image_callback)
 
     def config_callback(self, config, level):
         self.get_logger().info("Reconfigure Request: {color_hue}, {color_saturation}, {color_value}, {color_range}, {border}".format(**config))
@@ -102,26 +95,8 @@ class BlobDetector(Node):
         self.get_logger().info("Reset blob detector!")
         self.objects_saved = []
         return response
-
-    def depth_callback(self, depth_msg):
-        self.get_logger().info('K')
-        self.depth = depth_msg
-        # self.get_logger().info(f"Depth encoding: {depth_msg.encoding}")
-    
-    def info_callback(self, info_msg):
-        self.info = info_msg
-
-    def image_callback(self, image):
-        depth = self.depth
-        info = self.info
-        cv_image = np.zeros((1,1))
-        cv_depth = np.zeros((1,1))
-
-        # self.get_logger().info(f"Image encoding: {image.encoding}")
-        
-        if self.get_clock().now().to_msg().sec - self.wait_time < 5:
-            self.twist_pub.publish(Twist())
-            return
+   
+    def image_callback(self, image, depth, info):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(image, "bgr8")
         except CvBridgeError as e:
@@ -129,8 +104,8 @@ class BlobDetector(Node):
             
         try:
             cv_depth = self.bridge.imgmsg_to_cv2(depth, "32FC1")
-            self.get_logger().info(str(depth))
         except Exception as e:
+            self.get_logger().info(str(depth))
             pass
         
         hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
@@ -138,36 +113,25 @@ class BlobDetector(Node):
         mask = cv2.inRange(hsv, np.array([self.color_hue-self.color_range,self.color_saturation,self.color_value]), np.array([self.color_hue+self.color_range,255,255]))
         keypoints = self.detector.detect(mask) 
         
-        closestObject = [0,0,0]
+        closestObject = [0,0,0] # Object pose (x,y,z) in camera frame (x->right, y->down, z->forward)
         if len(keypoints) > 0:
-
-            # self.get_logger().info("detected")
-
             cv_image = cv2.drawKeypoints(cv_image, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             
-            for i in range(0, len(keypoints)):
-                # msg = str(self.info.k[0] +  keypoints[i].pt[0] + self.border + cv_image.shape[1])
-                # self.get_logger().info(str(self.info.k))
-                # self.get_logger().info(str(keypoints[i].pt[0]))
-                # self.get_logger().info(str(self.border))
-                # self.get_logger().info(str(cv_image.shape[1]))
-                
-                if self.info.k[0] > 0 and keypoints[i].pt[0] >= self.border and keypoints[i].pt[0] < cv_image.shape[1]-self.border:
+            for i in range(0, len(keypoints)):               
+                if info.k[0] > 0 and keypoints[i].pt[0] >= self.border and keypoints[i].pt[0] < cv_image.shape[1]-self.border:
                     pts_uv = np.array([[[keypoints[i].pt[0], keypoints[i].pt[1]]]], dtype=np.float32)
-                    info_K = np.array(self.info.k).reshape([3, 3])
-                    info_D = np.array(self.info.d)
-                    info_P = np.array(self.info.p).reshape([3, 4])
+                    info_K = np.array(info.k).reshape([3, 3])
+                    info_D = np.array(info.d)
+                    info_P = np.array(info.p).reshape([3, 4])
                     pts_uv = cv2.undistortPoints(pts_uv, info_K, info_D, info_P)
                     angle = np.arcsin(-pts_uv[0][0][0]) # negative to get angle from forward x axis
                     x = pts_uv[0][0][0]
                     y = pts_uv[0][0][1]
-
-                    out_msg = str(i+1) + ',' + str(len(keypoints)) + ',' + str(keypoints[i].pt[0]) + ',' + str(keypoints[i].pt[1]) + ',' + str(x) + ',' + str(y) + ',' + str(angle*180/np.pi)
-                    # self.get_logger().info(out_msg)
+                    # self.get_logger().info(f"({i+1}/{len(keypoints)}) {keypoints[i].pt[0]} {keypoints[i].pt[1]} -> {x} {y} angle={angle*180/np.pi} deg")
                     
                     # Get depth.
-                    u = int(x * self.info.p[0] + self.info.p[2])
-                    v = int(y * self.info.p[5] + self.info.p[6])
+                    u = int(x * info.p[0] + info.p[2])
+                    v = int(y * info.p[5] + info.p[6])
                     depth = -1
                     if u >= 0 and u < cv_depth.shape[1]:
                         for j in range(0, cv_depth.shape[0]):
@@ -185,56 +149,51 @@ class BlobDetector(Node):
                         closestObject[2] = depth
 
         # We process only the closest object detected
-        if closestObject[2] > 0 and closestObject[2] < self.max_distance:
+        if closestObject[2] > 0:
             # assuming the object is circular, use center of the object as position
-            depth = closestObject[2]
-            transObj = (closestObject[0]*depth, closestObject[1]*depth, depth)
+            transObj = (closestObject[0], closestObject[1], closestObject[2])
             rotObj = tf_transformations.quaternion_from_euler(0, np.pi/2, -np.pi/2)
-            self.br.sendTransform(transObj, rotObj,
-                    image.header.stamp,
-                    self.object_frame_id,
-                    image.header.frame_id)  
+            transform = TransformStamped()
+            transform.child_frame_id = self.object_frame_id
+            transform.header = image.header
+            transform.transform.rotation.x = rotObj[0]
+            transform.transform.rotation.y = rotObj[1]
+            transform.transform.rotation.z = rotObj[2]
+            transform.transform.rotation.w = rotObj[3]
+            transform.transform.translation.x = float(transObj[0])
+            transform.transform.translation.y = float(transObj[1])
+            transform.transform.translation.z = float(transObj[2])
+            self.br.sendTransform(transform)  
             msg = String()
             msg.data = self.object_frame_id
             self.object_pub.publish(msg) # signal that an object has been detected
             
             # Compute object pose in map frame
             try:
-                self.tf_buffer.wait_for_transform(self.map_frame_id, image.header.frame_id, image.header.stamp, rclpy.Duration(seconds=0.5))
-                (transMap,rotMap) = self.tf_buffer.lookup_transform(self.map_frame_id, image.header.frame_id, image.header.stamp)
+                self.tf_buffer.lookup_transform(self.map_frame_id, image.header.frame_id, image.header.stamp, Duration(nanoseconds=500000000)) # 500 ms
+                t = self.tf_buffer.lookup_transform(self.map_frame_id, image.header.frame_id, image.header.stamp)
+                transMap = [t.transform.translation.x, t.transform.translation.y, t.transform.translation.z]
+                rotMap = [t.transform.rotation.x, t.transform.rotation.y, t.transform.rotation.z, t.transform.rotation.w]
             except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException, tf2_ros.TransformException) as e:
                 self.get_logger().info(e)
                 return
             
-            (transMap, rotMap) = multiply_transforms((transMap, rotMap), (transObj, rotObj))
+            (transMap, rotMap) = multiply_transforms(transMap, rotMap, transObj, rotObj)
             
-            objectAlreadySaved = False
-            for i in range(0, len(self.objects_saved)):
-                obj = self.objects_saved[i]
-                if np.linalg.norm([obj[0] - transMap[0], obj[1] - transMap[1]]) < self.picture_distance:
-                    objectAlreadySaved = True
-                    break
-            
-            if not objectAlreadySaved:                
-                try:
-                    self.tf_buffer.wait_for_transform(self.frame_id, image.header.frame_id, image.header.stamp, rclpy.Duration(seconds=0.5))
-                    (transBase,rotBase) = self.tf_buffer.lookup_transform(self.frame_id, image.header.frame_id, image.header.stamp)
-                except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException, tf2_ros.TransformException) as e:
-                    self.get_logger().info(e)
-                    return
-                    
-                (transBase, rotBase) = multiply_transforms((transBase, rotBase), (transObj, rotObj))
-                distanceToGo = np.linalg.norm(transBase[0:2])
-                angle = np.arcsin(transBase[1]/transBase[0]) 
-                if distanceToGo <= self.picture_distance and abs(angle) < 0.1:
-                    # Take picture and save position of the object in the map
-                    objId = len(self.objects_saved)
-                    filename = 'object_' + str(objId) + '.jpg'
-                    cv2.imwrite(filename, cv_image) 
-                    self.file.write("%f %f %s\n" % (transMap[0], transMap[1], filename))
-                    self.get_logger().info('Saved %s at position (%f %f, distance=%fm) in the map!', filename, transMap[0], transMap[1], distanceToGo)
-                                        
-                    
+            # Compute object pose in base frame
+            try:
+                t = self.tf_buffer.lookup_transform(self.frame_id, image.header.frame_id, image.header.stamp, Duration(nanoseconds=500000000)) # 500 ms
+                transBase = [t.transform.translation.x, t.transform.translation.y, t.transform.translation.z]
+                rotBase = [t.transform.rotation.x, t.transform.rotation.y, t.transform.rotation.z, t.transform.rotation.w]
+            except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException, tf2_ros.TransformException) as e:
+                self.get_logger().info(e)
+                return
+                
+            (transBase, rotBase) = multiply_transforms(transBase, rotBase, transObj, rotObj)
+            distance = np.linalg.norm(transBase[0:2])
+            angle = np.arcsin(transBase[1]/transBase[0]) 
+
+            self.get_logger().info(f"Object detected at [{transMap[0]},{transMap[1]}] in {self.map_frame_id} frame! Distance and direction from robot: {distance}m {angle*180.0/np.pi}deg.")
 
         # debugging topic
         cv_image = cv2.bitwise_and(cv_image, cv_image, mask=mask)
