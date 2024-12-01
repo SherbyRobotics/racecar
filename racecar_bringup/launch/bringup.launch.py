@@ -20,6 +20,16 @@ def generate_launch_description():
 
     return LaunchDescription([
 
+
+        # Robot state publisher
+        Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='both',
+            parameters=[robot_description],
+        ),
+
         TimerAction(
             period=5.0,
             actions=[
@@ -49,7 +59,7 @@ def generate_launch_description():
             parameters=[{
                 'serial_port': '/dev/ttyUSB0',
                 'serial_baudrate': 115200,
-                'frame_id': 'laser',
+                'frame_id': 'racecar/base_laser',
                 'inverted': False,
                 'angle_compensate': True,
             }],
@@ -60,6 +70,10 @@ def generate_launch_description():
             package='v4l2_camera',
             executable='v4l2_camera_node',
             name='camera',
+            parameters=[{
+            	'frame_id' : 'racecar/camera_optical_link',
+            	'saturation' : 100,
+            }],
             remappings=[('image_raw', 'racecar/camera'),
                         ('camera_info', 'racecar/camera_info')],
         ),

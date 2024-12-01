@@ -66,7 +66,7 @@ ekf_filter_node:
         #     3a. Set your "world_frame" to your map_frame value
         #     3b. MAKE SURE something else is generating the odom->base_link transform. Note that this can even be another state
         #         estimation node from robot_localization! However, that instance should *not* fuse the global data.
-        map_frame: map              # Defaults to "map" if unspecified
+        map_frame: racecar/map              # Defaults to "map" if unspecified
         odom_frame: racecar/odom            # Defaults to "odom" if unspecified
         base_link_frame: racecar/base_footprint  # Defaults to "base_link" if unspecified
         world_frame: racecar/odom           # Defaults to the value of odom_frame if unspecified
