@@ -4,11 +4,12 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 from rclpy.duration import Duration
+# from rclpy.parameter_event_handler import ParameterEventHandler
 
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
-from std_msgs.msg import String, ColorRGBA
+from std_msgs.msg import String
 from std_srvs.srv import Empty
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import Twist, Point, TransformStamped
@@ -28,11 +29,11 @@ class BlobDetector(Node):
         self.map_frame_id = self.declare_parameter('map_frame_id', 'map').value
         self.frame_id = self.declare_parameter('frame_id', 'base_link').value
         self.object_frame_id = self.declare_parameter('object_frame_id', 'object').value
-        self.color_hue = self.declare_parameter('color_hue', 160).value  # 160=purple, 100=blue, 10=Orange
-        self.color_range = self.declare_parameter('color_range', 10).value
-        self.color_saturation = self.declare_parameter('color_saturation', 50).value
-        self.color_value = self.declare_parameter('color_value', 0).value
-        self.border = self.declare_parameter('border', 10).value
+        self.color_hue = self.declare_parameter('color_hue', 125).value  # 160=purple, 100=blue, 10=Orange
+        self.color_range = self.declare_parameter('color_range', 20).value
+        self.color_saturation = self.declare_parameter('color_saturation', 150).value
+        self.color_value = self.declare_parameter('color_value', 10).value
+        self.border = self.declare_parameter('border', 1).value
 
         self.wait_time = 0
 
@@ -51,7 +52,7 @@ class BlobDetector(Node):
         
         # Set Area filtering parameters 
         params.filterByArea = True
-        params.minArea = 10
+        params.minArea = 1500
         params.maxArea = 5000000000
           
         # Set Circularity filtering parameters 
@@ -82,21 +83,31 @@ class BlobDetector(Node):
         self.ts = message_filters.TimeSynchronizer([self.image_sub, self.depth_sub, self.info_sub], 10)
         self.ts.registerCallback(self.image_callback)
 
-    def config_callback(self, config, level):
-        self.get_logger().info("Reconfigure Request: {color_hue}, {color_saturation}, {color_value}, {color_range}, {border}".format(**config))
-        self.color_hue = config.color_hue
-        self.color_range = config.color_range
-        self.color_saturation = config.color_saturation
-        self.color_value = config.color_value
-        self.border = config.border
-        return config
+        self.timer = self.create_timer(1.0, self.param_callback)
+
+        # self.handler = ParameterEventHandler(self)
+
+        # self.hue_handle = self.handler.add_parameter_callback( parameter_name = 'color_hue', node_name='blob_detector', callback=self.hue_callback)
+
+    def param_callback(self):
+        self.color_hue = self.get_parameter('color_hue').get_parameter_value().integer_value 
+        self.color_range = self.get_parameter('color_range').get_parameter_value().integer_value
+        self.color_saturation = self.get_parameter('color_saturation').get_parameter_value().integer_value
+        self.color_value = self.get_parameter('color_value').get_parameter_value().integer_value
+        self.border = self.get_parameter('border').get_parameter_value().integer_value
+        self.get_logger().info(f"param values:{self.color_hue}, {self.color_range}, {self.color_saturation}, {self.color_value}, {self.border}")
         
+
+    # def config_callback(self, config, level):
+    #     self.get_logger().info("Reconfigure Request:")
+
     def reset_callback(self, request, response):
         self.get_logger().info("Reset blob detector!")
         self.objects_saved = []
         return response
    
     def image_callback(self, image, depth, info):
+
         try:
             cv_image = self.bridge.imgmsg_to_cv2(image, "bgr8")
         except CvBridgeError as e:
@@ -175,7 +186,7 @@ class BlobDetector(Node):
                 transMap = [t.transform.translation.x, t.transform.translation.y, t.transform.translation.z]
                 rotMap = [t.transform.rotation.x, t.transform.rotation.y, t.transform.rotation.z, t.transform.rotation.w]
             except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException, tf2_ros.TransformException) as e:
-                self.get_logger().info(e)
+                self.get_logger().info(str(e))
                 return
             
             (transMap, rotMap) = multiply_transforms(transMap, rotMap, transObj, rotObj)
@@ -186,7 +197,7 @@ class BlobDetector(Node):
                 transBase = [t.transform.translation.x, t.transform.translation.y, t.transform.translation.z]
                 rotBase = [t.transform.rotation.x, t.transform.rotation.y, t.transform.rotation.z, t.transform.rotation.w]
             except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException, tf2_ros.TransformException) as e:
-                self.get_logger().info(e)
+                self.get_logger().info(str(e))
                 return
                 
             (transBase, rotBase) = multiply_transforms(transBase, rotBase, transObj, rotObj)
@@ -200,7 +211,7 @@ class BlobDetector(Node):
         try:
             self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
         except CvBridgeError as e:
-            print(e)
+            self.get_logger().info(str(e))
 
 
 def main(args=None):

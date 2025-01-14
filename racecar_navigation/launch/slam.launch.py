@@ -62,7 +62,7 @@ def generate_launch_description():
 
     prefix_arg = DeclareLaunchArgument('prefix', default_value='racecar')
     localization_arg = DeclareLaunchArgument('localization', default_value='false')
-    database_path_arg = DeclareLaunchArgument('database_path', default_value='~/.ros/rtabmap.db')
+    database_path_arg = DeclareLaunchArgument('database_path', default_value='~/.ros/validation.db')
     odom_correction_arg = DeclareLaunchArgument('odom_correction', default_value='true')
     use_sim_time_arg = DeclareLaunchArgument('use_sim_time', default_value='false')
     delete_db_arg = DeclareLaunchArgument('delete_db', default_value='--uerror')

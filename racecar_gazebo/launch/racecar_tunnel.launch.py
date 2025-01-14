@@ -11,7 +11,7 @@ def generate_launch_description():
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
     racecar_gazebo = get_package_share_directory('racecar_gazebo')
 
-    world_name = os.path.join(get_package_share_directory('racecar_gazebo'), 'worlds', 'racecar_tunnel.world')
+    world_name = os.path.join(get_package_share_directory('racecar_gazebo'), 'worlds', 'racecar_validation.world')
     models_path = os.path.join(get_package_share_directory('racecar_gazebo'), 'models')
 
     addEnvVariable = AppendEnvironmentVariable("IGN_GAZEBO_RESOURCE_PATH",models_path)
