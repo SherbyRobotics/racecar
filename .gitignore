@@ -27,3 +27,6 @@ output/
 .idea/other.xml
 .idea/workspace.xml
 build/
+
+# Build logs
+build.log

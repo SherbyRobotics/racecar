@@ -1,40 +1,70 @@
-FROM ubuntu:jammy
-ARG USERNAME=docker
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+# syntax=docker/dockerfile:1.12.0
+FROM osrf/ros:jazzy-desktop-full
+ARG USERNAME=racecar
+ARG UID=1001
+ARG GID=$UID
 ARG DEBIAN_FRONTEND=noninteractive
 ARG DISPLAY=:0
+ARG ROS2_DIR=/ros2_ws
+ARG ROS_DISTRO=jazzy
 
 # Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    #
-    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
-    && apt-get update \
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y python3-pip
-RUN apt-get install -y curl
+RUN \
+groupadd --force --gid $GID $USERNAME && \
+useradd --uid $UID --gid $GID -m $USERNAME && \
+echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
+chmod 0440 /etc/sudoers.d/$USERNAME
 
+# Install dependencies
+RUN \
+apt-get update && \
+apt-get install -y --no-install-recommends software-properties-common && \
+add-apt-repository universe && \
+apt-get install --no-install-recommends -y \
+    curl \
+    git \
+    tzdata \
+    net-tools \
+    nmap \
+    htop \
+    python3-pip \
+    python3-rosdep \
+    ros-dev-tools && \
+apt-get clean
+
+# Configure the timezone
 ENV TZ=America/New_York
+RUN <<EOF
+ln -sf /usr/share/zoneinfo/$TZ /etc/localtime
+echo $TZ > /etc/timezone
+EOF
 
-# Install the tzdata package to configure the timezone
-RUN apt-get update && \
-    apt-get install -y tzdata && \
-    ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
-    echo $TZ > /etc/timezone && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Configure ROS2 workspace and install ROS2 package dependencies
+RUN \
+mkdir -p $ROS2_DIR/src && \
+cd $ROS2_DIR/src && \
+apt-get update && \
+git clone --branch ros2 --depth 1 https://github.com/RobotWebTools/web_video_server.git && \
+git clone --branch ros2 --depth 1 https://github.com/rst-tu-dortmund/costmap_converter.git && \
+git clone --branch ros2-master --depth 1 https://github.com/rst-tu-dortmund/teb_local_planner.git && \
+git clone --branch ros2 --depth 1 https://github.com/SherbyRobotics/racecar.git && \
+cd $ROS2_DIR && \
+rosdep update --rosdistro=$ROS_DISTRO && \
+rosdep install --rosdistro=$ROS_DISTRO --from-paths src --ignore-src -y && \
+apt-get clean
 
-USER $USERNAME
-WORKDIR /home/$USERNAME
-COPY images/setup_vm_ubuntu2204_humble.bash setup_vm_ubuntu2204_humble.bash
-RUN sudo chmod +x setup_vm_ubuntu2204_humble.bash
-RUN ./setup_vm_ubuntu2204_humble.bash
+# Clean up cache and unnecessary files to reduce image size
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV SHELL /bin/bash
+RUN chown --recursive $UID:$GID $ROS2_DIR
+COPY --chown=$UID:$GID --chmod=0755 ./colcon.sh $ROS2_DIR/
+COPY --chmod=0755 ./ros_entrypoint.sh /
+ENTRYPOINT [ "/ros_entrypoint.sh" ]
+CMD [ "/bin/bash" ]
+
+ENV SHELL=/bin/bash
 ENV DISPLAY=$DISPLAY
 
-CMD ["/bin/bash"]
+USER $UID:$GID
+
+WORKDIR $ROS2_DIR
