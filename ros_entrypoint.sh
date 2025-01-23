@@ -4,6 +4,7 @@ set -x
 
 export ROS_DISTRO=jazzy
 export ROS2_DIR=/ros2_ws
+USERNAME=racecar
 
 # Install utility packages
 sudo apt-get update
@@ -51,8 +52,8 @@ sudo apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-desktop
 
 # Configure racecar's workspace and install ROS2 package dependencies
 source /opt/ros/${ROS_DISTRO}/setup.bash
-mkdir -p ${ROS2_DIR}/src
-sudo chown --recursive ${USER}:${USER} ${ROS2_DIR}
+sudo mkdir -p ${ROS2_DIR}/src
+sudo chown --recursive ${USERNAME}:${USERNAME} ${ROS2_DIR}
 cd ${ROS2_DIR}/src
 sudo apt-get update
 git clone --branch ros2 --depth 1 https://github.com/RobotWebTools/web_video_server.git
@@ -60,10 +61,12 @@ git clone --branch ros2 --depth 1 https://github.com/rst-tu-dortmund/costmap_con
 git clone --branch ros2-master --depth 1 https://github.com/rst-tu-dortmund/teb_local_planner.git
 git clone --branch ros2 --depth 1 https://github.com/SherbyRobotics/racecar.git
 cd ${ROS2_DIR}
-sudo rosdep init
+if [ ! -f '/etc/ros/rosdep/sources.list.d/20-default.list' ]; then
+    sudo rosdep init --rosdistro=${ROS_DISTRO}
+fi
 rosdep update --rosdistro=${ROS_DISTRO}
 rosdep install --rosdistro=${ROS_DISTRO} --from-paths src --ignore-src -y
-colcon build
+colcon build --cmake-clean-cache && \
 source ${ROS2_DIR}/install/local_setup.bash
 
 # Setup ROS2 environment
