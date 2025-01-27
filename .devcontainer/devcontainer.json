@@ -10,7 +10,7 @@
         },
         "progress":"plain"
     },
-    "workspaceFolder": "/home/racecar/ros_ws",
+    "workspaceFolder": "/home/racecar/ros2_ws",
     "customizations": {
         "vscode": {
             "extensions":[

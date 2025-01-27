@@ -7,7 +7,7 @@ ARG UID=1001
 ARG GID=$UID
 ARG DEBIAN_FRONTEND=noninteractive
 ARG DISPLAY=:0
-ENV ROS2_DIR=/ros2_ws
+ENV ROS2_DIR=~/ros2_ws
 
 # Create the user
 RUN \
@@ -29,13 +29,13 @@ apt-get clean
 # Clean up cache and unnecessary files to reduce image size
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY --chmod=0755 ./ros_entrypoint.sh /
-ENTRYPOINT [ "/ros_entrypoint.sh" ]
+USER ${USERNAME}
+COPY --chmod=0755 ./images/setup_vm_ubuntu2404_jazzy.bash /home/${USERNAME}/setup_vm_ubuntu2404_jazzy.bash
+RUN ./home/${USERNAME}/setup_vm_ubuntu2404_jazzy.bash
+
 CMD [ "/bin/bash" ]
 
 ENV SHELL=/bin/bash
 ENV DISPLAY=$DISPLAY
-
-USER $UID:$GID
 
 WORKDIR $ROS2_DIR

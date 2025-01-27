@@ -1,17 +1,15 @@
 #!/bin/bash
-set -e
-set -x
-
 export ROS_DISTRO=jazzy
-export ROS2_DIR=/ros2_ws
-USERNAME=racecar
+export ROS2_DIR=~/ros2_ws
+USERNAME=${USER}
 
 # Install utility packages
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends \
     net-tools \
     nmap \
-    htop
+    htop \
+    git
     # Add your packages here
 
 # === Install ROS ===
@@ -26,7 +24,7 @@ locale # Verify settings
 
 # Enable required repositories
 sudo apt-get install -y --no-install-recommends software-properties-common
-sudo add-apt-repository universe
+sudo add-apt-repository universe -y
 
 # Add the ROS 2 GPG key
 sudo apt-get update
@@ -48,12 +46,11 @@ sudo apt-get install -y --no-install-recommends \
 sudo apt-get upgrade -y
 sudo apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-desktop
 
-# === EOF ===
 
 # Configure racecar's workspace and install ROS2 package dependencies
 source /opt/ros/${ROS_DISTRO}/setup.bash
-sudo mkdir -p ${ROS2_DIR}/src
-sudo chown --recursive ${USERNAME}:${USERNAME} ${ROS2_DIR}
+mkdir -p ${ROS2_DIR}/src
+# sudo chown --recursive ${USERNAME}:${USERNAME} ${ROS2_DIR}
 cd ${ROS2_DIR}/src
 sudo apt-get update
 git clone --branch ros2 --depth 1 https://github.com/RobotWebTools/web_video_server.git
@@ -72,5 +69,3 @@ source ${ROS2_DIR}/install/local_setup.bash
 # Setup ROS2 environment
 echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 echo "source ${ROS2_DIR}/install/local_setup.bash" >> ~/.bashrc
-
-exec "$@"
