@@ -8,12 +8,12 @@
             "USERNAME": "racecar",
             "DISPLAY": "unix:0"
         },
-        "progress":"plain"
+        "progress": "plain"
     },
     "workspaceFolder": "/home/racecar/ros2_ws",
     "customizations": {
         "vscode": {
-            "extensions":[
+            "extensions": [
                 "ms-vscode.cpptools",
                 "ms-vscode.cpptools-themes",
                 "twxs.cmake",
@@ -31,11 +31,12 @@
         "--net=host",
         "--pid=host",
         "--ipc=host",
-        "-e", "DISPLAY=${env:DISPLAY}",
-        "-i"   
+        "-e",
+        "DISPLAY=${env:DISPLAY}",
+        "-i"
     ],
     "mounts": [
-       "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
-       "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
+        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
+        "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
     ]
 }

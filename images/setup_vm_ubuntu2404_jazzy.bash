@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -eux
+
 export ROS_DISTRO=jazzy
 export ROS2_DIR=~/ros2_ws
 USERNAME=${USER}

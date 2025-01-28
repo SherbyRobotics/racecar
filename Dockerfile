@@ -11,12 +11,12 @@ ENV ROS2_DIR=~/ros2_ws
 
 # Create the user
 RUN \
-groupadd --force --gid $GID $USERNAME && \
-useradd --uid $UID --gid $GID -m $USERNAME && \
+groupadd --force --gid $GID ${USERNAME} && \
+useradd --uid $UID --gid $GID -m ${USERNAME} && \
 apt-get update && \
 apt-get install -y --no-install-recommends sudo && \
-echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
-chmod 0440 /etc/sudoers.d/$USERNAME
+echo ${USERNAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME} && \
+chmod 0440 /etc/sudoers.d/${USERNAME}
 
 # Configure the timezone
 ENV TZ=America/New_York
@@ -31,7 +31,7 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 USER ${USERNAME}
 COPY --chmod=0755 ./images/setup_vm_ubuntu2404_jazzy.bash /home/${USERNAME}/setup_vm_ubuntu2404_jazzy.bash
-RUN ./home/${USERNAME}/setup_vm_ubuntu2404_jazzy.bash
+RUN /home/${USERNAME}/setup_vm_ubuntu2404_jazzy.bash
 
 CMD [ "/bin/bash" ]
 
