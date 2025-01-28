@@ -461,7 +461,6 @@ void setup()
   //
   delay(3000) ;
   steeringServo.write(pwm_zer_ser) ;
-  sensorsCallback(1);
   
 }
 
@@ -521,6 +520,17 @@ void loop()
     else
       inCmdType = -1;
     }
+
+  
+
+  unsigned long dt = time_now - time_last_high;
+  if (dt > time_period_high ) {
+    
+    sensorsCallback(dt);
+    
+    time_last_high = time_now ;
+    enc_last_high = enc_now ;
+  }
 }
 
 // ======================================== CALLBACKS ========================================
@@ -530,11 +540,6 @@ void cmdCallback()
   ser_ref  = -cmdMsg.data[0]; //rad
   dri_ref  = cmdMsg.data[1];  // volt or m/s or m
   ctl_mode = cmdMsg.data[2];  // 1    or 2   or 3*/
-  
-  unsigned long dt = time_now - time_last_high;
-  sensorsCallback(dt);
-  time_last_high = time_now ;
-  enc_last_high = enc_now ;
 
   time_last_com = millis();
 }
