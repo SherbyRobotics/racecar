@@ -7,6 +7,14 @@ export ROS2_DIR=~/ros2_ws
 if [ -z "${USER}" ]; then
     export USER=$(whoami)
 fi
+export MAKEFLAGS="-j1"
+
+# Get the total RAM of the device
+get_total_ram () {
+  local TOTALRAM=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*')
+  echo $TOTALRAM
+}
+RAM_SIZE=$(get_total_ram)
 
 # Install utility packages
 sudo apt-get update
@@ -70,7 +78,7 @@ if [ ! -f '/etc/ros/rosdep/sources.list.d/20-default.list' ]; then
 fi
 rosdep update --rosdistro=${ROS_DISTRO}
 rosdep install --rosdistro=${ROS_DISTRO} --from-paths src --ignore-src -y
-colcon build --cmake-clean-cache && \
+colcon build --cmake-clean-cache --parallel-workers 1 --symlink-install && \
 source ${ROS2_DIR}/install/local_setup.bash
 
 # Setup ROS2 environment
