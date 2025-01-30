@@ -4,17 +4,7 @@ set -ex
 
 export ROS_DISTRO=jazzy
 export ROS2_DIR=~/ros2_ws
-if [ -z "${USER}" ]; then
-    export USER=$(whoami)
-fi
-export MAKEFLAGS="-j1"
 
-# Get the total RAM of the device
-get_total_ram () {
-  local TOTALRAM=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*')
-  echo $TOTALRAM
-}
-RAM_SIZE=$(get_total_ram)
 
 # Install utility packages
 sudo apt-get update
@@ -63,24 +53,37 @@ sudo apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-desktop
 # Configure racecar's workspace and install ROS2 package dependencies
 source /opt/ros/${ROS_DISTRO}/setup.bash
 mkdir -p ${ROS2_DIR}/src
-sudo chown --recursive ${USER}:${USER} ${ROS2_DIR}
+
 cd ${ROS2_DIR}/src
 sudo apt-get update
 git clone --branch ros2 --depth 1 https://github.com/RobotWebTools/web_video_server.git
 git clone --branch ros2 --depth 1 https://github.com/rst-tu-dortmund/costmap_converter.git
 git clone --branch ros2-master --depth 1 https://github.com/rst-tu-dortmund/teb_local_planner.git
-if [ ! -d "${ROS2_DIR}/src/racecar" ]; then
-    git clone --branch ros2 --depth 1 https://github.com/SherbyRobotics/racecar.git
-fi
+git clone --branch ros2 --depth 1 https://github.com/SherbyRobotics/racecar.git
 cd ${ROS2_DIR}
 if [ ! -f '/etc/ros/rosdep/sources.list.d/20-default.list' ]; then
     sudo rosdep init --rosdistro=${ROS_DISTRO}
 fi
 rosdep update --rosdistro=${ROS_DISTRO}
 rosdep install --rosdistro=${ROS_DISTRO} --from-paths src --ignore-src -y
-colcon build --cmake-clean-cache --parallel-workers 1 --symlink-install && \
-source ${ROS2_DIR}/install/local_setup.bash
+
+# Get the total RAM of the device
+get_total_ram () {
+  local TOTALRAM=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*')
+  echo $TOTALRAM
+}
+RAM_SIZE=$(get_total_ram)
+
+if [ $RAM_SIZE < 6291456 ]; then
+    echo "Detecting memory-constrained environments using low-memory build strategies"
+    export MAKEFLAGS="-j1"
+	colcon build --cmake-clean-cache --parallel-workers 1 --symlink-install
+    
+else
+	colcon build --cmake-clean-cache --symlink-install
+fi
 
 # Setup ROS2 environment
+source ${ROS2_DIR}/install/local_setup.bash
 echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 echo "source ${ROS2_DIR}/install/local_setup.bash" >> ~/.bashrc
