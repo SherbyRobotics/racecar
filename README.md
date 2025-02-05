@@ -22,51 +22,52 @@ To be able to test our code, there are a few requirements.
 * Logitech Wireless Gamepad F710 (DirectInput Mode)
 
 ### Software
-* For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](https://github.com/SherbyRobotics/racecar/tree/ros2/images#restore-raspberrypi-image) to flash your RPI.
+* For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](images/README.md#restore-raspberrypi-image) to flash your RPI.
 
-* For Desktop/Laptop development, see this [section](https://github.com/SherbyRobotics/racecar/tree/ros2/images#creating-a-virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 22.04
+* For Desktop/Laptop development, see this [section](images/README.md#creating-a-virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 22.04
 
-* Click here to [download the default virtual machine](https://usherbrooke-my.sharepoint.com/:u:/g/personal/lali3401_usherbrooke_ca/ET_KS0N6qFpPjCdlN4sOIrYBsIMreMN1X6O5qblisWM_Rw?e=6nY1pi), see this [section](https://github.com/SherbyRobotics/racecar/tree/ros2/images/images#importing-a-virtual-machine) for how to import it in Virtual box
+* Click here to [download the default virtual machine](https://usherbrooke-my.sharepoint.com/:u:/g/personal/lali3401_usherbrooke_ca/ET_KS0N6qFpPjCdlN4sOIrYBsIMreMN1X6O5qblisWM_Rw?e=6nY1pi), see this [section](images/README.md#importing-a-virtual-machine) for how to import it in Virtual box
     Use the VM to show topics and view them in RVIZ to limit the usage of the RaspberryPi. You might need to change the [ROS_DOMAIN_ID](https://docs.ros.org/en/rolling/Concepts/Intermediate/About-Domain-ID.html) on both machine before using it : `export ROS_DOMAIN_ID = X`
 
 ### Documentation
-* [Hardware Connections](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#hardware-connections)
-* [USB Hub woes](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#usb-hub-woes)
-* [Steering Offset](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#steering-offset)
-* [Remote Connection (SSH/VNC)](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#remote-connection-sshvnc)
-* [ROS2 on multiple computers (ROS_IP)](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#ros-on-multiple-computers-ros_ip)
-* [Simulated environment (Gazebo)](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#simulated-environment-gazebo)
-* [The RaceCar batteries](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#the-racecar-batteries)
-* [Charging the Anker battery](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#charging-the-anker-battery)
-* [Charging the Traxxas battery](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#charging-the-traxxas-battery)
-* [The Killswitch](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/README.md#the-killswitch)
+* [Hardware Connections](doc/README.md#hardware-connections)
+* [USB Hub woes](doc/README.md#usb-hub-woes)
+* [Steering Offset](doc/README.md#steering-offset)
+* [Remote Connection (SSH/VNC)](doc/README.md#remote-connection-sshvnc)
+* [ROS2 on multiple computers (ROS_IP)](doc/README.md#ros-on-multiple-computers-ros_ip)
+* [Simulated environment (Gazebo)](doc/README.md#simulated-environment-gazebo)
+* [The RaceCar batteries](doc/README.md#the-racecar-batteries)
+* [Charging the Anker battery](doc/README.md#charging-the-anker-battery)
+* [Charging the Traxxas battery](doc/README.md#charging-the-traxxas-battery)
+* [The Killswitch](doc/README.md#the-killswitch)
 
 ## How it works
 In the graph, you can see a representation of the communication between the nodes and the topics of the most basic working mode:
 ![134103581-986b1f90-49de-4c44-837e-c3292f4de27f](https://user-images.githubusercontent.com/16725496/134103763-9a2e7839-77fe-411a-9f8b-ce5df9a0cd32.jpg)
-using the base launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/blob/dev-ian/racecar_bringup/launch/teleop.launch.py). 
+using the base launch file [teleop.launch.py](racecar_bringup/launch/teleop.launch.py). 
 
 The RaceCar has many operating modes that allow you to test different functionnalities. The ROS controller Node, which control commands to the motor and the steering servo, has multiple high-level mode that are selected by joystick inputs (see [Controller modes](#controller-modes) table for more details). For instance, open-loop, closed-loop in velocity, closed-loop in position modes are available for both the propulsion and the steering.  The Arduino has also multiple internal low-level modes (different than the high-level ones!!!) that are selected by the ROS controller Node. Empty operating mode templates are available in the source code for you to test custom control modes.
 
 ## Launch
-1. Follow those [instructions](https://github.com/SherbyRobotics/racecar/tree/ros2/images#restore-raspberrypi-image) to flash your Raspberry Pi with a pre-built image.
+1. Follow those [instructions](images#restore-raspberrypi-image) to flash your Raspberry Pi with a pre-built image.
 2. Connect the battery to Raspberry Pi.
 2. Flash the Arduino (need to be done only 1 time):
     1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi if not already done.
-    2. Flash the Arduino mega 2560 with the firmware file [Controller.ino](https://github.com/SherbyRobotics/racecar/blob/dev-ian/racecar_arduino/Controller/Controller.ino) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
+    2. Flash the Arduino mega 2560 with the firmware file [Controller.ino](racecar_arduino/Controller/Controller.ino) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
 3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
-4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch](https://github.com/SherbyRobotics/racecar/tree/ros2/racecar_bringup/launch/teleop.launch.py):
+4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch.py](racecar_bringup/launch/teleop.launch.py):
     ```bash
-    $ ros2 launch racecar_bringup teleop.launch
+    $ ros2 launch racecar_bringup teleop.launch.py
     ```
 5. To visualize the racecar in rviz:
     ```bash
-    $ ros2 launch racecar_navigation rviz.launch
+    $ ros2 launch racecar_navigation rviz.launch.py
     ```
-    ![](https://github.com/SherbyRobotics/racecar/blob/ros2/doc/racecar_rviz_teleop.jpg "rviz" )
+    ![](doc/racecar_rviz_teleop.jpg "rviz" )
 6. Enable the joystick by performing an input combination below to start.
 7. Enjoy!
 
+# Controller Modes
 ## High-level Controller Modes
 
 The high-level mode is the operating mode of the "controller" node running on the rasberry pi. The high-level mode is selected in the "teleop" node, that translate joystick buttons into a "ctl_ref" message. The mode is placed in the "ctl_ref.linear.z" channel.
