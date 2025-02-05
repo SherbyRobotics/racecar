@@ -1,61 +1,76 @@
 # racecar
+Software sources for the UdeS 1/10th autonomous car platform
 
-Software repository for Université de Sherbrooke (UdeS)'s 1/10th autonomous car platform. Originally inspired from the [MIT racecar](https://github.com/mit-racecar).
-
-## Table of Contents
-
+## Table of contents
+* [Technologies](#technologies)
 * [Requirements](#requirements)
-* [Installation](#installation)
+* [How it works](#how-it-works)
+* [Launch](#launch)
+* [Controller Modes](#controller-modes)
+
+## Technologies
+The project is created with:
+* Python 3.8
+* Arduino programming language
+* [ROS 2](https://docs.ros.org/en/humble/Installation.html)
 
 ## Requirements
+To be able to test our code, there are a few requirements.
 
 ### Hardware
-
-* [RaceCar](https://cad.onshape.com/documents/9d3f435f340b50b281de3ac4/w/60d94a6915ed0711b2290521/e/45c11c7ee9e7e6dfaec5c7e5) of UdeS;
-* Logitech Wireless Gamepad F710 (XInput mode)\*\*;
-* RaspberryPi5 (RPi5) with at least 4GB RAM (8GB recommended; SHOULD work with 2GB, but WILL result in a slower experience);
-* Micro-SD card (minimum 32GB, 64/128GB recommended)\*\*\*;
-* Arduino Mega2560 Rev3.
-
-[Hardware documentation](doc/README.md)
-
-> \*\* The mappings of the F710 in **XInput** mode are 1:1 with an Xbox Series X controller, and the code SHOULD be compatible.  
-> \*\*\* Not all SD cards are the same. Please inform yourselves BEFORE purchasing one. [Here](https://a.co/d/dtF65ZB) is our recommendation.
+* [RaceCar](https://cad.onshape.com/documents/9d3f435f340b50b281de3ac4/w/60d94a6915ed0711b2290521/e/45c11c7ee9e7e6dfaec5c7e5) of the Université de Sherbrooke
+* Logitech Wireless Gamepad F710 (DirectInput Mode)
 
 ### Software
+* For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](images/README.md#restore-raspberrypi-image) to flash your RPI.
 
-* A fresh Ubuntu 24.04.X LTS install on the RPi5 ([Image install link](https://ubuntu.com/download/raspberry-pi/thank-you?version=24.04.1&architecture=desktop-arm64+raspi)) ([How-to flash an image to an SD card (**TODO**)]());
-* An internet connection (Ethernet connection recommended) (**IdO** Wi-Fi if on campus)
+* For Desktop/Laptop development, see this [section](images/README.md#creating-a-virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 22.04
 
-## Installation
+* Click here to [download the default virtual machine](https://usherbrooke-my.sharepoint.com/:u:/g/personal/lali3401_usherbrooke_ca/ET_KS0N6qFpPjCdlN4sOIrYBsIMreMN1X6O5qblisWM_Rw?e=6nY1pi), see this [section](images/README.md#importing-a-virtual-machine) for how to import it in Virtual box
+    Use the VM to show topics and view them in RVIZ to limit the usage of the RaspberryPi. You might need to change the [ROS_DOMAIN_ID](https://docs.ros.org/en/rolling/Concepts/Intermediate/About-Domain-ID.html) on both machine before using it : `export ROS_DOMAIN_ID = X`
 
-On the RPi5 (with a fresh install), open a terminal (<kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>T</kbd>), and executes the following commands:
+### Documentation
+* [Hardware Connections](doc/README.md#hardware-connections)
+* [USB Hub woes](doc/README.md#usb-hub-woes)
+* [Steering Offset](doc/README.md#steering-offset)
+* [Remote Connection (SSH/VNC)](doc/README.md#remote-connection-sshvnc)
+* [ROS2 on multiple computers (ROS_IP)](doc/README.md#ros-on-multiple-computers-ros_ip)
+* [Simulated environment (Gazebo)](doc/README.md#simulated-environment-gazebo)
+* [The RaceCar batteries](doc/README.md#the-racecar-batteries)
+* [Charging the Anker battery](doc/README.md#charging-the-anker-battery)
+* [Charging the Traxxas battery](doc/README.md#charging-the-traxxas-battery)
+* [The Killswitch](doc/README.md#the-killswitch)
 
-> *N.B.* You MUST execute the commands as a user, NOT as root.
+## How it works
+In the graph, you can see a representation of the communication between the nodes and the topics of the most basic working mode:
+![134103581-986b1f90-49de-4c44-837e-c3292f4de27f](https://user-images.githubusercontent.com/16725496/134103763-9a2e7839-77fe-411a-9f8b-ce5df9a0cd32.jpg)
+using the base launch file [teleop.launch.py](racecar_bringup/launch/teleop.launch.py). 
 
-```bash
-# Create and change into the `src` directory in the ROS 2 workspace
-mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
-
-# Clone and change into this repository
-git clone --branch ros2 --depth 1 https://github.com/SherbyRobotics/racecar.git && cd ./racecar
-
-# Add execution permissions to the install script, and launch it.
-sudo chmod +x ./images/setup_vm_ubuntu2404_jazzy.bash
-./images/setup_vm_ubuntu2404_jazzy.bash
-```
-
-Once the install script has finished (successfully), you are ready to test the racecar: see [this section (**TODO**)]().
+The RaceCar has many operating modes that allow you to test different functionnalities. The ROS controller Node, which control commands to the motor and the steering servo, has multiple high-level mode that are selected by joystick inputs (see [Controller modes](#controller-modes) table for more details). For instance, open-loop, closed-loop in velocity, closed-loop in position modes are available for both the propulsion and the steering.  The Arduino has also multiple internal low-level modes (different than the high-level ones!!!) that are selected by the ROS controller Node. Empty operating mode templates are available in the source code for you to test custom control modes.
 
 ## Launch
+1. Follow those [instructions](images#restore-raspberrypi-image) to flash your Raspberry Pi with a pre-built image.
+2. Connect the battery to Raspberry Pi.
+2. Flash the Arduino (need to be done only 1 time):
+    1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi if not already done.
+    2. Flash the Arduino mega 2560 with the firmware file [Controller.ino](racecar_arduino/Controller/Controller.ino) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
+3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
+4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch.py](racecar_bringup/launch/teleop.launch.py):
+    ```bash
+    $ ros2 launch racecar_bringup teleop.launch.py
+    ```
+5. To visualize the racecar in rviz:
+    ```bash
+    $ ros2 launch racecar_navigation rviz.launch.py
+    ```
+    ![](doc/racecar_rviz_teleop.jpg "rviz" )
+6. Enable the joystick by performing an input combination below to start.
+7. Enjoy!
 
-TODO
-
+# Controller Modes
 ## High-level Controller Modes
 
-TODO
-
-<!-- The high-level mode is the operating mode of the "controller" node running on the rasberry pi. The high-level mode is selected in the "teleop" node, that translate joystick buttons into a "ctl_ref" message. The mode is placed in the "ctl_ref.linear.z" channel.
+The high-level mode is the operating mode of the "controller" node running on the rasberry pi. The high-level mode is selected in the "teleop" node, that translate joystick buttons into a "ctl_ref" message. The mode is placed in the "ctl_ref.linear.z" channel.
 
 Joystick inputs: LB is used as a deadman switch and must be always pressed for the car to operate. Make sure the switch mode behind the gamepad is on D and not X. 
 
@@ -71,14 +86,12 @@ High-level Mode | Input buttons | Function
 6|`LB` + `Y`|Reset encoder command
 7|`LB` + `LY`|Empty Template
 8|`LB` + `Croos key Up/Down`| Empty Template
-NaN|`LB` + `LT`|Joystick-based control disabled (no ctl_ref published) -->
+NaN|`LB` + `LT`|Joystick-based control disabled (no ctl_ref published)
 
 
 ## Low-level Controller Modes (Arduino modes)
 
-TODO
-
-<!-- The low-level mode is the operating mode of the Arduino. The low-level mode is selected in the "controller" node running on the rasberry pi. The mode is placed in the "prop_cmd.linear.z" channel.
+The low-level mode is the operating mode of the Arduino. The low-level mode is selected in the "controller" node running on the rasberry pi. The mode is placed in the "prop_cmd.linear.z" channel.
 
 Low-level Mode | Function
 -|-
@@ -86,4 +99,5 @@ Low-level Mode | Function
 1|Open-loop PWM control
 2|Closed-loop velocity (based on wheel-encoder feedback)
 2|Closed-loop position (based on wheel-encoder feedback)
-4|Reset encoder command -->
+4|Reset encoder command
+

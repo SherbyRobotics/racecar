@@ -78,9 +78,7 @@ Adjust this steering offset [here](../racecar_autopilot/racecar_autopilot/slash_
 
 # Remote Connection (SSH/VNC)
 
-TODO
-
-<!-- First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](https://github.com/SherbyRobotics/racecar/tree/ros2/images#restore-raspberrypi3-image)). The default login is `racecar` with password `racecar`.
+First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](../images/README.md#restore-raspberrypi-image)). The default login is `racecar` with password `racecar`.
 
  * SSH (command line):
      ```bash
@@ -100,8 +98,7 @@ TODO
    * By ethernet: set IP to `192.168.10.1`
    * By Hotspot: set IP to `10.42.0.1`
    * Disable encryption and open the connection.
-     -->
-
+    
 # The RaceCar batteries
 
 * The RaceCar contains two batteries:
