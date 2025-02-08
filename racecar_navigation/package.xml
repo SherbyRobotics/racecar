@@ -16,7 +16,6 @@
   <depend>navigation2</depend>
   <depend>racecar_bringup</depend>
   <depend>racecar_behaviors</depend>
-  <depend>teb_local_planner</depend>
   <depend>rtabmap_ros</depend>
   
 
