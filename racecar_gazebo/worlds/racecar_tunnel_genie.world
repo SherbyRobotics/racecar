@@ -2,10 +2,24 @@
 <sdf version="1.4">
 <world name="racecar_tunnel">
 
-  <!-- <include>
-    <uri>model://sun</uri>
-    <pose>0 0 10 -0.11 -0.5 0</pose>
-  </include> -->
+<light type="directional" name="sun">
+    <cast_shadows>true</cast_shadows>
+    <pose>0 0 10 0 0 0</pose>
+    <diffuse>0.8 0.8 0.8 1</diffuse>
+    <specular>0.2 0.2 0.2 1</specular>
+    <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+    </attenuation>
+    <direction>-0.5 0.1 -0.9</direction>
+    <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+    </spot>
+</light>
 
   <gui>
     <camera name='main'>
@@ -40,15 +54,7 @@
             <size>150 150</size>
           </plane>
         </geometry>
-        <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Grey</name>
-          </script>
-          <ambient>0.3 0.3 0.3 1.0</ambient>
-          <diffuse>0.7 0.7 0.7 1.0</diffuse>
-          <specular>0.01 0.01 0.01 1.0</specular>
-        </material>
+        <material>Gazebo/Black</material>
       </visual>
     </link>
   </model>

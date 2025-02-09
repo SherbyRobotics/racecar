@@ -80,7 +80,7 @@
 
   <plugin filename="ignition-gazebo-joint-state-publisher-system"
              name="ignition::gazebo::systems::JointStatePublisher">
-    <ignition_frame_id>odom</ignition_frame_id>
+    <gz_frame_id>odom</gz_frame_id>
     <topic>/joint_states</topic>
   </plugin>
 
@@ -120,7 +120,7 @@
           <stddev>0.01</stddev>
         </noise>
       </ray>
-      <ignition_frame_id>$(arg prefix)/base_laser</ignition_frame_id>
+      <gz_frame_id>$(arg prefix)/base_laser</gz_frame_id>
     </sensor>
   </gazebo>
 </xacro:unless>
@@ -147,7 +147,7 @@
         <mean>0.0</mean>
         <stddev>0.007</stddev>
       </noise>
-      <ignition_frame_id>$(arg prefix)/camera_optical_link</ignition_frame_id>
+      <gz_frame_id>$(arg prefix)/camera_optical_link</gz_frame_id>
     </sensor>
   </gazebo>
 </xacro:unless>

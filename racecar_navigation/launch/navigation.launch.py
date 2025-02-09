@@ -17,7 +17,7 @@ def launch_setup(context, *args, **kwargs):
     nav2_params_file = os.path.join(get_package_share_directory('racecar_navigation'), 'nav2_params.yaml')
 
     nav2_bringup = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('nav2_bringup'), 'launch', 'navigation_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('racecar_navigation'), 'launch', 'navigation_stack.launch.py')),
         launch_arguments={
             'use_sim_time': use_sim_time,
             'params_file': nav2_params_file,
