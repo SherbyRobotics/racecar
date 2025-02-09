@@ -56,9 +56,6 @@ mkdir -p ${ROS2_DIR}/src
 
 cd ${ROS2_DIR}/src
 sudo apt-get update
-git clone --branch ros2 --depth 1 https://github.com/RobotWebTools/web_video_server.git
-git clone --branch ros2 --depth 1 https://github.com/rst-tu-dortmund/costmap_converter.git
-git clone --branch ros2-master --depth 1 https://github.com/rst-tu-dortmund/teb_local_planner.git
 git clone --branch ros2 --depth 1 https://github.com/SherbyRobotics/racecar.git
 cd ${ROS2_DIR}
 if [ ! -f '/etc/ros/rosdep/sources.list.d/20-default.list' ]; then
