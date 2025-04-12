@@ -1,0 +1,5 @@
+syntax = "proto2";
+
+message FloatArray {
+    repeated float data = 1 [packed = true];
+}
