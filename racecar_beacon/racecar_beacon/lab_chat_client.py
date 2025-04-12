@@ -1,9 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import socket
 
-HOST = '127.0.0.1'
-PORT = 65432
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
+HOST = str("127.0.0.1")
+PORT = int(65432)
+
+
+def main():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+
+
+if __name__ == "__main__":
+    main()
