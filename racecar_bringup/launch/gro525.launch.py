@@ -6,6 +6,8 @@ from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from ament_index_python.packages import get_package_share_directory
 
+import os
+
 
 racecar_bringup_dir = get_package_share_directory("racecar_bringup")
 rosbridge_server_dir = get_package_share_directory("rosbridge_server")
@@ -15,7 +17,7 @@ rosbridge_port_arg = DeclareLaunchArgument(
 )
 
 host_address_arg = DeclareLaunchArgument(
-    "host_address", default_value="127.0.0.1", description="Address of the RaspberryPi"
+    "host_address", default_value="10.42.0.1", description="Address of the Raspberry Pi"
 )
 
 rosbridge_server_ld = IncludeLaunchDescription(
@@ -50,7 +52,9 @@ camera_node = Node(
 )
 
 teleop_ld = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(f"{racecar_bringup_dir}/launch/teleop.launch.py"),
+    PythonLaunchDescriptionSource(
+        os.path.join(racecar_bringup_dir, "launch", "teleop.launch.py")
+    ),
     launch_arguments={"serial_com": "True"}.items(),
 )
 
