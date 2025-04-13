@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 
 import socket
-from struct import *
+from struct import unpack
 
-HOST = '127.0.0.1'
-# This process should listen to a different port than the PositionBroadcast client.
-PORT = 65432
+"""
+NOTES:
+
+- This process MUST listen to a different port than the PositionBroadcast client;
+- A socket MUST be closed BEFORE exiting the process.
+"""
 
 
+def main():
+    # TODO: Implement the RemoteRequest client here.
+    pass
 
+
+if __name__ == "__main__":
+    main()
