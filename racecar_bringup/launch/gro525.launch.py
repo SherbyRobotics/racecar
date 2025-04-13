@@ -1,41 +1,72 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, SetLaunchConfiguration
 from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription
-from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 from ament_index_python.packages import get_package_share_directory
 
+import os
+
+
+racecar_bringup_dir = get_package_share_directory("racecar_bringup")
+rosbridge_server_dir = get_package_share_directory("rosbridge_server")
+
+rosbridge_port_arg = DeclareLaunchArgument(
+    "port", default_value="9090", description="Port for rosbridge websocket"
+)
+
+host_address_arg = DeclareLaunchArgument(
+    "host_address", default_value="10.42.0.1", description="Address of the Raspberry Pi"
+)
+
+rosbridge_server_ld = IncludeLaunchDescription(
+    XMLLaunchDescriptionSource(
+        f"{rosbridge_server_dir}/launch/rosbridge_websocket_launch.xml"
+    ),
+    launch_arguments={"port": LaunchConfiguration("port")}.items(),
+)
+
+web_video_server_node = Node(
+    package="web_video_server",
+    executable="web_video_server",
+    name="web_video_server",
+    output="screen",
+    parameters=[{"address": LaunchConfiguration("host_address")}],
+)
+
+camera_node = Node(
+    package="v4l2_camera",
+    executable="v4l2_camera_node",
+    name="camera",
+    parameters=[
+        {
+            "camera_frame_id": "racecar/camera_optical_link",
+            "saturation": 100,
+        }
+    ],
+    remappings=[
+        ("image_raw", "racecar/camera"),
+        ("camera_info", "racecar/camera_info"),
+    ],
+)
+
+teleop_ld = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        os.path.join(racecar_bringup_dir, "launch", "teleop.launch.py")
+    ),
+    launch_arguments={"serial_com": "True"}.items(),
+)
+
+
 def generate_launch_description():
-    # Get the package directories
-    rosbridge_server_pkg_share_dir = get_package_share_directory('rosbridge_server')
-    web_video_server_pkg_share_dir = get_package_share_directory('web_video_server')
-    racecar_web_interface_pkg_share_dir = get_package_share_directory('racecar_web_interface')
-    racecar_bringup_pkg_share_dir = get_package_share_directory('racecar_bringup')
-    
-    port_argument = DeclareLaunchArgument(
-        'port', default_value='9090',
-        description='Port for rosbridge websocket'
+    return LaunchDescription(
+        [
+            rosbridge_port_arg,
+            host_address_arg,
+            rosbridge_server_ld,
+            web_video_server_node,
+            camera_node,
+            teleop_ld,
+        ]
     )
-    
-
-    # Launch rosbridge_websocket_launch.xml from rosbridge_server package
-    rosbridge_launch = IncludeLaunchDescription(
-        XMLLaunchDescriptionSource([rosbridge_server_pkg_share_dir, '/launch/rosbridge_websocket_launch.xml']),
-        launch_arguments={'port': '9090'}.items()
-    )
-
-    #Launch web_video_server node from web_video_server package
-    web_video_server_node = Node(
-        package='web_video_server',
-       executable='web_video_server',
-        name='web_video_server',
-        output='screen',
-        parameters=[{'address': '10.42.0.1'}]  # Set the address parameter to "10.42.0.1"
-    )
-
-    return LaunchDescription([
-    	port_argument,
-        rosbridge_launch,
-        web_video_server_node,
-    ])
