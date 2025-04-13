@@ -3,7 +3,6 @@
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
-from .lab_poll_pos import yaw_from_quaternion
 
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
@@ -11,6 +10,8 @@ from sensor_msgs.msg import LaserScan
 import socket
 import threading
 from struct import pack
+
+from racecar_beacon.utils import yaw_from_quaternion
 
 
 class ROSMonitor(Node):

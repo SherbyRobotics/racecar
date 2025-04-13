@@ -8,16 +8,7 @@ from tf_transformations import euler_from_quaternion
 from geometry_msgs.msg import Quaternion
 from nav_msgs.msg import Odometry
 
-
-def yaw_from_quaternion(quaternion: Quaternion):
-    """
-    Use TF transforms to convert a quaternion to a rotation angle around the Z axis.
-
-    Usage with an `Odometry` message:
-        ```yaw = yaw_from_quaternion(msg.pose.pose.orientation)
-    """
-    (_, _, yaw) = euler_from_quaternion(*quaternion)
-    return yaw
+from racecar_beacon.utils import yaw_from_quaternion
 
 
 class PositionPoller(Node):
