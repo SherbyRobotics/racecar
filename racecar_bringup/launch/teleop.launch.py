@@ -1,22 +1,16 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import TimerAction
-import datetime
 
 def generate_launch_description():
     return LaunchDescription([
-        
-        # TimerAction(
-        #     period=5.0,
-        #     actions=[
-        #         Node(
-        #             package='pb2ros2',
-        #             executable='arduino_agent',
-        #             name='arduino',
-        #             output='screen',
-        #         ),
-        #     ],
-        # ),
+        Node(
+            package="racecar_bringup",
+            executable="arduino_sensors",
+            name="arduino_sensors",
+            output="screen",
+            remappings=[("raw_odom", "propulsion_sensors")],
+        ),
 
         Node(
             package='pb2roscpp',

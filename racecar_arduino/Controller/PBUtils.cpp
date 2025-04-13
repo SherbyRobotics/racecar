@@ -78,7 +78,7 @@ void PBUtils::pbSend(int nbs, ...)
       toSendBuilder += String(id);
       toSendBuilder += "|";
       
-      for(int j = 0; j < stream.bytes_written; j++)
+      for(size_t j = 0; j < stream.bytes_written; j++)
       {
         sprintf (toSend, "%02X", bufferOut[j]);
         toSendBuilder += String(toSend);

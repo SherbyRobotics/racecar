@@ -14,7 +14,7 @@
 #include <SPI.h>
 #include <Servo.h> 
 #define USB_USBCON
-#define IMU
+// #define IMU
 
 // IMU
 #ifdef IMU
@@ -64,7 +64,7 @@ const float pos_ei_sat =  10000.0;
 
 // Loop period 
 const unsigned long time_period_low   = 2;    // 500 Hz for internal PID loop
-const unsigned long time_period_high  = 20;   // 50 Hz  for ROS communication
+const unsigned long time_period_high  = 25;   // 50 Hz  for ROS communication
 const unsigned long time_period_com   = 1000; // 1000 ms = max com delay (watchdog)
 
 // Hardware min-zero-max range for the steering servo and the drive
@@ -304,7 +304,7 @@ bool msgDiscardedLength = false;
 
 PBUtils pbUtils(topics);
 
-const unsigned long baud_rate = 250000;
+const unsigned long baud_rate = 115200;
 
 ///////////////////////////////////////////////////////////////////
 // Controller One tick
@@ -462,6 +462,8 @@ void setup()
   delay(3000) ;
   steeringServo.write(pwm_zer_ser) ;
   
+  //sensorsCallback(1);
+  
 }
 
 void loop()
@@ -522,7 +524,7 @@ void loop()
     }
 
   
-
+/*
   unsigned long dt = time_now - time_last_high;
   if (dt > time_period_high ) {
     
@@ -530,7 +532,7 @@ void loop()
     
     time_last_high = time_now ;
     enc_last_high = enc_now ;
-  }
+  }*/
 }
 
 // ======================================== CALLBACKS ========================================
@@ -540,6 +542,13 @@ void cmdCallback()
   ser_ref  = -cmdMsg.data[0]; //rad
   dri_ref  = cmdMsg.data[1];  // volt or m/s or m
   ctl_mode = cmdMsg.data[2];  // 1    or 2   or 3*/
+
+  
+  unsigned long dt = time_now - time_last_high;
+  sensorsCallback(dt);
+  
+  time_last_high = time_now ;
+  enc_last_high = enc_now ;
 
   time_last_com = millis();
 }
@@ -553,7 +562,8 @@ void sensorsCallback(unsigned long dt)
     
     // For DEBUG
     sensorsMsg.data[2] = (float)dri_ref; // set point received by arduino
-    sensorsMsg.data[3] = (float)dri_cmd; // drive set point in volts
+    //sensorsMsg.data[3] = (float)dri_cmd; // drive set point in volts
+    sensorsMsg.data[3] = (float)Serial.available(); // drive set point in volts
     sensorsMsg.data[4] = (float)dri_pwm; // drive set point in pwm
     sensorsMsg.data[5] = (float)enc_now; // raw encoder counts
     sensorsMsg.data[6] = (float)ser_ref; // steering angle (don't remove/change, used for GRO830)

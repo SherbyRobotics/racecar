@@ -12,11 +12,11 @@ class SlashController(Node):
 
         # Init subscribers
         self.sub_ref = self.create_subscription(Twist, 'ctl_ref', self.read_ref, 1)
-        self.sub_prop = self.create_subscription(Float32MultiArray, 'prop_sensors', self.read_arduino, 1)
+        self.sub_prop = self.create_subscription(Float32MultiArray, 'propulsion_sensors', self.read_arduino, 1)
         self.sub_laser = self.create_subscription(Twist, 'car_position', self.read_laser, 1)
 
         # Init publishers
-        self.pub_cmd = self.create_publisher(Twist, 'prop_cmd', 1)
+        self.pub_cmd = self.create_publisher(Twist, 'propulsion_cmd', 1)
 
         # Timer
         self.dt = 0.05
