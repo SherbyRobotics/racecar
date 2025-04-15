@@ -43,9 +43,9 @@ class ArduinoCommunicationNode : public rclcpp::Node
         }
 
         publisher_ = this->create_publisher<std_msgs::msg::Float32MultiArray>(
-            "propulsion_sensors", 1); // create publisher object
+            "prop_sensors", 1); // create publisher object
         subscription_ = this->create_subscription<geometry_msgs::msg::Twist>(
-            "propulsion_cmd", 1,
+            "prop_cmd", 1,
             std::bind(&ArduinoCommunicationNode::controlCallback, this,
                       _1)); // create subscriber object
 
@@ -68,11 +68,6 @@ class ArduinoCommunicationNode : public rclcpp::Node
 
     serial::Serial
         *my_serialp; // Serial pointer to initialize the serial communication in the constructor
-
-    struct message { // message structure for nanopb custom functions found on stackoverflow
-        int id;
-        std::string msg;
-    };
 
     // Fonctions
     void controlCallback(const geometry_msgs::msg::Twist msg)
@@ -141,7 +136,7 @@ class ArduinoCommunicationNode : public rclcpp::Node
         message.data.arg = &decodedData;
         message.data.funcs.decode = FloatArray_decode_single_number;
 
-        if (my_serialp->available() > 0) { // wait for 1000 characters to enter the serialbuffer
+        if (my_serialp->available() > 0) {
 
             my_serialp->readline(msgbuffer, MAX_MSG_LEN, ">"); // readuntil the end of a message
 
@@ -162,17 +157,12 @@ class ArduinoCommunicationNode : public rclcpp::Node
 
             std_msgs::msg::Float32MultiArray prop_sensors; // instantiate the published message
 
-            decodedData.numbers[4] = my_serialp->available(); // debug IAN
-
             for (int i = 0; i < decodedData.numbers_count; i++) {
                 prop_sensors.data.push_back(
                     decodedData.numbers[i]); // append the decoded message to the data
             }
 
             publisher_->publish(prop_sensors); // publish the data
-
-            // if(my_serialp->available()>0)
-            // 	my_serialp->flushInput();//flush the input buffer just to start on known ground
         }
     }
 
