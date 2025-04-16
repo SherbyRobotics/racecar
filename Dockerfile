@@ -3,20 +3,22 @@
 # To test on ARM64 architecture, replace base image with `osrf/ubuntu_arm64:noble`
 FROM ubuntu:noble
 ARG USERNAME=racecar
-ARG UID=1001
-ARG GID=$UID
+ARG USER_UID=1001
+ARG USER_GID=$USER_UID
 ARG DEBIAN_FRONTEND=noninteractive
 ARG DISPLAY=:0
 ENV ROS2_DIR=/home/${USERNAME}/ros2_ws
 
+USER root
+RUN if id -u $USER_UID ; then groupdel --force `id -un $USER_UID`; userdel `id -un $USER_UID` ; fi
+
 # Create the user
-RUN \
-groupadd --force --gid $GID ${USERNAME} && \
-useradd --uid $UID --gid $GID -m ${USERNAME} && \
-apt-get update && \
-apt-get install -y --no-install-recommends sudo && \
-echo ${USERNAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME} && \
-chmod 0440 /etc/sudoers.d/${USERNAME}
+RUN groupadd --force --gid $USER_GID ${USERNAME} && \
+    useradd --uid $USER_UID --gid $USER_GID -m ${USERNAME} && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends sudo && \
+    echo ${USERNAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME} && \
+    chmod 0440 /etc/sudoers.d/${USERNAME}
 
 # Configure the timezone
 ENV TZ=America/New_York
