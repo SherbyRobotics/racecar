@@ -58,6 +58,7 @@
     <wheel_separation>0.25</wheel_separation>
     <kingpin_width>0.23</kingpin_width>
     <wheel_base>0.325</wheel_base>
+    <wheel_radius>0.05</wheel_radius>
     <steering_limit>0.667</steering_limit>
     <topic>$(arg prefix)/cmd_vel</topic>
     <child_frame_id>$(arg prefix)/base_footprint</child_frame_id>

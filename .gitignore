@@ -30,3 +30,6 @@ build/
 
 # Build logs
 build.log
+log/
+build/
+install/
