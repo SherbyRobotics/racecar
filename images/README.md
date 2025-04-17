@@ -57,3 +57,20 @@ If your are configuring a native Ubuntu 22.04 computer skip to step 6. If you wa
     $ ./setup_vm_ubuntu2204_humble.bash
     ```
 
+# Setup RPI5 from scratch
+
+1. Download the official ubuntu 24.04 image for RPI:
+    * RPI5 and RPI4: [ubuntu24.04](https://ubuntu.com/download/raspberry-pi)
+2. Use [Etcher](https://www.balena.io/etcher/) to flash the image on a SD-CARD (min 16GB). 
+
+3. Boot the RPI with HDMI, a mouse and a keyboard connected. Create a user with name `racecar` and password is `racecar`.
+
+4. Make sure the RPI have internet acces.
+
+5. Download and launch the install script for RPI.
+
+    ```bash
+    $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/ros2/images/setup_rpi5_ubuntu2404_jazzy.bash
+    $ chmod +x setup_rpi5_ubuntu2404_jazzy.bash
+    $ ./setup_rpi5_ubuntu2404_jazzy.bash
+    ```
