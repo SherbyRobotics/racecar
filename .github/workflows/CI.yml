@@ -1,0 +1,46 @@
+name: CI 
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  ROS_DISTRO: jazzy
+
+jobs:
+  valid_rosdep_install:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Test dependecy 
+      uses: addnab/docker-run-action@v3
+      with:
+          image: osrf/ros:${{ env.ROS_DISTRO }}-desktop
+          options: -v ${{ github.workspace }}:/home
+          shell: bash
+          run: |
+              rosdep update 
+              rosdep install -s --from-paths /home --ignore-src -y
+
+  valid_build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Test build  
+      uses: addnab/docker-run-action@v3
+      with:
+          image: osrf/ros:${{ env.ROS_DISTRO }}-desktop
+          options: -v ${{ github.workspace }}:/home
+          shell: bash
+          run: |
+              cd /home
+              apt update
+              rosdep update && rosdep install --from-paths . --ignore-src -y
+              source /opt/ros/${{ env.ROS_DISTRO }}/setup.bash
+              colcon build
