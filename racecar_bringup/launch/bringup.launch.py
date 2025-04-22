@@ -30,18 +30,13 @@ def generate_launch_description():
             parameters=[robot_description],
         ),
 
-        # TimerAction(
-        #     period=5.0,
-        #     actions=[
-        #         Node(
-        #             package='pb2ros2',
-        #             executable='arduino_agent',
-        #             name='arduino',
-        #             output='screen',
-        #         ),
-        #     ],
-        # ),
 
+        Node(
+            package='pb2roscpp',
+            executable='pb2roscpp',
+            name='arduino',
+            output='screen',
+        ),
 
         Node(
             package='racecar_bringup',
