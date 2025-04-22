@@ -64,7 +64,7 @@ const float pos_ei_sat =  10000.0;
 
 // Loop period 
 const unsigned long time_period_low   = 2;    // 500 Hz for internal PID loop
-const unsigned long time_period_high  = 20;   // 50 Hz  for ROS communication
+const unsigned long time_period_high  = 25;   // 50 Hz  for ROS communication
 const unsigned long time_period_com   = 1000; // 1000 ms = max com delay (watchdog)
 
 // Hardware min-zero-max range for the steering servo and the drive
@@ -304,7 +304,7 @@ bool msgDiscardedLength = false;
 
 PBUtils pbUtils(topics);
 
-const unsigned long baud_rate = 250000;
+const unsigned long baud_rate = 115200;
 
 ///////////////////////////////////////////////////////////////////
 // Controller One tick
@@ -452,7 +452,7 @@ void setup()
 
   // Initialize 
   #ifdef IMU
-    int stat = imu.begin();
+    imu.begin();
     imu.setAccelRange(MPU9250::ACCEL_RANGE_2G);
     imu.setGyroRange(MPU9250::GYRO_RANGE_250DPS);
     imu.setDlpfBandwidth(MPU9250::DLPF_BANDWIDTH_41HZ);
@@ -461,7 +461,6 @@ void setup()
   //
   delay(3000) ;
   steeringServo.write(pwm_zer_ser) ;
-  
 }
 
 void loop()
@@ -511,23 +510,19 @@ void loop()
           case CMD:
             cmdCallback();
             break;
-            
           default:
             break;
         }
       }
     }
-    else
+    else {
       inCmdType = -1;
     }
-
-  
+  }
 
   unsigned long dt = time_now - time_last_high;
   if (dt > time_period_high ) {
-    
     sensorsCallback(dt);
-    
     time_last_high = time_now ;
     enc_last_high = enc_now ;
   }
@@ -553,7 +548,8 @@ void sensorsCallback(unsigned long dt)
     
     // For DEBUG
     sensorsMsg.data[2] = (float)dri_ref; // set point received by arduino
-    sensorsMsg.data[3] = (float)dri_cmd; // drive set point in volts
+    //sensorsMsg.data[3] = (float)dri_cmd; // drive set point in volts
+    sensorsMsg.data[3] = (float)Serial.available(); // futile: we SHOULD NOT receive anything if Serial is not available.
     sensorsMsg.data[4] = (float)dri_pwm; // drive set point in pwm
     sensorsMsg.data[5] = (float)enc_now; // raw encoder counts
     sensorsMsg.data[6] = (float)ser_ref; // steering angle (don't remove/change, used for GRO830)
@@ -576,7 +572,6 @@ void sensorsCallback(unsigned long dt)
     #endif
         
     pbUtils.pbSend(1, SENSORS);
-    //Serial.println(' ');
     Serial.flush();
 }
 

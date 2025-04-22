@@ -16,7 +16,7 @@ class SlashController(Node):
         self.sub_laser = self.create_subscription(Twist, 'car_position', self.read_laser, 1)
 
         # Init publishers
-        self.pub_cmd = self.create_publisher(Twist, 'prop_cmd', 1)
+        self.pub_cmd = self.create_publisher(Twist, "prop_cmd", 1)
 
         # Timer
         self.dt = 0.05

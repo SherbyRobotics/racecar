@@ -39,7 +39,7 @@ class Teleop(Node):
         min_axes = 5 if self.ps4 else 4
         if len(joy_msg.axes) < min_axes or len(joy_msg.buttons) < 7:
             if not self.joystickCompatibilityWarned:
-                self.get_logger().info(f"slash_teleop: Received topic doesn't have enough axes and/or buttons. If a Logitech gamepad is used, make sure also it is in X mode. Will not warn again.")
+                self.get_logger().info("slash_teleop: Received topic doesn't have enough axes and/or buttons. If a Logitech gamepad is used, make sure also it is in X mode. Will not warn again.")
                 self.joystickCompatibilityWarned = True
             return
 
@@ -63,11 +63,23 @@ class Teleop(Node):
                 self.cmd_msg.linear.x  = propulsion_user_input * self.max_volt #[volts]
                 self.cmd_msg.angular.z = steering_user_input * self.cmd2rad
                 self.cmd_msg.linear.z  = 1.0   #CtrlChoice
+            
+            elif (joy_msg.buttons[10]): # RJP
+                """
+                GRO501-1: closed-loop velocity fixed @ X m/s, open-loop
+                steering, where X is determined "on-site".
+                """
+                self.cmd_msg.linear.x = 2.0 # m/s
+                self.cmd_msg.angular.z = steering_user_input * self.cmd2rad
+                self.cmd_msg.linear.z = 0.0 # high-level mode
                 
             #If right trigger is active       
-            elif (joy_msg.buttons[7]):   
-                # Closed-loop position, Open-loop steering
-                self.cmd_msg.linear.x  = propulsion_user_input # [m]
+            elif (joy_msg.buttons[7]):   # START
+                """
+                GRO501-1: closed-loop position fixed @ X m, open-loop
+                steering, where X is determined "on-site".
+                """
+                self.cmd_msg.linear.x  = 2.0 # [m]
                 self.cmd_msg.angular.z = steering_user_input * self.cmd2rad
                 self.cmd_msg.linear.z  = 2.0   #CtrlChoice
                 
