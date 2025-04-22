@@ -6,8 +6,10 @@ sudo apt update && sudo apt upgrade -y
 # Configure remote access
 sudo apt install -y openssh-server xrdp
 
-# Enable to GPU
+# Add user to groups
 sudo usermod -a -G render $USER
+sudo usermod -a -G video $USER
+sudo usermod -a -G dialout $USER
 
 # Add swap
 sudo fallocate -l 8G /extra-swapfile
