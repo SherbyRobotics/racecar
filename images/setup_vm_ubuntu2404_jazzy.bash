@@ -12,8 +12,27 @@ sudo apt-get install -y --no-install-recommends \
     net-tools \
     nmap \
     htop \
-    git
+    git \
+    wget \
+    gpg \
+    python3-venv
     # Add your packages here
+
+
+# Install vscode and extention
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" |sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+rm -f packages.microsoft.gpg
+
+sudo apt install -y apt-transport-https
+sudo apt update
+sudo apt install -y code
+
+code --install-extension platformio.platformio-ide
+code --install-extension ms-vscode-remote.vscode-remote-extensionpack
+code --install-extension ms-iot.vscode-ros
+
 
 # === Install ROS ===
 
