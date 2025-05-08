@@ -1,12 +1,13 @@
 import os
+import xacro
+
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, OpaqueFunction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-import xacro
-import yaml
+
 
 def launch_setup(context, *args, **kwargs):
     # Declare launch arguments
@@ -15,6 +16,7 @@ def launch_setup(context, *args, **kwargs):
     # Package Directories    
     racecar_description = get_package_share_directory('racecar_description')
     racecar_gazebo = get_package_share_directory('racecar_gazebo')
+    racecar_navigation = get_package_share_directory('racecar_navigation')
 
     # Parse robot description from xacro
     robot_description_file = os.path.join(racecar_description, 'urdf', 'racecar.xacro')
@@ -83,6 +85,12 @@ def launch_setup(context, *args, **kwargs):
     gaz_control = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(racecar_gazebo, 'launch', 'gazebo_control.launch.py')]),
     )
+    
+    kalmanFilter = IncludeLaunchDescription(
+                        PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
+                        launch_arguments={"odom_topic":f'/{prefix}/odom/filtered',
+                                          "use_sim_time":"True"}.items()       
+                    )
 
     return [
         robot_state_publisher,
@@ -91,7 +99,8 @@ def launch_setup(context, *args, **kwargs):
         cmd_vel_arb,
         joystick,
         teleop,
-        gaz_control
+        gaz_control,
+        kalmanFilter
     ]
 
 def generate_launch_description():

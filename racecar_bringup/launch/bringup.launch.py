@@ -72,5 +72,11 @@ def generate_launch_description():
             remappings=[('image_raw', 'racecar/camera'),
                         ('camera_info', 'racecar/camera_info')],
         ),
+                
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
+            launch_arguments={"odom_topic":'/racecar/odom/filtered',
+                              "use_sim_time":"false"}.items()       
+        )
         
     ])

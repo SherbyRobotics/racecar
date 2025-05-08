@@ -1,8 +1,13 @@
+import os
+import yaml
+
 from launch import LaunchDescription, LaunchContext
 from launch.actions import DeclareLaunchArgument, GroupAction, OpaqueFunction
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-import os
+
+from ament_index_python.packages import get_package_share_directory
+
 
 def launch_setup(context, *args, **kwargs):
     # Declare launch arguments
@@ -22,7 +27,7 @@ def launch_setup(context, *args, **kwargs):
             {'database_path': database_path},
             {'frame_id': PathJoinSubstitution([prefix, 'base_footprint'])},
             {'map_frame_id': PathJoinSubstitution([prefix, 'map'])},
-            {'odom_frame_id': PathJoinSubstitution([prefix, 'odom'])},
+            {'odom_frame_id': PathJoinSubstitution([prefix, 'odom','filtered'])},
             {'subscribe_depth': False},
             {'subscribe_rgb': False},
             {'subscribe_scan': True},

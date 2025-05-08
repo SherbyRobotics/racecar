@@ -3,7 +3,7 @@ bt_navigator:
     use_sim_time: true
     global_frame: racecar/map
     robot_base_frame: racecar/base_footprint
-    odom_topic: /racecar/odom
+    odom_topic: /racecar/odom/filtered
     bt_loop_duration: 10
     default_server_timeout: 20
     wait_for_service_timeout: 1000
@@ -89,7 +89,7 @@ local_costmap:
     ros__parameters:
       update_frequency: 5.0
       publish_frequency: 2.0
-      global_frame: racecar/odom
+      global_frame: racecar/odom/filtered
       robot_base_frame: racecar/base_footprint
       use_sim_time: true
       rolling_window: true
@@ -233,7 +233,7 @@ behavior_server:
       plugin: "nav2_behaviors::Wait"
     assisted_teleop:
       plugin: "nav2_behaviors::AssistedTeleop"
-    local_frame: racecar/odom
+    local_frame: racecar/odom/filtered
     global_frame: racecar/map
     robot_base_frame: racecar/base_footprint
     transform_tolerance: 0.1
@@ -264,7 +264,7 @@ velocity_smoother:
     min_velocity: [-0.5, 0.0, -2.0]
     max_accel: [2.5, 0.0, 3.2]
     max_decel: [-2.5, 0.0, -3.2]
-    odom_topic: "/racecar/odom"
+    odom_topic: "/racecar/odom/filtered"
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]
     velocity_timeout: 1.0
@@ -273,7 +273,7 @@ collision_monitor:
   ros__parameters:
     use_sim_time: true
     base_frame_id: "racecar/base_footprint"
-    odom_frame_id: "racecar/odom"
+    odom_frame_id: "racecar/odom/filtered"
     cmd_vel_in_topic: "cmd_vel_smoothed"
     cmd_vel_out_topic: "cmd_vel"
     state_topic: "collision_monitor_state"
