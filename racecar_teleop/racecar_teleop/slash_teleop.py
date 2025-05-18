@@ -45,7 +45,7 @@ class Teleop(Node):
 
         self.joystickCompatibilityWarned = False   # reset in case we switch mode on the gamepad
 
-        propulsion_user_input = joy_msg.axes[4]    # Up-down Right joystick 
+        propulsion_user_input = joy_msg.axes[3]    # Up-down Right joystick 
         steering_user_input   = joy_msg.axes[0]    # Left-right left joystick
         
         self.cmd_msg = Twist()             
@@ -114,7 +114,7 @@ class Teleop(Node):
             #If left trigger is active 
             elif (joy_msg.buttons[6]):
                 # No ctl_ref msg published!
-                return;
+                return
                 
             #If right joy pushed
             # elif(joy_msg.buttons[11]):
