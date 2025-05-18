@@ -1,11 +1,9 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
-from launch.substitutions import ThisLaunchFileDir
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 import os
-import xacro
 
 def generate_launch_description():
 
@@ -23,7 +21,8 @@ def generate_launch_description():
             executable='cmd_vel_arbitration',
             name='cmd_vel_arbitration',
             output='screen',
-            remappings=[('/cmd_vel_output', '/cmd_vel')],
+            namespace='racecar',
+            remappings=[('cmd_vel_output', 'cmd_vel')],
         ),
 
         Node(
@@ -38,16 +37,15 @@ def generate_launch_description():
             executable='slash_controller',
             name='controller',
             output='screen',
-            remappings=[('/ctl_ref', '/cmd_vel')],
+            remappings=[('ctl_ref', 'racecar/cmd_vel')],
         ),
-
 
         Node(
             package='racecar_teleop',
             executable='slash_teleop',
             name='teleop',
             output='screen',
-            remappings=[('/ctl_ref', '/cmd_vel_abtr_0')],   
+            remappings=[('ctl_ref', 'racecar/cmd_vel_abtr_0')],   
         ),
 
     ])

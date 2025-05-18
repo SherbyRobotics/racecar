@@ -44,7 +44,8 @@ def generate_launch_description():
             executable='arduino_sensors',
             name='arduino_sensors',
             output='screen',
-            remappings=[('/raw_odom', 'prop_sensors')],
+            remappings=[('/raw_odom', 'prop_sensors'),
+                        ('/odom', '/racecar/odom')],
         ),
 
         Node(
