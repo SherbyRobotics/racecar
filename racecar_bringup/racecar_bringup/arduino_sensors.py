@@ -19,7 +19,7 @@ class ArduinoSensors(Node):
         self._w = self.declare_parameter('axle_track', 0.20).value
         self._radius = self.declare_parameter('wheel_radius', 0.05).value
         self._child_frame_id = self.declare_parameter('child_frame_id', 'base_footprint').value
-        self._publish_tf = self.declare_parameter('publish_tf', True).value
+        self._publish_tf = self.declare_parameter('publish_tf', False).value
         self._tf_prefix = self.declare_parameter('tf_prefix', 'racecar').value
 
         # State space variables

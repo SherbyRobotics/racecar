@@ -63,6 +63,8 @@
     <topic>$(arg prefix)/cmd_vel</topic>
     <child_frame_id>$(arg prefix)/base_footprint</child_frame_id>
     <publish_tf>false</publish_tf>
+    <tf_topic>$(arg prefix)/odom/tf</tf_topic>
+    <odom_topic>$(arg prefix)/odom</odom_topic>
   </plugin>
 
   <plugin filename="libignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
@@ -85,13 +87,6 @@
     <topic>/joint_states</topic>
   </plugin>
 
-  <plugin filename="ignition-gazebo-odometry-publisher-system"
-                name="ignition::gazebo::systems::OdometryPublisher">
-            <odom_topic>$(arg prefix)/odom</odom_topic>
-            <tf_topic>$(arg prefix)/odom/tf</tf_topic>
-            <robot_base_frame>$(arg prefix)/base_footprint</robot_base_frame>
-            <odom_frame>$(arg prefix)/odom</odom_frame>
-  </plugin>
 </gazebo>
   <!-- hokuyo -->
 <xacro:unless value="$(optenv DISABLE_GAZEBO_LASER false)">
@@ -155,6 +150,7 @@
 
 <gazebo reference="$(arg prefix)/imu_link">
   <sensor name="imu_sensor" type="imu">
+    <gz_frame_id>$(arg prefix)/imu_link</gz_frame_id>
     <topic>$(arg prefix)/imu</topic>
   </sensor>
 </gazebo>

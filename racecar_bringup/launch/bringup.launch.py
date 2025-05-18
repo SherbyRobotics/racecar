@@ -12,6 +12,7 @@ def generate_launch_description():
 
     # Package Directories    
     racecar_description = get_package_share_directory('racecar_description')
+    racecar_navigation = get_package_share_directory('racecar_navigation')
     # Parse robot description from xacro
     robot_description_file = os.path.join(racecar_description, 'urdf', 'racecar.xacro')
     robot_description_config = xacro.process_file(robot_description_file)
@@ -72,5 +73,24 @@ def generate_launch_description():
             remappings=[('image_raw', 'racecar/camera'),
                         ('camera_info', 'racecar/camera_info')],
         ),
+
+        Node(
+            package='imu_filter_madgwick',
+            executable='imu_filter_madgwick_node',
+            name='imu_filter_node',
+            output='screen', 
+            parameters=[
+                {'use_mag':True},
+                {'world_frame':'enu'},
+                {'publish_tf':False}
+            ],
+            remappings=[("/imu/data","racecar/imu")]
+        ),
+                
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
+            launch_arguments={"odom_topic":'/racecar/odom/filtered',
+                              "use_sim_time":"false"}.items()       
+        )
         
     ])

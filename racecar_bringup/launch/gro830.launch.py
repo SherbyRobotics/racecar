@@ -17,10 +17,6 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([os.path.join(racecar_bringup, 'launch', 'bringup.launch.py')]),
         ),
-
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([os.path.join(racecar_bringup, 'launch/include', 'robot_localization.launch.py')]),
-        ),
         
         Node(
             package='racecar_bringup',

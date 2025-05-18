@@ -263,11 +263,6 @@
 
 
   <!-- IMU -->
-  <joint name="imu_joint" type="fixed">
-    <origin xyz="0 -0.065 -0.015" rpy="0 0 -1.570796327" /> 
-    <parent link="$(arg prefix)/base_laser"/>
-    <child link="$(arg prefix)/imu_link" />
-  </joint>
   <link name='$(arg prefix)/imu_link'>
      <inertial>
        <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -278,6 +273,12 @@
 	  izz="1e-05"/>
        </inertial>
   </link>
+  
+  <joint name="imu_joint" type="fixed">
+    <origin xyz="0.3 -0.115 0" rpy="0 0 0" /> 
+    <parent link="$(arg prefix)/base_link"/>
+    <child link="$(arg prefix)/imu_link" />
+  </joint>
  
   <!-- Add the remaining xacros -->
   <xacro:include filename="$(find racecar_description)/urdf/racecar.gazebo"/>
