@@ -4,7 +4,6 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
@@ -27,13 +26,6 @@ web_video_server_node = Node(
     parameters=[{"address": LaunchConfiguration("host_address")}],
 )
 
-bringup_ld = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(
-        os.path.join(racecar_bringup_dir, "launch", "bringup.launch.py")
-    ),
-    launch_arguments={"serial_com": "True"}.items(),
-)
-
 def generate_launch_description():
     return LaunchDescription([
             DeclareLaunchArgument("host_address", 
@@ -45,6 +37,5 @@ def generate_launch_description():
                                   description="Port for rosbridge websocket"),
             rosbridge_server_ld,
             web_video_server_node,
-            bringup_ld,
         ]
     )

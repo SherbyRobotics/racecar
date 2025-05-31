@@ -1,15 +1,15 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, TimerAction
-from launch.substitutions import ThisLaunchFileDir
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, OpaqueFunction
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
+
 import os
 import xacro
 
-def generate_launch_description():
-
-
+def launch_setup(context, *args, **kwargs):
     # Package Directories    
     racecar_description = get_package_share_directory('racecar_description')
     racecar_navigation = get_package_share_directory('racecar_navigation')
@@ -18,80 +18,82 @@ def generate_launch_description():
     robot_description_config = xacro.process_file(robot_description_file)
     robot_description = {'robot_description': robot_description_config.toxml()}
 
-
-    return LaunchDescription([
-
-
-        # Robot state publisher
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='both',
-            parameters=[robot_description],
-        ),
-
-
-        Node(
-            package='pb2roscpp',
-            executable='pb2roscpp',
-            name='arduino',
-            output='screen',
-        ),
-
-        Node(
-            package='racecar_bringup',
-            executable='arduino_sensors',
-            name='arduino_sensors',
-            output='screen',
-            remappings=[('/raw_odom', 'prop_sensors'),
-                        ('/odom', '/racecar/odom')],
-        ),
-
-        Node(
-            name='lidar',
-            package='rplidar_ros',
-            executable='rplidar_composition',
-            output='screen',
-            parameters=[{
-                'serial_port': '/dev/ttyUSB0',
-                'serial_baudrate': 115200,
-                'frame_id': 'racecar/base_laser',
-                'inverted': False,
-                'angle_compensate': True,
-            }],
-            remappings=[('/scan', '/racecar/scan')],
-        ),
-
-        Node(
-            package='v4l2_camera',
-            executable='v4l2_camera_node',
-            name='camera',
-            parameters=[{
-            	'frame_id' : 'racecar/camera_optical_link',
-            	'saturation' : 100,
-            }],
-            remappings=[('image_raw', 'racecar/camera'),
-                        ('camera_info', 'racecar/camera_info')],
-        ),
-
-        Node(
-            package='imu_filter_madgwick',
-            executable='imu_filter_madgwick_node',
-            name='imu_filter_node',
-            output='screen', 
-            parameters=[
-                {'use_mag':True},
-                {'world_frame':'enu'},
-                {'publish_tf':False}
-            ],
-            remappings=[("/imu/data","racecar/imu")]
-        ),
-                
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
-            launch_arguments={"odom_topic":'/racecar/odom/filtered',
-                              "use_sim_time":"false"}.items()       
+    # Robot state publisher
+    robotStatePublisher = Node(package='robot_state_publisher',
+                               executable='robot_state_publisher',
+                               name='robot_state_publisher',
+                               output='both',
+                               parameters=[robot_description])
+    
+    arduinoBridge = Node(package='pb2roscpp',
+                         executable='pb2roscpp',
+                         name='arduino',
+                         output='screen')
+    
+    
+    arduinoSensor = Node(package='racecar_bringup',
+                         executable='arduino_sensors',
+                         name='arduino_sensors',
+                         output='screen',
+                         remappings=[('/raw_odom', 'prop_sensors'),
+                                     ('/odom', '/racecar/odom')])
+    
+    
+    lidar = Node(name='lidar',
+                 package='rplidar_ros',
+                 executable='rplidar_composition',
+                 output='screen',
+                 parameters=[{'serial_port': '/dev/ttyUSB0',
+                              'serial_baudrate': 115200,
+                              'frame_id': 'racecar/base_laser',
+                              'inverted': False,
+                              'angle_compensate': True}],
+                 remappings=[('/scan', '/racecar/scan')],
+                 condition=IfCondition(LaunchConfiguration('start_lidar')))
+    
+    camera =   Node(package='v4l2_camera',
+                    executable='v4l2_camera_node',
+                    name='camera',
+                    parameters=[{'camera_frame_id' : 'racecar/camera_optical_link',
+                                 'saturation' : 100,}],
+                    remappings=[('image_raw', 'racecar/camera'),
+                                ('camera_info', 'racecar/camera_info')],
+                    condition=IfCondition(LaunchConfiguration('start_camera'))
         )
-        
+    
+    magwick = Node(package='imu_filter_madgwick',
+                   executable='imu_filter_madgwick_node',
+                   name='imu_filter_node',
+                   output='screen',
+                   parameters=[{'use_mag':True},
+                               {'world_frame':'enu'},
+                               {'publish_tf':False}],
+                   remappings=[("/imu/data","racecar/imu")]
+        )
+    
+    kalmaFilter =  IncludeLaunchDescription(PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
+                                            launch_arguments={"odom_topic":'/racecar/odom/filtered',
+                                                              "use_sim_time":"false"}.items())
+    
+    return [robotStatePublisher,
+            arduinoBridge,
+            arduinoSensor,
+            lidar,
+            camera,
+            magwick,
+            kalmaFilter]
+
+    
+def generate_launch_description():
+    # Declare launch arguments
+    start_lidar_arg = DeclareLaunchArgument('start_lidar', default_value='True')
+    start_camera_arg = DeclareLaunchArgument('start_camera', default_value='True')
+
+    # Define launch description
+    ld = LaunchDescription([
+        start_lidar_arg,
+        start_camera_arg,
+        OpaqueFunction(function=launch_setup)
     ])
+    
+    return ld

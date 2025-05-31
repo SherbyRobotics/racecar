@@ -8,7 +8,8 @@ def generate_launch_description():
     return LaunchDescription([
 
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([ThisLaunchFileDir(), '/teleop.launch.py'])  # Teleop controller
+            PythonLaunchDescriptionSource([ThisLaunchFileDir(), '/teleop.launch.py']),
+            launch_arguments={'start_camera': "False"}.items()
         ),
 
         Node(
