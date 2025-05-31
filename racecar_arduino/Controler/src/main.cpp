@@ -71,21 +71,22 @@ const unsigned long time_period_high = 25;   // 50 Hz  for ROS communication
 const unsigned long time_period_com  = 1000; // 1000 ms = max com delay (watchdog)
 
 // Hardware min-zero-max range for the steering servo and the drive
-const int pwm_min_ser = 30;
-const int pwm_zer_ser = 90;
-const int pwm_max_ser = 150;
-const int pwm_min_dri = -511;
-const int pwm_zer_dri = 0;
-const int pwm_max_dri = 511;
+const int min_ser_angle = 45;
+const int zer_ser_angle = 90;
+const int max_ser_angle = 135;
+const int pwm_min_dri   = -511;
+const int pwm_zer_dri   = 0;
+const int pwm_max_dri   = 511;
 
 const int dri_wakeup_time = 20; // micro second
 
 // Units Conversion
-const double batteryV = 8;
-const double maxAngle = 40 * (2 * 3.1416) / 360; // max steering angle in rad
-const double rad2pwm  = (pwm_zer_ser - pwm_min_ser) / maxAngle;
-const double volt2pwm = (pwm_zer_dri - pwm_min_dri) / batteryV;
-const double tick2m   = 0.000002752;             // To confirm
+const double batteryV             = 8;
+const double maxAngle             = 30;                             // max steering angle in deg
+const double steeringAngleStep    = (zer_ser_angle - min_ser_angle) / maxAngle;
+const double steeringCmd2SerAngle = steeringAngleStep * RAD_TO_DEG; // cmd is in rad but servo are control in deg
+const double volt2pwm             = (pwm_zer_dri - pwm_min_dri) / batteryV;
+const double tick2m               = 0.000002752;                    // To confirm
 
 ///////////////////////////////////////////////////////////////////
 // Memory
@@ -98,7 +99,7 @@ int ctl_mode    = 0; // discrete control mode
 int dri_standby = 0;
 
 // Ouputs
-int ser_pwm   = 0;
+int ser_angle = 0;
 int dri_pwm   = 0;
 float dri_cmd = 0;
 
@@ -200,26 +201,25 @@ void clearEncoderCount()
 // Convertion functions
 ///////////////////////////////////////////////////////////////////
 
-// Convertion function : Servo Angle --> PWM
-double ser2pwm(double cmd)
+// Convertion function : steering Angle --> Servo Angle
+// Note steering angle is assume to be in rad and to represent
+// the angle of the interior wheel during the rotation
+double steering2ServoAngle(double steeringCmd)
 {
     // Scale and offset
-    double pwm_d = cmd * rad2pwm + (double)pwm_zer_ser;
-
-    // Rounding and conversion
-    int pwm = (int)(pwm_d + 0.5);
+    int servo_angle = (int)(steeringCmd * steeringCmd2SerAngle + (double)zer_ser_angle);
 
     // Saturations
-    if (pwm > pwm_max_ser)
+    if (servo_angle > max_ser_angle)
     {
-        pwm = pwm_max_ser;
+        servo_angle = max_ser_angle;
     }
-    if (pwm < pwm_min_ser)
+    if (servo_angle < min_ser_angle)
     {
-        pwm = pwm_min_ser;
+        servo_angle = min_ser_angle;
     }
 
-    return pwm;
+    return servo_angle;
 }
 
 // Convertion function : Volt Command --> PWM
@@ -324,8 +324,8 @@ void ctl(int dt_low)
     ///////////////////////////////////////////////
 
     // Servo Open-Loop fonction
-    ser_pwm = ser2pwm(ser_ref);
-    steeringServo.write(ser_pwm);
+    ser_angle = steering2ServoAngle(ser_ref);
+    steeringServo.write(ser_angle);
 
     ///////////////////////////////////////////////
     // PROPULSION CONTROL
@@ -458,7 +458,7 @@ void setup()
     clearEncoderCount();
 
     // Initialize Steering and drive cmd to neutral
-    steeringServo.write(pwm_max_ser);
+    steeringServo.write(max_ser_angle);
     set_pwm(0);
 
 // Initialize
@@ -471,7 +471,7 @@ void setup()
 #endif
     //
     delay(3000);
-    steeringServo.write(pwm_zer_ser);
+    steeringServo.write(zer_ser_angle);
 }
 
 void loop()
