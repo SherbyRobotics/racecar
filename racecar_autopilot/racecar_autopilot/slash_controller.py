@@ -16,7 +16,8 @@ class SlashController(Node):
         self.sub_prop = self.create_subscription(Float32MultiArray, 'prop_sensors', self.read_arduino, 1)
         self.sub_laser = self.create_subscription(Twist, 'car_position', self.read_laser, 1)
         self.wheelbase = self.declare_parameter('wheelbase', 0.34).value
-        self.max_steering = self.declare_parameter('max_steering', 0.37).value
+        self.wheelSpacing = self.declare_parameter('wheel_spacing', 0.25).value
+        self.max_steering = self.declare_parameter('max_steering', 0.52).value
 
         # Init publishers
         self.pub_cmd = self.create_publisher(Twist, "prop_cmd", 1)
@@ -61,7 +62,8 @@ class SlashController(Node):
             return 0
 
         radius = v / omega
-        return max(min(math.atan(self.wheelbase / radius), self.max_steering), -self.max_steering)
+        # source https://www.racecar-engineering.com/articles/tech-explained-ackermann-steering-geometry/
+        return max(min(math.atan(self.wheelbase / (radius-self.wheelSpacing/2)), self.max_steering), -self.max_steering)
         
     #######################################
     def timed_controller(self):
