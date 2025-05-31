@@ -1,9 +1,8 @@
 {
-    "name": "ROS 2 Development Container",
-    "privileged": true,
+    "name": "racecar devcontainer",
     "remoteUser": "racecar",
     "build": {
-        "dockerfile": "../Dockerfile",
+        "dockerfile": "Dockerfile.dev",
         "args": {
             "USERNAME": "racecar",
             "USER_UID": "1001", // change it to your user UID if need to preserve file permission
@@ -12,6 +11,7 @@
         "progress": "plain"
     },
     "workspaceFolder": "/home/racecar/ros2_ws",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/racecar/ros2_ws/src,type=bind",
     "customizations": {
         "vscode": {
             "extensions": [
@@ -40,5 +40,6 @@
     "mounts": [
         "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
         "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
-    ]
+    ],
+    "postCreateCommand": "sudo apt update && rosdep update && rosdep install --from-paths src --ignore-src -y && colcon build --symlink-install"
 }
