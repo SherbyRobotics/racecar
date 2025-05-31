@@ -43,6 +43,14 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
         namespace=prefix
     )
+    
+    # Bridge image 
+    imageBridge = Node(
+        package='ros_gz_image',
+        executable='image_bridge',
+        arguments=['/racecar/camera'],
+        output='screen'
+    )
 
     # Spawn
     spawn = Node(
@@ -95,6 +103,7 @@ def launch_setup(context, *args, **kwargs):
     return [
         robot_state_publisher,
         bridge,
+        imageBridge,
         spawn,
         cmd_vel_arb,
         joystick,

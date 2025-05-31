@@ -34,12 +34,6 @@
   gz_type_name: "gz.msgs.Odometry"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/racecar/camera"
-  gz_topic_name: "/racecar/camera"
-  ros_type_name: "sensor_msgs/msg/Image"
-  gz_type_name: "gz.msgs.Image"
-  direction: GZ_TO_ROS
-
 - ros_topic_name: "/racecar/camera_info"
   gz_topic_name: "/racecar/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
