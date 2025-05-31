@@ -1,11 +1,41 @@
-BasedOnStyle: LLVM
+---
+# We'll use defaults from the LLVM style, but with 4 columns indentation.
+BasedOnStyle: Microsoft
 IndentWidth: 4
-UseTab: Never
-ColumnLimit: 100
-AllowShortFunctionsOnASingleLine: false
-BreakBeforeBraces: Linux
-IndentCaseLabels: false
-SortIncludes: false
-PointerAlignment: Right
-SpacesBeforeTrailingComments: 1
-SpaceBeforeParens: ControlStatements
+
+# Force pointers to the type for C++.
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+
+# Max 130 per column
+ColumnLimit: 130
+
+# Align braket
+AlignAfterOpenBracket: Align
+
+# Align equal statement
+AlignConsecutiveAssignments: Consecutive
+
+# Align comment
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 2
+
+# Indent public/private keyword
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine : Never 
+
+# define break policy
+BinPackArguments: false
+BinPackParameters: OnePerLine
+PackConstructorInitializers: CurrentLine
+BreakFunctionDefinitionParameters: false
+BreakInheritanceList : AfterComma
+
+# Indent public/private keyword
+IndentAccessModifiers: true
+
+# add new line at EOF
+InsertNewlineAtEOF: true
