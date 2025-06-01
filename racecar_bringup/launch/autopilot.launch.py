@@ -8,29 +8,14 @@ def generate_launch_description():
     return LaunchDescription([
 
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([ThisLaunchFileDir(), '/teleop.launch.py'])  # Teleop controller
+            PythonLaunchDescriptionSource([ThisLaunchFileDir(), '/teleop.launch.py']),
+            launch_arguments={'start_camera': "False"}.items()
         ),
-
 
         Node(
             package='racecar_autopilot',
             executable='wall_estimator',
             name='wall_estimator',
         ),
-
-        Node(
-            name='lidar',
-            package='rplidar_ros',
-            executable='rplidar_composition',
-            output='screen',
-            parameters=[{
-                'serial_port': '/dev/ttyUSB0',
-                'serial_baudrate': 115200,
-                'frame_id': 'laser',
-                'inverted': False,
-                'angle_compensate': True,
-            }],
-        ),
-
         
     ])

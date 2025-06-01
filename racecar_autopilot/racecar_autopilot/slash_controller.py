@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import rclpy
+import math
 from rclpy.node import Node
 import numpy as np
 from geometry_msgs.msg import Twist
@@ -14,6 +15,9 @@ class SlashController(Node):
         self.sub_ref = self.create_subscription(Twist, 'ctl_ref', self.read_ref, 1)
         self.sub_prop = self.create_subscription(Float32MultiArray, 'prop_sensors', self.read_arduino, 1)
         self.sub_laser = self.create_subscription(Twist, 'car_position', self.read_laser, 1)
+        self.wheelbase = self.declare_parameter('wheelbase', 0.34).value
+        self.wheelSpacing = self.declare_parameter('wheel_spacing', 0.25).value
+        self.max_steering = self.declare_parameter('max_steering', 0.52).value
 
         # Init publishers
         self.pub_cmd = self.create_publisher(Twist, "prop_cmd", 1)
@@ -53,6 +57,14 @@ class SlashController(Node):
         self.laser_y_old    = 0
         self.laser_dy_fill  = 0
         
+    def convert_trans_rot_vel_to_steering_angle(self, v, omega):
+        if omega == 0 or v == 0:
+            return 0
+
+        radius = v / omega
+        # source https://www.racecar-engineering.com/articles/tech-explained-ackermann-steering-geometry/
+        return max(min(math.atan(self.wheelbase / (radius-self.wheelSpacing/2)), self.max_steering), -self.max_steering)
+        
     #######################################
     def timed_controller(self):
         
@@ -77,10 +89,10 @@ class SlashController(Node):
             
             # For compatibility mode 0 needs to be closed-loop velocity
             elif ( self.high_level_mode == 0 ):
-                # Closed-loop velocity on arduino
+                # Closed-loop velocity on arduino with theta commanded not steering
                 self.propulsion_cmd = self.propulsion_ref
                 self.arduino_mode   = 2  
-                self.steering_cmd   = self.steering_ref + self.steering_offset 
+                self.steering_cmd   = self.convert_trans_rot_vel_to_steering_angle(self.propulsion_ref, self.steering_ref) + self.steering_offset 
                 
             elif ( self.high_level_mode == 2 ):
                 # Closed-loop position on arduino
@@ -143,11 +155,10 @@ class SlashController(Node):
 
                 
             elif ( self.high_level_mode == 7 ):
-                # Template for custom controllers
-            
-                self.steering_cmd   = 0 + self.steering_offset
-                self.propulsion_cmd = 0     
-                self.arduino_mode   = 0 # Mode ??? on arduino 
+                # Closed-loop velocity open-loop steering
+                self.propulsion_cmd = self.propulsion_ref
+                self.arduino_mode   = 2  
+                self.steering_cmd   = self.steering_ref + self.steering_offset 
                 
                 
             elif ( self.high_level_mode == 8 ):

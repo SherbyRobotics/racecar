@@ -1,22 +1,24 @@
+import os
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import TimerAction
+from launch.actions import TimerAction, IncludeLaunchDescription, DeclareLaunchArgument
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
+
 
 def generate_launch_description():
-    return LaunchDescription([
-        Node(
-            package="racecar_bringup",
-            executable="arduino_sensors",
-            name="arduino_sensors",
-            output="screen",
-            remappings=[("raw_odom", "prop_sensors")],
-        ),
+    racecar_bringup = get_package_share_directory('racecar_bringup')
 
-        Node(
-            package='pb2roscpp',
-            executable='pb2roscpp',
-            name='arduino',
-            output='screen',
+    return LaunchDescription([
+        DeclareLaunchArgument('start_lidar', default_value='True'),
+        DeclareLaunchArgument('start_camera', default_value='True'),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(racecar_bringup, 'launch', 'bringup.launch.py')]),
+            launch_arguments={'start_lidar': LaunchConfiguration('start_lidar'),
+                              'start_camera': LaunchConfiguration('start_camera')}.items()
         ),
 
         Node(
@@ -45,5 +47,5 @@ def generate_launch_description():
                     output='screen',
                 ),
             ]
-        ),
+        )
     ])

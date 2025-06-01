@@ -296,7 +296,7 @@ collision_monitor:
     observation_sources: ["scan"]
     scan:
       type: "scan"
-      topic: "scan"
+      topic: "/racecar/scan"
       min_height: 0.15
       max_height: 2.0
       enabled: True
