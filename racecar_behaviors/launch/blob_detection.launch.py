@@ -8,7 +8,6 @@ def launch_setup(context, *args, **kwargs):
     #Declare launch arguments
     prefix = LaunchConfiguration('prefix').perform(context)
     debug = LaunchConfiguration('debug').perform(context)
-    fixed_frame_id = LaunchConfiguration('fixed_frame_id').perform(context)
 
      # Define nodes for behaviors
     republish_raspicam_node = Node(
@@ -32,7 +31,7 @@ def launch_setup(context, *args, **kwargs):
         package='rtabmap_util',
         executable='pointcloud_to_depthimage',
         name='pointcloud_to_depthimage',
-        parameters=[{'fixed_frame_id': 'racecar/odom', 'fill_holes_size': 4, 'topic_queue_size': 10}],
+        parameters=[{'fixed_frame_id': 'racecar/odom/filtered', 'fill_holes_size': 4, 'topic_queue_size': 10}],
         remappings=[('camera_info', 'racecar/camera_info'), ('cloud', 'scan_cloud'),
                     ('image', 'raspicam_node/depth_registered'), ('image_raw', 'raspicam_node/depth_registered_raw')]
     )
@@ -111,14 +110,11 @@ def generate_launch_description():
     # Declare launch arguments
     prefix_arg = DeclareLaunchArgument('prefix', default_value='racecar')
     debug_arg = DeclareLaunchArgument('debug', default_value='false')
-    fixed_frame_id_arg = DeclareLaunchArgument('fixed_frame_id', default_value='odom')
 
     # Define launch description
     ld = LaunchDescription([
         prefix_arg,
         debug_arg,
-        fixed_frame_id_arg,
-
         OpaqueFunction(function=launch_setup)
     ])
 
