@@ -44,17 +44,17 @@ To see the topic publish by the racecar using a VM you need the VM need to be mo
 If your are configuring a native Ubuntu 22.04 computer skip to step 6. If you want to create a Virtual machine from scratch follow all the steps : 
 
 1. Install [VirtualBox](https://www.virtualbox.org/). Optionally, the VirtualBox Extension Pack can also be installed for USB2-USB3 support.
-2. Download Ubuntu 22.04 LTS (Jammy Jellyfish) [64-bit PC (AMD64) desktop image](https://www.releases.ubuntu.com/22.04/)
-3. Open VirtualBox, create a new image called "Ubuntu 22.04" with at least 4-6 GB of RAM (or 50% of your computer RAM). Click default next options up to hard drive size, which can be set to 20 GB. Before starting the virtual machine, edit its Settings:
+2. Download Ubuntu 24.04.2 LTS (Noble Numbat) [64-bit PC (AMD64) desktop image](https://www.releases.ubuntu.com/noble/)
+3. Open VirtualBox, create a new image called "Ubuntu 24.04" with at least 4-6 GB of RAM (or 50% of your computer RAM). Click default next options up to hard drive size, which can be set to 20 GB. Before starting the virtual machine, edit its Settings:
     1. System->Processor: set at least 2 to 6 processors (or 50% of your CPUs). 
 	2. Network->Adapter 2: Enable it, attached to "Bridged Adapter" with your wireless network adapter. This will be used to connect the virtual machine to ROS on the RaceCar (see [ROS on multiple computers](https://github.com/SherbyRobotics/racecar/tree/master/doc) example).
-4. Start the virtual machine, it will ask for an ISO file, select the Ubuntu 22.04 Desktop ISO file previously downloaded. Install Ubuntu with all default settings.
+4. Start the virtual machine, it will ask for an ISO file, select the Ubuntu 24.04 Desktop ISO file previously downloaded. Install Ubuntu with all default settings.
 5. After installation, the virtual machine will reboot, connect to your account and in VirtualBox's Devices menu, select "Insert Guest Additions CD Image...", click on "Run" button to install them. After installation, reboot the virtual machine. You can then enable the shared clipboard (Devices->Shared Clipboard) and resize the window as you wish.
 6. To install automatically the RaceCar's developement environment, open a terminal and execute thoses commands (make sure the virtual machine has access to Internet):
     ```bash
-    $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/ros2/images/setup_vm_ubuntu2204_humble.bash
-    $ chmod +x setup_vm_ubuntu2204_humble.bash
-    $ ./setup_vm_ubuntu2204_humble.bash
+    $ wget https://raw.githubusercontent.com/SherbyRobotics/racecar/ros2/images/setup_vm_ubuntu2404_jazzy.bash
+    $ chmod +x setup_vm_ubuntu2404_jazzy.bash
+    $ ./setup_vm_ubuntu2404_jazzy.bash
     ```
 
 # Setup RPI5 from scratch
