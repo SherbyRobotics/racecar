@@ -22,18 +22,8 @@ def launch_setup(context, *args, **kwargs):
                          executable='pb2roscpp',
                          name='arduino',
                          output='screen')
-    
-    
-    arduinoSensor = Node(package='racecar_bringup',
-                         executable='arduino_sensors',
-                         name='arduino_sensors',
-                         output='screen',
-                         remappings=[('/raw_odom', 'prop_sensors'),
-                                     ('/odom', '/racecar/odom')])
 
-    
-    return [arduinoBridge,
-            arduinoSensor]
+    return [arduinoBridge]
 
     
 def generate_launch_description():
