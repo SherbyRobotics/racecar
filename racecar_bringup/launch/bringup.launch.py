@@ -23,12 +23,16 @@ def launch_setup(context, *args, **kwargs):
                                executable='robot_state_publisher',
                                name='robot_state_publisher',
                                output='both',
-                               parameters=[robot_description])
+                               parameters=[robot_description],
+                               condition=IfCondition(LaunchConfiguration('start_robotStatePublisher'))
+                               )
     
     arduinoBridge = Node(package='pb2roscpp',
                          executable='pb2roscpp',
                          name='arduino',
-                         output='screen')
+                         output='screen',
+                         condition=IfCondition(LaunchConfiguration('start_arduinoBridge'))
+                         )
     
     
     arduinoSensor = Node(package='racecar_bringup',
@@ -36,7 +40,9 @@ def launch_setup(context, *args, **kwargs):
                          name='arduino_sensors',
                          output='screen',
                          remappings=[('/raw_odom', 'prop_sensors'),
-                                     ('/odom', '/racecar/odom')])
+                                     ('/odom', '/racecar/odom')],
+                         condition=IfCondition(LaunchConfiguration('start_arduinoSensor'))
+                         )
     
     
     lidar = Node(name='lidar',
@@ -49,7 +55,8 @@ def launch_setup(context, *args, **kwargs):
                               'inverted': False,
                               'angle_compensate': True}],
                  remappings=[('/scan', '/racecar/scan')],
-                 condition=IfCondition(LaunchConfiguration('start_lidar')))
+                 condition=IfCondition(LaunchConfiguration('start_lidar'))
+                 )
     
     camera =   Node(package='v4l2_camera',
                     executable='v4l2_camera_node',
@@ -59,7 +66,7 @@ def launch_setup(context, *args, **kwargs):
                     remappings=[('image_raw', 'racecar/camera'),
                                 ('camera_info', 'racecar/camera_info')],
                     condition=IfCondition(LaunchConfiguration('start_camera'))
-        )
+                    )
     
     magwick = Node(package='imu_filter_madgwick',
                    executable='imu_filter_madgwick_node',
@@ -68,13 +75,16 @@ def launch_setup(context, *args, **kwargs):
                    parameters=[{'use_mag':True},
                                {'world_frame':'enu'},
                                {'publish_tf':False}],
-                   remappings=[("/imu/data","racecar/imu")]
-        )
+                   remappings=[("/imu/data","racecar/imu")],
+                   condition=IfCondition(LaunchConfiguration('start_magwick'))
+                   )
     
-    kalmaFilter =  IncludeLaunchDescription(PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
-                                            launch_arguments={"odom_topic":'/racecar/odom/filtered',
-                                                              "use_sim_time":"false"}.items())
-    
+    kalmaFilter =  IncludeLaunchDescription(
+    PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
+    launch_arguments={"odom_topic":'/racecar/odom/filtered', "use_sim_time":"false"}.items(),
+    condition=IfCondition(LaunchConfiguration('start_kalma')
+                                            ))
+                                                             
     return [robotStatePublisher,
             arduinoBridge,
             arduinoSensor,
@@ -86,13 +96,23 @@ def launch_setup(context, *args, **kwargs):
     
 def generate_launch_description():
     # Declare launch arguments
+    start_robot_state_publisher_arg = DeclareLaunchArgument('start_robotStatePublisher', default_value='True')
+    start_arduino_bridge_arg = DeclareLaunchArgument('start_arduinoBridge', default_value='True')
+    start_arduino_sensor_arg = DeclareLaunchArgument('start_arduinoSensor', default_value='True')
     start_lidar_arg = DeclareLaunchArgument('start_lidar', default_value='True')
     start_camera_arg = DeclareLaunchArgument('start_camera', default_value='True')
-
+    start_magwick_arg = DeclareLaunchArgument('start_magwick', default_value='True')
+    start_kalma_arg = DeclareLaunchArgument('start_kalma', default_value='True')
+    
     # Define launch description
     ld = LaunchDescription([
+        start_robot_state_publisher_arg,
+        start_arduino_bridge_arg,
+        start_arduino_sensor_arg,
         start_lidar_arg,
         start_camera_arg,
+        start_magwick_arg,
+        start_kalma_arg,
         OpaqueFunction(function=launch_setup)
     ])
     

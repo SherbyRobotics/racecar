@@ -12,14 +12,8 @@ def generate_launch_description():
     racecar_bringup = get_package_share_directory('racecar_bringup')
 
     return LaunchDescription([
-        DeclareLaunchArgument('start_lidar', default_value='True'),
-        DeclareLaunchArgument('start_camera', default_value='True'),
-
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([os.path.join(racecar_bringup, 'launch', 'bringup.launch.py')]),
-            launch_arguments={'start_lidar': LaunchConfiguration('start_lidar'),
-                              'start_camera': LaunchConfiguration('start_camera')}.items()
-        ),
+            PythonLaunchDescriptionSource([os.path.join(racecar_bringup, 'launch', 'bringup.launch.py')])),
 
         Node(
             package='racecar_teleop',

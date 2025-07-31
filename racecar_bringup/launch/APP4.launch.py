@@ -16,6 +16,7 @@ def generate_launch_description():
             package='racecar_autopilot',
             executable='wall_estimator',
             name='wall_estimator',
+            remappings=[('/scan','/racecar/scan')],
         ),
         
     ])
