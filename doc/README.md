@@ -56,7 +56,7 @@ If the RaceCar doesn't move straight when no steering commands are sent, it is p
 ## Mechanical calibration
 **Note**: Mechanical calibration has already been done. Normally you only need to perform [software calibration](#sofware-calibration).
 
-1. Make sure the Arduino is flashed with the default firmware: [`Controller.ino`](../racecar_arduino/Controller/Controller.ino). When the RaceCar's power board is activated, the arduino will send a zero steering value.
+1. Make sure the Arduino is flashed with the default firmware: [`main.cpp`](../racecar_arduino/Controller/src/main.cpp). When the RaceCar's power board is activated, the arduino will send a zero steering value.
 2. Unscrew that screw:
 
     ![steering_1](steering_1.jpg)
@@ -77,7 +77,7 @@ If the RaceCar doesn't move straight when no steering commands are sent, it is p
 
 Adjust this steering offset [here](../racecar_autopilot/racecar_autopilot/slash_controller.py#L28).
 
-# Remote Connection (SSH/VNC)
+# Remote Connection (SSH/XRDP)
 
 First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](../images/README.md#restore-raspberrypi-image)). The default login is `racecar` with password `racecar`.
 
@@ -94,11 +94,10 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
     VScode remote ssh extension allows you to open a remote folder on any remote machine, virtual machine, or container with a running SSH server and take full advantage of VS Code's feature set. This lets you modify the files directly in the RaspberryPi on the VScode application from your computer.
 
 
-
- * [VNC Viewer](https://www.realvnc.com/en/connect/download/viewer/) (Remote Desktop):
+ * XRDP (Remote Desktop Connection)
+   You can use the default windows remote desktop connection app. Also, ensure that no monitor is connected to the Raspberry Pi during boot and you are not logged in, otherwise it wont work.
    * By ethernet: set IP to `192.168.10.1`
    * By Hotspot: set IP to `10.42.0.1`
-   * Disable encryption and open the connection.
     
 # The RaceCar batteries
 
