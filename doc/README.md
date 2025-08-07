@@ -151,13 +151,17 @@ To set the charger into Discharge -> Charge Mode:
 
 # The LiDAR configuration
 * For the LiDAR, you'll need to set the serial baud rate in the bringup launch file according to your specific model. There are two variants: the A2M8 (red) and the A2M12 (purple), as illustrated in the image below:
-    ![lidar A2M8](lidar A2M8.jpg)        ![lidar A2M12](lidar A2M12.jpg)
 
-* For the A2M8, the serial baud rate is 115200
-* For the A2M12, the serial baud rate is 256000
+| A2M8 | A2M12 |
+|-----------|----------------|
+| ![lidar%20A2M8](lidar%20A2M8.jpg) | ![lidar%20A2M12](lidar%20A2M12.jpg) |
 
-*In this file : [`bringup.launch.py`](../racecar_bringup/launch/bringup.launch.py) , you'll find the LiDAR node declaration, which includes a serial_baudrate parameter. Ensure that its value matches the specifications of your LiDAR model.
 
-*Ensure that the Slamtec UART-to-USB serial port adapter board switch is set to the correct baud rate, as shown in the image below:
+* For the A2M8, the serial baud rate is 115 200 bit/s
+* For the A2M12, the serial baud rate is 256 000 bit/s
+
+* In this file : [`bringup.launch.py`](../racecar_bringup/launch/bringup.launch.py) , you'll find the LiDAR node declaration, which includes a serial_baudrate parameter. Ensure that its value matches the specifications of your LiDAR model.
+
+* Ensure that the Slamtec UART-to-USB serial port adapter board switch is set to the correct baud rate, as shown in the image below:
 
 ![Slamtec](Slamtec.jpg)
