@@ -26,8 +26,7 @@ web_video_server_node = Node(
 )
 
 def generate_launch_description():
-    return LaunchDescription
-([
+    return LaunchDescription([
     DeclareLaunchArgument("host_address", 
                         default_value="10.42.0.1", 
                         description="Address of the Raspberry Pi"),
