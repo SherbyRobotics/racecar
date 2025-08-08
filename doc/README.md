@@ -56,7 +56,7 @@ If the RaceCar doesn't move straight when no steering commands are sent, it is p
 ## Mechanical calibration
 **Note**: Mechanical calibration has already been done. Normally you only need to perform [software calibration](#sofware-calibration).
 
-1. Make sure the Arduino is flashed with the default firmware: [`main.cpp`](../racecar_arduino/Controller/src/main.cpp). When the RaceCar's power board is activated, the arduino will send a zero steering value.
+1. Make sure the Arduino is flashed with the default firmware: [`main.cpp`](../racecar_arduino/Controller/src/main.cpp). (See flash procedure in the Launch section here: [`README`](../README.md)). When the RaceCar's power board is activated, the arduino will send a zero steering value.
 2. Unscrew that screw:
 
     ![steering_1](steering_1.jpg)
