@@ -51,21 +51,25 @@ The RaceCar has many operating modes that allow you to test different functionna
 ## Launch
 1. Follow those [instructions](images#restore-raspberrypi-image) to flash your Raspberry Pi with a pre-built image.
 2. Connect the battery to Raspberry Pi.
-2. Flash the Arduino (need to be done only 1 time):
+3. Flash the Arduino (need to be done only 1 time):
     1. Connect the Arduino mega 2560 of the RaceCar to Raspberry Pi if not already done.
-    2. Flash the Arduino mega 2560 with the firmware file [Controller.ino](racecar_arduino/Controller/Controller.ino) using Arduino IDE (with Tools->Board: select "Arduino Mega or Mega 2560" as target).
-3. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
-4. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch.py](racecar_bringup/launch/teleop.launch.py):
+    2. Flash the Arduino mega 2560 with the firmware file [`main.cpp`](racecar_arduino/Controller/src/main.cpp) using Visual Studio Code with PlatformIO IDE .
+    3. Open Visual Studio Code, then navigate to File > Open Folder. Select the folder: [racecar_arduino](racecar_arduino/Controller) and open the file [`main.cpp`](racecar_arduino/Controller/src/main.cpp).
+    4. Once the project loads, wait for PlatformIO Core to finish initializing
+    5. In the top-right corner, click the checkmark icon, then select Upload to flash the code to your device.
+
+4. Turn on the motors by flipping the switch on the left side of the car. A green light will turn on.
+5. From a terminal (`ctrl+alt+t`), launch ROS with the launch file [teleop.launch.py](racecar_bringup/launch/teleop.launch.py):
     ```bash
     $ ros2 launch racecar_bringup teleop.launch.py
     ```
-5. To visualize the racecar in rviz:
+6. To visualize the racecar in rviz:
     ```bash
     $ ros2 launch racecar_navigation rviz.launch.py
     ```
     ![](doc/racecar_rviz_teleop.jpg "rviz" )
-6. Enable the joystick by performing an input combination below to start.
-7. Enjoy!
+7. Enable the joystick by performing an input combination below to start.
+8. Enjoy!
 
 # Controller Modes
 ## High-level Controller Modes

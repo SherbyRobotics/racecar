@@ -6,6 +6,7 @@
 * [Charging the Anker battery](#charging-the-anker-battery)
 * [Charging the Traxxas battery](#charging-the-traxxas-battery)
 * [The Killswitch](#the-killswitch)
+* [The Lidar Configuration](#the-lidar-configuration)
   
 
 # Hardware Connections
@@ -55,7 +56,7 @@ If the RaceCar doesn't move straight when no steering commands are sent, it is p
 ## Mechanical calibration
 **Note**: Mechanical calibration has already been done. Normally you only need to perform [software calibration](#sofware-calibration).
 
-1. Make sure the Arduino is flashed with the default firmware: [`Controller.ino`](../racecar_arduino/Controller/Controller.ino). When the RaceCar's power board is activated, the arduino will send a zero steering value.
+1. Make sure the Arduino is flashed with the default firmware: [`main.cpp`](../racecar_arduino/Controller/src/main.cpp). (See flash procedure in the Launch section here: [`README`](../README.md)). When the RaceCar's power board is activated, the arduino will send a zero steering value.
 2. Unscrew that screw:
 
     ![steering_1](steering_1.jpg)
@@ -76,7 +77,7 @@ If the RaceCar doesn't move straight when no steering commands are sent, it is p
 
 Adjust this steering offset [here](../racecar_autopilot/racecar_autopilot/slash_controller.py#L28).
 
-# Remote Connection (SSH/VNC)
+# Remote Connection (SSH/XRDP)
 
 First, make sure the ethernet and hotspot interfaces are properly configured on your Raspberry Pi (see Step 5 of [this section](../images/README.md#restore-raspberrypi-image)). The default login is `racecar` with password `racecar`.
 
@@ -93,11 +94,10 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
     VScode remote ssh extension allows you to open a remote folder on any remote machine, virtual machine, or container with a running SSH server and take full advantage of VS Code's feature set. This lets you modify the files directly in the RaspberryPi on the VScode application from your computer.
 
 
-
- * [VNC Viewer](https://www.realvnc.com/en/connect/download/viewer/) (Remote Desktop):
+ * XRDP (Remote Desktop Connection)
+   You can use the default windows remote desktop connection app. Also, ensure that no monitor is connected to the Raspberry Pi during boot and you are not logged in, otherwise it wont work.
    * By ethernet: set IP to `192.168.10.1`
    * By Hotspot: set IP to `10.42.0.1`
-   * Disable encryption and open the connection.
     
 # The RaceCar batteries
 
@@ -147,3 +147,20 @@ To set the charger into Discharge -> Charge Mode:
     <p align="center"><i>The simplest remote killswitch: a long loop of wire</i></p>
 
 * Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
+
+# The LiDAR configuration
+* For the LiDAR, you'll need to set the serial baud rate in the bringup launch file according to your specific model. There are two variants: the A2M8 (red) and the A2M12 (purple), as illustrated in the image below:
+
+| A2M8 | A2M12 |
+|-----------|----------------|
+| ![lidar%20A2M8](lidar%20A2M8.jpg) | ![lidar%20A2M12](lidar%20A2M12.jpg) |
+
+
+* For the A2M8, the serial baud rate is 115 200 bit/s
+* For the A2M12, the serial baud rate is 256 000 bit/s
+
+* In this file : [`bringup.launch.py`](../racecar_bringup/launch/bringup.launch.py) , you'll find the LiDAR node declaration, which includes a serial_baudrate parameter. Ensure that its value matches the specifications of your LiDAR model.
+
+* Ensure that the Slamtec UART-to-USB serial port adapter board switch is set to the correct baud rate, as shown in the image below:
+
+![Slamtec](Slamtec.jpg)
