@@ -41,7 +41,7 @@ To see the topic publish by the racecar using a VM you need the VM need to be mo
 ---
 
 # Creating a Virtual Machine
-If your are configuring a native Ubuntu 22.04 computer skip to step 6. If you want to create a Virtual machine from scratch follow all the steps : 
+If your are configuring a native Ubuntu 24.04 computer skip to step 6. If you want to create a Virtual machine from scratch follow all the steps : 
 
 1. Install [VirtualBox](https://www.virtualbox.org/). Optionally, the VirtualBox Extension Pack can also be installed for USB2-USB3 support.
 2. Download Ubuntu 24.04.2 LTS (Noble Numbat) [64-bit PC (AMD64) desktop image](https://www.releases.ubuntu.com/noble/)
