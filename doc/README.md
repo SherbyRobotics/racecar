@@ -1,7 +1,7 @@
 * [Hardware Connections](#hardware-connections)
 * [USB Hub woes](#usb-hub-woes)
 * [Steering Offset](#steering-offset)
-* [Remote Connection (SSH/VNC)](#remote-connection-sshvnc)
+* [Remote Connection (SSH/XRDP)](#remote-connection-sshxrdp)
 * [The RaceCar batteries](#the-racecar-batteries)
 * [Charging the Anker battery](#charging-the-anker-battery)
 * [Charging the Traxxas battery](#charging-the-traxxas-battery)
