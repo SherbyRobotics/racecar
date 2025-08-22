@@ -24,7 +24,7 @@ To be able to test our code, there are a few requirements.
 ### Software
 * For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](images/README.md#restore-raspberrypi-image) to flash your RPI.
 
-* For Desktop/Laptop development, see this [section](images/README.md#creating-a-virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 22.04
+* For Desktop/Laptop development, see this [section](images/README.md#creating-a-virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 24.04
 
 * Click here to [download the default virtual machine](https://usherbrooke-my.sharepoint.com/:u:/g/personal/lali3401_usherbrooke_ca/ET_KS0N6qFpPjCdlN4sOIrYBsIMreMN1X6O5qblisWM_Rw?e=6nY1pi), see this [section](images/README.md#importing-a-virtual-machine) for how to import it in Virtual box
     Use the VM to show topics and view them in RVIZ to limit the usage of the RaspberryPi. You might need to change the [ROS_DOMAIN_ID](https://docs.ros.org/en/rolling/Concepts/Intermediate/About-Domain-ID.html) on both machine before using it : `export ROS_DOMAIN_ID = X`
