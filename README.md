@@ -33,7 +33,7 @@ To be able to test our code, there are a few requirements.
 * [Hardware Connections](doc/README.md#hardware-connections)
 * [USB Hub woes](doc/README.md#usb-hub-woes)
 * [Steering Offset](doc/README.md#steering-offset)
-* [Remote Connection (SSH/VNC)](doc/README.md#remote-connection-sshvnc)
+* [Remote Connection (SSH/XRDP)](doc/README.md#remote-connection-sshxrdp)
 * [ROS2 on multiple computers (ROS_IP)](doc/README.md#ros-on-multiple-computers-ros_ip)
 * [Simulated environment (Gazebo)](doc/README.md#simulated-environment-gazebo)
 * [The RaceCar batteries](doc/README.md#the-racecar-batteries)
