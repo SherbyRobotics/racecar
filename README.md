@@ -22,7 +22,7 @@ To be able to test our code, there are a few requirements.
 * Logitech Wireless Gamepad F710 (DirectInput Mode)
 
 ### Software
-* For Raspberry Pi on RaceCar, we provide RPI4 images with everything already installed, see this [page](images/README.md#restore-raspberrypi-image) to flash your RPI.
+* For Raspberry Pi on RaceCar, we provide RPI5 images with everything already installed, see this [page](images/README.md#restore-raspberrypi-image) to flash your RPI.
 
 * For Desktop/Laptop development, see this [section](images/README.md#creating-a-virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 24.04
 
