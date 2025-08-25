@@ -11,11 +11,11 @@
 
 # Hardware Connections
 
-  <img src="racecar_connections.jpg" alt="connections" width="800">
+  <img src="RaceCar_connections_Pi5.jpg" alt="connections" width="1000">
 
-**WARNING**: Make sure the Raspberry Pi4 is unpowered when you connect and deconnect the raspicam. The connector is very sensitive and small sparks could happen making the camera unusable. See also this [post](https://stackoverflow.com/questions/31354280/raspberry-camera-error-mmal-no-data-received-from-sensor). Also make sure you **shutdown properly** the Pi4 (`sudo halt` in a terminal or doing a shutdown in the interface) before unplugging the power. If the Pi4 is talking to camera while you unplug the power, **it may damage the camera and your SD-CARD!**
+**WARNING**: Make sure the Raspberry Pi5 is unpowered when you connect and disconnect cables. Also make sure you **shutdown properly** the Pi5 (`sudo halt` in a terminal or doing a shutdown in the interface) before unplugging the power. Otherwise **it may corrupt/damage your SD-CARD!**
 
-First, get some metric Allen Keys so you can mount your ArduinoMega and your Raspberry Pi4.
+First, get some metric Allen Keys so you can mount your ArduinoMega and your Raspberry Pi5.
 
 * Connect the ArduinoMega under the black PCB. Its USB port must face toward the back of the RaceCar. If you have a transparent base under your Mega, remove it first! It will only get in the way.
 
@@ -23,22 +23,22 @@ First, get some metric Allen Keys so you can mount your ArduinoMega and your Ras
    * Connect the IMU in J4 "I2C".
    * Connect the propulsion encoder in J2 "EncProp".
 
-* Mount your Rapberry Pi4 on its 4 studs. Do not overtighten the screws, they are fragile. Its USB ports must face toward the back of the RaceCar.
+* Mount your Rapberry Pi5 on its craddle. Secure it with the elastic band. Its USB ports must face toward the back of the RaceCar.
 
-* Connect the flex cable of the RaspiCAM (#6) in J3 "CAMERA". Beware of the orientation.
+* Connect the camera (#6) in a USB port of the Pi5.
 
-* Connect the Logitech Controller's USB dongle into the USB hub (#10).
-* Connect the USB hub (#10) into one USB-A port of the Pi4.
-* USB cable #12: Connect into ArduinoMega USB-B and Pi4 USB-A.
+* Connect the Logitech Controller's USB dongle (#7) into the USB hub (#10).
+* Connect the USB hub (#10) into one USB-A port of the Pi5.
+* USB cable #12: Connect into ArduinoMega USB-B and Pi5 USB-A.
 * USB cable #16: Connect into LIDAR (#2) round connector and USB Power Pack (#5) USB-A.
 
 Finally, **CONNECT ONLY WHEN READY TO POWER UP YOUR Raspberry Pi**:
 
-* USB cable #13: Connect into USB Power Pack (#5) USB-A and Pi4 USB-C.
+* USB cable #13: Connect into USB Power Pack (#5) USB-A and Pi5 USB-C.
 
 And once the PI is booted:
 
-* USB cable #14: Connect into Pi4 USB3 and LIDAR (#2) Micro-USB.
+* USB cable #14: Connect into Pi5 USB3 and LIDAR (#2) Micro-USB.
 
 # USB hub woes
 If the USB hub doesn't seem to work or is not recognized, try the following first before calling it defective:
