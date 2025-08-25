@@ -113,7 +113,7 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
 
 # Charging the Traxxas battery
 
-* For the Traxxas battery, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the motor drive is on left ("Charge"). Connect the wires like in the figure below. **To avoid a short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the reverse when removing the wires after charging!)**. On the charger, make sure the battery type is set to NiMH and the maximum current limit is 2A. Hold « Start » to start charging. When the battery is charged, the charger should stop by itself with a sound. Stop charging manually if it has been charging for more than 2 hours. Normally, the charger is set to cutoff after 2 hours of charging.
+* For the Traxxas battery, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the motor drive is on left ("Charge"). Connect the wires like in the figure below. **To avoid a short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the reverse when removing the wires after charging!)**. On the charger, make sure to choose **"NiMH Charge"** and the maximum current limit is 2A. Hold « Start » to start charging. When the battery is charged, the charger should stop by itself with a sound. Stop charging manually if it has been charging for more than 2 hours. Normally, the charger is set to cutoff after 2 hours of charging.
 
     ![traxxas_battery](Branchements_du_chargeur(Pi5).jpg)
 
@@ -122,18 +122,19 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
 
 ```
 If the charger is not already in NiMH Mode:
-- Press "Batt. Type" until you get "Program Select NiMH Batt"
+- Press "Stop" and then "Inc" until you get "NiMH Batt"
 
 To set the charger into Discharge -> Charge Mode:
 
 - Press "Start"
 - If the Current is other than 2.0A, press "Start" once and adjust value with "Dec." and "Inc.", then press "Start" once to confirm
 - Press "Inc." until you find "NiMH Discharge"
-- Press "Start" to adjust values: 0.1A and 1.2V
+- Press "Start" to adjust values: 0.1A and 1.4V
 - Press "Inc." Until you find "NiMH Cycle"
 - Press "Start" to adjust cycle to "DCHG>CHG" (discharge, then charge)
-- Hold "Start" until the charger commences the cycle. You must hold it for quite a few seconds...
+- Hold "Start" until the charger commences the cycle.
 ```
+* The Charger user manual can be found here.
 
 # The Killswitch
 
