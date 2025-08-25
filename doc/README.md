@@ -134,7 +134,7 @@ To set the charger into Discharge -> Charge Mode:
 - Press "Start" to adjust cycle to "DCHG>CHG" (discharge, then charge)
 - Hold "Start" until the charger commences the cycle.
 ```
-* The Charger user manual can be found here.
+* The Charger user manual can be found [here](SkyRC_iMAX_B6AC_V2_V3.10.pdf).
 
 # The Killswitch
 
