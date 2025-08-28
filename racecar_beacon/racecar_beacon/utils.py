@@ -12,5 +12,5 @@ def yaw_from_quaternion(quaternion: Quaternion):
     Usage with an `Odometry` message:
         ```yaw = yaw_from_quaternion(msg.pose.pose.orientation)
     """
-    (_, _, yaw) = euler_from_quaternion(*quaternion)
+    (_, _, yaw) = euler_from_quaternion([quaternion.w, quaternion.x, quaternion.y, quaternion.z])
     return yaw
