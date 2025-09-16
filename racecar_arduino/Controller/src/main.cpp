@@ -34,7 +34,7 @@ Servo steeringServo;
 const int slaveSelectEnc = 45;
 
 // Pins for outputs PWM
-const int ser_pin = 9; // Servo
+const int str_pin = 9; // Servo
 
 // Custom drive
 const int dri_pwm_pin = 6;  // H bridge drive pwm
@@ -71,9 +71,9 @@ const unsigned long time_period_high = 25;   // 50 Hz  for ROS communication
 const unsigned long time_period_com  = 1000; // 1000 ms = max com delay (watchdog)
 
 // Hardware min-zero-max range for the steering servo and the drive
-const int min_ser_angle = 45;
-const int zer_ser_angle = 90;
-const int max_ser_angle = 135;
+const int min_str_angle = 45;
+const int zer_str_angle = 90;
+const int max_str_angle = 135;
 const int pwm_min_dri   = -511;
 const int pwm_zer_dri   = 0;
 const int pwm_max_dri   = 511;
@@ -83,7 +83,7 @@ const int dri_wakeup_time = 20; // micro second
 // Units Conversion
 const double batteryV             = 8;
 const double maxAngle             = 30;                             // max steering angle in deg
-const double steeringAngleStep    = (zer_ser_angle - min_ser_angle) / maxAngle;
+const double steeringAngleStep    = (zer_str_angle - min_str_angle) / maxAngle;
 const double steeringCmd2SerAngle = steeringAngleStep * RAD_TO_DEG; // cmd is in rad but servo are control in deg
 const double volt2pwm             = (pwm_zer_dri - pwm_min_dri) / batteryV;
 const double tick2m               = 0.000002752;                    // To confirm
@@ -93,13 +93,13 @@ const double tick2m               = 0.000002752;                    // To confir
 ///////////////////////////////////////////////////////////////////
 
 // Inputs
-float ser_ref   = 0; // rad
+float str_ref   = 0; // rad
 float dri_ref   = 0; // volt
 int ctl_mode    = 0; // discrete control mode
 int dri_standby = 0;
 
 // Ouputs
-int ser_angle = 0;
+int str_angle = 0;
 int dri_pwm   = 0;
 float dri_cmd = 0;
 
@@ -207,16 +207,16 @@ void clearEncoderCount()
 double steering2ServoAngle(double steeringCmd)
 {
     // Scale and offset
-    int servo_angle = (int)(steeringCmd * steeringCmd2SerAngle + (double)zer_ser_angle);
+    int servo_angle = (int)(steeringCmd * steeringCmd2SerAngle + (double)zer_str_angle);
 
     // Saturations
-    if (servo_angle > max_ser_angle)
+    if (servo_angle > max_str_angle)
     {
-        servo_angle = max_ser_angle;
+        servo_angle = max_str_angle;
     }
-    if (servo_angle < min_ser_angle)
+    if (servo_angle < min_str_angle)
     {
-        servo_angle = min_ser_angle;
+        servo_angle = min_str_angle;
     }
 
     return servo_angle;
@@ -324,8 +324,8 @@ void ctl(int dt_low)
     ///////////////////////////////////////////////
 
     // Servo Open-Loop fonction
-    ser_angle = steering2ServoAngle(ser_ref);
-    steeringServo.write(ser_angle);
+    str_angle = steering2ServoAngle(str_ref);
+    steeringServo.write(str_angle);
 
     ///////////////////////////////////////////////
     // PROPULSION CONTROL
@@ -449,7 +449,7 @@ void setup()
     delay(10);
 
     // Init PWM output Pins
-    steeringServo.attach(ser_pin);
+    steeringServo.attach(str_pin);
     pinMode(dri_dir_pin, OUTPUT);
     pinMode(dri_pwm_pin, OUTPUT);
 
@@ -458,7 +458,7 @@ void setup()
     clearEncoderCount();
 
     // Initialize Steering and drive cmd to neutral
-    steeringServo.write(max_ser_angle);
+    steeringServo.write(max_str_angle);
     set_pwm(0);
 
 // Initialize
@@ -471,7 +471,7 @@ void setup()
 #endif
     //
     delay(3000);
-    steeringServo.write(zer_ser_angle);
+    steeringServo.write(zer_str_angle);
 }
 
 void loop()
@@ -540,7 +540,7 @@ void loop()
 
 void cmdCallback()
 {
-    ser_ref  = -cmdMsg.data[0]; // rad
+    str_ref  = -cmdMsg.data[0]; // rad
     dri_ref  = cmdMsg.data[1];  // volt or m/s or m
     ctl_mode = cmdMsg.data[2];  // 1    or 2   or 3*/
 
@@ -555,11 +555,11 @@ void sensorsCallback(unsigned long dt)
 
     // For DEBUG
     sensorsMsg.data[2] = (float)dri_ref; // set point received by arduino
-    // sensorsMsg.data[3] = (float)dri_cmd; // drive set point in volts
-    sensorsMsg.data[3] = (float)Serial.available(); // futile: we SHOULD NOT receive anything if Serial is not available.
+    sensorsMsg.data[3] = (float)dri_cmd; // drive set point in volts
+    // sensorsMsg.data[3] = (float)Serial.available(); // futile: we SHOULD NOT receive anything if Serial is not available.
     sensorsMsg.data[4] = (float)dri_pwm;            // drive set point in pwm
     sensorsMsg.data[5] = (float)enc_now;            // raw encoder counts
-    sensorsMsg.data[6] = (float)ser_ref;            // steering angle (don't remove/change, used for GRO830)
+    sensorsMsg.data[6] = (float)str_ref;            // steering angle (don't remove/change, used for GRO830)
     sensorsMsg.data[7] = (float)(ctl_mode);         // for com debug
     sensorsMsg.data[8] = (float)dt;                 // time elapsed since last publish (don't remove/change, used for GRO830)
     sensorsMsg.data[9] =
