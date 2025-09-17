@@ -43,7 +43,7 @@ source .venv/bin/activate  # Activate the virtual environment
 Once the virtual environment is activated, install the dependencies:
 
 ```bash
-pip3 install --requirement gro830_lab.txt
+pip3 install --requirement src/racecar/gro830_lab.txt
 ```
 
 Verify the installation worked with `pip3 list | grep transforms3D`. The version SHOULD be `0.4.2`.
