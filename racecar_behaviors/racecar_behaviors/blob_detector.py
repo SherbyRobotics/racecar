@@ -1,5 +1,10 @@
     #!/usr/bin/env python3
 
+# Band-Aid to be able to use `ros2 launch`
+import sys
+if "/usr/local/lib/python3.12/dist-packages" in sys.path:
+    sys.path.remove("/usr/local/lib/python3.12/dist-packages")
+
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
