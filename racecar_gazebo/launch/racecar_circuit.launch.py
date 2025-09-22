@@ -3,7 +3,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.actions import AppendEnvironmentVariable, SetEnvironmentVariable
+from launch.actions import AppendEnvironmentVariable
 
 def generate_launch_description():
     # Package Directories    
@@ -13,7 +13,7 @@ def generate_launch_description():
     world_name = os.path.join(get_package_share_directory('racecar_gazebo'), 'worlds', 'racecar_circuit.world')
     racecar_gazebo = os.path.join(get_package_share_directory('racecar_gazebo'))
 
-    gazeboDefaultResourcePath = SetEnvironmentVariable(name="GZ_SIM_RESOURCE_PATH", "/opt/ros/jazzy/share")
+    gazeboDefaultResourcePath = AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", "/opt/ros/jazzy/share")
     addRacecarGazeboResourcePath = AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", racecar_gazebo)
 
 
