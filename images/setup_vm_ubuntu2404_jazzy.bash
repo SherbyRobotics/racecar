@@ -68,10 +68,6 @@ sudo apt-get install -y --no-install-recommends \
 sudo apt-get upgrade -y
 sudo apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-desktop
 
-# Install Additionnal DDS implementation
-sudo apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
-
-
 # Configure racecar's workspace and install ROS2 package dependencies
 source /opt/ros/${ROS_DISTRO}/setup.bash
 mkdir -p ${ROS2_DIR}/src
@@ -107,6 +103,3 @@ source ${ROS2_DIR}/install/local_setup.bash
 echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 echo "source ${ROS2_DIR}/install/local_setup.bash" >> ~/.bashrc
 echo "export ROS_DOMAIN_ID=1" >> ~/.bashrc
-
-echo "# use cyclone as default DDS" >> ~/.bashrc
-echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc
