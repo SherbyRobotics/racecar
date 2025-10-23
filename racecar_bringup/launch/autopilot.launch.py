@@ -51,10 +51,10 @@ def generate_launch_description():
                 remappings=[("/scan", "/racecar/scan")],
             ),
             Node(
-            package='racecar_autopilot',
-            executable='wall_estimator',
-            name='wall_estimator',
-            remappings=[('/scan','/racecar/scan')],
+                package="racecar_autopilot",
+                executable="wall_estimator",
+                name="wall_estimator",
+                remappings=[("/scan", "/racecar/scan")],
             ),
         ]
     )
