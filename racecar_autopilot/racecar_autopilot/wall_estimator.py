@@ -33,7 +33,7 @@ class WallEstimator(Node):
         self.theta_right = 0.0
 
         # Info about LiDAR read from the first scan
-        self.lidar_range_computed = False
+        self.lidar_index_to_compute = True
         self.index_left_start = 0  # 140
         self.index_left_end = 0  # 220
         self.index_right_start = 0  # 500
@@ -42,9 +42,9 @@ class WallEstimator(Node):
     ########################################
     def read_scan(self, scan_msg):
 
-        if not self.lidar_range_computed:
+        if self.lidar_index_to_compute:
             self.compute_lidar_ranges(scan_msg)
-            self.lidar_range_computed = True
+            self.lidar_index_to_compute = False
 
         self.estimate_car_position(scan_msg)
 
@@ -93,7 +93,7 @@ class WallEstimator(Node):
         A = np.column_stack((x, ones))
 
         # Least square solution
-        estimation = np.linalg.lstsq(A, y)[0]  # (ATA)^-1 ATy
+        estimation = np.linalg.lstsq(A, y, rcond=None)[0]  # (ATA)^-1 ATy
 
         m = estimation[0]  # slope
         b = estimation[1]  # offset
@@ -105,7 +105,7 @@ class WallEstimator(Node):
         return theta, y
 
     ########################################
-    def read_scan(self, scan_msg):
+    def estimate_car_position(self, scan_msg):
 
         ranges = np.array(scan_msg.ranges)
 
