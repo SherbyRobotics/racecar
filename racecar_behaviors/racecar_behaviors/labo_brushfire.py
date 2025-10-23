@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# NOTE: "Band-Aid" for `ros2 run` issue. Not required when using `python3` to
+# run the script.
+#import sys
+#if "/usr/local/lib/python3.12/dist-packages" in sys.path:
+#    sys.path.remove("/usr/local/lib/python3.12/dist-packages")
+
 import rclpy
 import rclpy.logging
 from rclpy.node import Node
@@ -23,6 +29,7 @@ class Brushfire(Node):
             mask = brushfire_map == 1
             brushfire_map = brushfire_map.astype(float) / float(maximum) * 225.0 + 30.0
             brushfire_map[mask] = 0
+            brushfire_map = brushfire_map.astype(np.uint8)  # Removes "type warning" from OpenCV
             # Flip image to get x->up, y->left (like top view in RVIZ looking towards x-axis)
             cv2.imwrite('brushfire.bmp', cv2.transpose(cv2.flip(brushfire_map, -1)))
             self.get_logger().info("Exported brushfire.bmp")
@@ -31,11 +38,12 @@ class Brushfire(Node):
 
     def export_grid_map(self, grid):
         # Example to show grid with same color as RVIZ
-        grid[grid == -1] = 89
-        grid[grid == 0] = 178
-        grid[grid == 100] = 0
+        img = np.zeros_like(grid).astype(np.uint8)  # Avoids OverflowError from NumPy
+        img[grid == -1] = 89
+        img[grid == 0] = 178
+        img[grid == 100] = 0
         # Flip image to get x->up, y->left (like top view in RVIZ looking towards x-axis)
-        cv2.imwrite('map.bmp', cv2.transpose(cv2.flip(grid, -1)))
+        cv2.imwrite('map.bmp', cv2.transpose(cv2.flip(img, -1)))
         self.get_logger().info("Exported map.bmp")
 
     def get_map_callback(self, future):

@@ -11,9 +11,10 @@ def generate_launch_description():
     racecar_gazebo = get_package_share_directory('racecar_gazebo')
 
     world_name = os.path.join(get_package_share_directory('racecar_gazebo'), 'worlds', 'racecar_circuit.world')
-    models_path = os.path.join(get_package_share_directory('racecar_gazebo'))
+    racecar_gazebo = os.path.join(get_package_share_directory('racecar_gazebo'))
 
-    addEnvVariable = AppendEnvironmentVariable("IGN_GAZEBO_RESOURCE_PATH",models_path)
+    gazeboDefaultResourcePath = AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", "/opt/ros/jazzy/share")
+    addRacecarGazeboResourcePath = AppendEnvironmentVariable("GZ_SIM_RESOURCE_PATH", racecar_gazebo)
 
 
     # Inside generate_launch_description() function
@@ -30,7 +31,8 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        addEnvVariable,
+        gazeboDefaultResourcePath,
+        addRacecarGazeboResourcePath,
         gazebo,
         spawn,
     ])
