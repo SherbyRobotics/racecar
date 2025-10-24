@@ -7,7 +7,7 @@ from launch.actions import (
     IncludeLaunchDescription,
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 
 
 def generate_launch_description():
@@ -15,8 +15,11 @@ def generate_launch_description():
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
     racecar_gazebo = get_package_share_directory("racecar_gazebo")
 
-    world_name = os.path.join(
-        racecar_gazebo, "worlds", f"racecar_{LaunchConfiguration('world')}.world"
+    world_arg = DeclareLaunchArgument(
+        "world",
+        default_value="tunnel",
+        description="Name of the world file to load into Gazebo",
+        choices=["tunnel", "tunnel_genie", "circuit"],
     )
 
     gazeboDefaultResourcePath = AppendEnvironmentVariable(
@@ -26,20 +29,24 @@ def generate_launch_description():
         "GZ_SIM_RESOURCE_PATH", racecar_gazebo
     )
 
-    world_arg = DeclareLaunchArgument(
-        "world",
-        default_value="tunnel",
-        description="The name of the world file to load",
-        choices=["tunnel", "tunnel_genie", "circuit"],
-    )
-
     # Inside generate_launch_description() function
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
-        launch_arguments={"gz_args": f"-r {world_name}"}.items(),
-    )
+        launch_arguments={
+            "gz_args": [
+                "-r ",
+                PathJoinSubstitution(
+                    [
+                        racecar_gazebo,
+                        "worlds",
+                        ["racecar_", LaunchConfiguration("world"), ".world"],
+                    ]
+                ),
+            ]
+        }.items(),
+    )  # TODO: Find a better way to use the `world` argument at launch.
 
     # Include spawn launch file
     spawn = IncludeLaunchDescription(
