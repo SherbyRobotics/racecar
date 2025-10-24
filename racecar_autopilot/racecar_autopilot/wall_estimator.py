@@ -1,144 +1,206 @@
 #!/usr/bin/env python3
 
 import rclpy
-from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
-
+import numpy as np
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
 
-import numpy as np
-
 
 class WallEstimator(Node):
-    def __init__(self):
-        super().__init__("wall_estimator")
 
-        # Bounds for the LiDAR's measurements used for estimate
-        self.LEFT_REFERENCE_ANGLE = -90.0  # deg
-        self.RIGHT_REFERENCE_ANGLE = 90.0  # deg
-        self.REFERENCE_ANGLE_DELTA = 15.0  # deg
+    def __init__(self):
+        super().__init__("estimator")
+
+        # Init subscribers
+        self.sub_ref = self.create_subscription(LaserScan, "scan", self.read_scan, 1)
+
+        # Init publishers
+        self.pub_y = self.create_publisher(Twist, "car_position", 1)
+
+        # Parameters
+        self.cone_angle_deg = 20.0  # deg # Angle around left/right reference to consider for the estimation
 
         # Outputs
-        self.y_estimate = float(0)
-        self.dy_estimate = float(0)
-        self.theta_estimate = float(0)
+        self.y_estimation = 0.0
+        self.dy_estimation = 0.0
+        self.theta_estimation = 0.0
 
         # Memory
-        self.y_left = float(0)
-        self.y_right = float(0)
-        self.theta_left = float(0)
-        self.theta_right = float(0)
-        self.nb_lidar_point = int(0)
+        self.y_left = 0.0
+        self.y_right = 0.0
+        self.theta_left = 0.0
+        self.theta_right = 0.0
 
-        self.lidar_subscription = self.create_subscription(LaserScan, "racecar/scan", self.read_scan, 1)
-        self.pos_publisher = self.create_publisher(Twist, "car_position", 1)
+        # Info about LiDAR read from the first scan
+        self.lidar_index_to_compute = True
+        self.index_left_start = 0  # 140
+        self.index_left_end = 0  # 220
+        self.index_right_start = 0  # 500
+        self.index_right_end = 0  # 580
 
-    def read_scan(self, scan_msg: LaserScan):
+    ########################################
+    def read_scan(self, scan_msg):
+
+        if self.lidar_index_to_compute:
+            self.compute_lidar_ranges(scan_msg)
+            self.lidar_index_to_compute = False
+
+        self.estimate_car_position(scan_msg)
+
+    ########################################
+    def compute_lidar_ranges(self, scan_msg):
+
+        angle_min_deg = np.degrees(scan_msg.angle_min)
+        angle_increment_deg = np.degrees(scan_msg.angle_increment)
         ranges = np.array(scan_msg.ranges, dtype=np.float32)
-        angle_min_deg: float = np.degrees(scan_msg.angle_min)
-        angle_increment_deg: float = np.degrees(scan_msg.angle_increment)
-
-        left_lower_bound = self.LEFT_REFERENCE_ANGLE - self.REFERENCE_ANGLE_DELTA
-        left_upper_bound = self.LEFT_REFERENCE_ANGLE + self.REFERENCE_ANGLE_DELTA
-
-        right_lower_bound = self.RIGHT_REFERENCE_ANGLE - self.REFERENCE_ANGLE_DELTA
-        right_upper_bound = self.RIGHT_REFERENCE_ANGLE + self.REFERENCE_ANGLE_DELTA
-
-        # Precompute angles in degress for all indices
-        angles_deg = angle_min_deg + np.arange(len(ranges), dtype=np.float32) * angle_increment_deg
-
-        half_length = len(scan_msg.ranges) // 2
-
-        # Left side: only use the first half of the ranges
-        left_mask = (
-            (angles_deg[:half_length] >= left_lower_bound)
-            & (angles_deg[:half_length] <= left_upper_bound)
-            & (scan_msg.range_min < ranges[:half_length])
-            & (ranges[:half_length] < scan_msg.range_max)
+        angles_deg = (
+            angle_min_deg
+            + np.arange(len(ranges), dtype=np.float32) * angle_increment_deg
         )
-        left_distances = ranges[:half_length][left_mask]
-        left_thetas = angles_deg[:half_length][left_mask]
 
-        if len(left_distances) > 2:
-            left_distances = np.array(left_distances, dtype=np.float32)
-            left_thetas = np.radians(left_thetas)
+        left_min_deg = -90.0 - self.cone_angle_deg
+        left_max_deg = -90.0 + self.cone_angle_deg
+        right_min_deg = 90.0 - self.cone_angle_deg
+        right_max_deg = 90.0 + self.cone_angle_deg
 
-            y = left_distances * np.sin(left_thetas)
-            x = left_distances * np.cos(left_thetas)
-
-            A = np.column_stack((x, np.ones(x.shape, dtype=np.float32)))
-
-            # Least Squares method
-            estimate = np.linalg.lstsq(A, y, rcond=None)[0]  # (A'A)^-1 * A'y
-
-            slope = estimate[0]
-            offset = estimate[1]
-
-            self.theta_left = np.arctan(slope)
-            self.y_left = offset
-
-        # Right side: only use the second half of the ranges
-        right_mask = (
-            (angles_deg[half_length:] >= right_lower_bound)
-            & (angles_deg[half_length:] <= right_upper_bound)
-            & (scan_msg.range_min < ranges[half_length:])
-            & (ranges[half_length:] < scan_msg.range_max)
+        # Find indices corresponding to left and right min/max angles
+        self.index_left_start = np.searchsorted(angles_deg, left_min_deg, side="left")
+        self.index_left_end = (
+            np.searchsorted(angles_deg, left_max_deg, side="right") - 1
         )
-        right_distances = ranges[half_length:][right_mask]
-        right_thetas = angles_deg[half_length:][right_mask]
+        self.index_right_start = np.searchsorted(angles_deg, right_min_deg, side="left")
+        self.index_right_end = (
+            np.searchsorted(angles_deg, right_max_deg, side="right") - 1
+        )
 
-        if len(right_distances) > 2:
-            right_distances = np.array(right_distances)
-            right_thetas = np.radians(right_thetas)
+        self.get_logger().info(
+            f"LiDAR left indices: {self.index_left_start} to {self.index_left_end}"
+        )
+        self.get_logger().info(
+            f"LiDAR right indices: {self.index_right_start} to {self.index_right_end}"
+        )
 
-            y = right_distances * np.sin(right_thetas)
-            x = right_distances * np.cos(right_thetas)
+    ########################################
+    def estimate_line_from_points(self, d, theta):
 
-            A = np.column_stack((x, np.ones(x.shape, dtype=np.float32)))
+        # Convert to Cartesian
+        y = d * np.sin(theta)
+        x = d * np.cos(theta)
 
-            # Least Squares method
-            estimate = np.linalg.lstsq(A, y, rcond=None)[0]  # (ATA)^-1 ATy
+        # Formulate A matrix of the linear system
+        ones = np.ones(x.shape)
+        A = np.column_stack((x, ones))
 
-            slope = estimate[0]
-            offset = estimate[1]
+        # Least square solution
+        estimation = np.linalg.lstsq(A, y, rcond=None)[0]  # (ATA)^-1 ATy
 
-            self.theta_right = np.arctan(slope)
-            self.y_right = offset
+        m = estimation[0]  # slope
+        b = estimation[1]  # offset
 
-        self.theta_estimate = (self.theta_left + self.theta_right) / 2
-        self.y_estimate = (self.y_left + self.y_right) / 2
+        # Return angle and offset
+        theta = np.arctan(m)
+        y = b
 
-        self.publish_estimate()
+        return theta, y
 
-    def convert_angle_to_index(self, angle: float):
-        return round(self.nb_lidar_point * angle / 360)
+    ########################################
+    def estimate_car_position(self, scan_msg):
 
-    def publish_estimate(self):
+        ranges = np.array(scan_msg.ranges)
+
+        # Left side
+        d_data = []
+        theta_data = []
+        n_good_scan = 0
+
+        # Get data in the left cone
+        for i in range(self.index_left_start, self.index_left_end + 1):
+
+            scan_is_good = (ranges[i] > scan_msg.range_min) & (
+                ranges[i] < scan_msg.range_max
+            )
+
+            if scan_is_good:
+                d_data.append(ranges[i])
+                theta_data.append(scan_msg.angle_min + i * scan_msg.angle_increment)
+                n_good_scan = n_good_scan + 1
+
+        if n_good_scan > 2:
+
+            # Estimate left wall line from points using least squares
+            d = np.array(d_data)
+            theta = np.array(theta_data)
+            self.theta_left, self.y_left = self.estimate_line_from_points(d, theta)
+
+        else:
+
+            self.get_logger().warning("Not enough good scans on the left side.")
+
+        # Right side
+        d_data = []
+        theta_data = []
+        n_good_scan = 0
+
+        # Get data in the right cone
+        for i in range(self.index_right_start, self.index_right_end + 1):
+
+            scan_is_good = (ranges[i] > scan_msg.range_min) & (
+                ranges[i] < scan_msg.range_max
+            )
+
+            if scan_is_good:
+
+                d_data.append(ranges[i])
+                theta_data.append(scan_msg.angle_min + i * scan_msg.angle_increment)
+
+                n_good_scan = n_good_scan + 1
+
+        if n_good_scan > 2:
+
+            # Estimate left wall line from points
+            d = np.array(d_data)
+            theta = np.array(theta_data)
+            self.theta_right, self.y_right = self.estimate_line_from_points(d, theta)
+
+        else:
+
+            self.get_logger().warning("Not enough good scans on the right side.")
+
+        # Combine left and right estimates
+        self.theta_estimation = 0.5 * (self.theta_left + self.theta_right)
+        self.y_estimation = 0.5 * (self.y_left + self.y_right)
+
+        self.pub_estimate()
+
+    ########################################
+    def pub_estimate(self):
+
         msg = Twist()
 
-        msg.linear.y = float(self.y_estimate)
-        msg.angular.z = float(self.theta_estimate)
+        msg.linear.y = float(self.y_estimation)
+        msg.angular.z = float(self.theta_estimation)
 
-        # These are for debugging purposes
+        # debug
+
         msg.linear.x = float(self.y_left)
         msg.linear.z = float(self.y_right)
+
         msg.angular.x = float(self.theta_left)
         msg.angular.y = float(self.theta_right)
 
-        self.pos_publisher.publish(msg)
+        self.pub_y.publish(msg)
 
 
 def main(args=None):
-    try:
-        rclpy.init(args=args)
-        node = WallEstimator()
-        rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
-        pass
-    finally:
-        rclpy.shutdown()
+    rclpy.init(args=args)
+    node = WallEstimator()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
+
+##############################################
 
 if __name__ == "__main__":
     main()

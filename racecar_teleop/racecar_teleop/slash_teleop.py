@@ -136,7 +136,7 @@ class Teleop(Node):
                 # Closed-loop velocity, Open-loop steering
                 self.cmd_msg.linear.x  = propulsion_user_input * self.max_vel #[m/s]
                 self.cmd_msg.angular.z = steering_user_input * self.cmd2rad
-                self.cmd_msg.linear.z  = 7.0  # Control mode
+                self.cmd_msg.linear.z  = 0.0  # Control mode
         
         # Deadman is un-pressed
         else:
