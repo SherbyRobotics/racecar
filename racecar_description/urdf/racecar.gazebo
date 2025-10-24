@@ -147,7 +147,7 @@
             <stddev>0.01</stddev>
           </noise>
         </ray>
-        <!-- <gz_frame_id>$(arg prefix)/base_laser</gz_frame_id> -->
+        <gz_frame_id>$(arg prefix)/base_laser</gz_frame_id>
       </sensor>
     </gazebo>
   </xacro:unless>
@@ -159,29 +159,29 @@
         <topic>$(arg prefix)/camera</topic>
         <update_rate>10.0</update_rate>
         <!-- math.atan(320 / 687.8065795898438) * 2 -->
-        <!-- <horizontal_fov>1.5</horizontal_fov> -->
-        <!-- <image>
-        <width>160</width>
-        <height>120</height>
-        <format>B8G8R8</format>
-      </image> -->
-        <!-- <clip>
-        <near>0.02</near>
-        <far>300</far>
-      </clip> -->
-        <!-- <noise>
-        <type>gaussian</type>
-        <mean>0.0</mean>
-        <stddev>0.007</stddev>
-      </noise>
-      <gz_frame_id>$(arg prefix)/camera_optical_link</gz_frame_id> -->
+        <horizontal_fov>1.5</horizontal_fov>
+        <image>
+          <width>160</width>
+          <height>120</height>
+          <format>B8G8R8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+        <gz_frame_id>$(arg prefix)/camera_optical_link</gz_frame_id>
       </sensor>
     </gazebo>
   </xacro:unless>
 
   <gazebo reference="$(arg prefix)/imu_link">
     <sensor name="imu_sensor" type="imu">
-      <!-- <gz_frame_id>$(arg prefix)/imu_link</gz_frame_id> -->
+      <gz_frame_id>$(arg prefix)/imu_link</gz_frame_id>
       <topic>$(arg prefix)/imu</topic>
     </sensor>
   </gazebo>
