@@ -1,4 +1,4 @@
-# GRO830-A25 - Lab issue
+# GRO830-A25 - Lab Issues & Tweaks
 
 > _N.B._ This section documents a "Band-Aid" to fix the issues with GRO830's lab. The fix described ARE temporary, and a robust solution MUST be developped.
 
@@ -87,3 +87,23 @@ python3 path/to/labo_brushfire.py
 ```
 
 Alternatively, if you want `ros2 run` to work, you can uncomment the lines of code at the top of the file to remove the problematic path from the list, BUT this "Band-Aid" is a very bad solution, and is NOT recommended. Note that this solution works exclusively for this script, and you need to paste the lines in every script (affected by the issue) executed using either `ros2 run` or `ros2 launch`.
+
+## Tweaks to apply on the faculty's lab PCs
+
+The first tweak is to remove the now deprecated environment variable Gazebo used to find its resources. For A25, the version of Gazebo used is "Harmonic", which uses the environment variable `GZ_SIM_RESOURCE_PATH`. However, the ROS image for the racecar has yet to update the environment variable, and still uses `IGN_GAZEBO_RESOURCE_PATH`. To apply the tweak, run the following command **on each new session on a lab PC**:
+
+```bash
+echo "unset IGN_GAZEBO_RESOURCE_PATH" >> ~/.bashrc
+```
+
+> NOTES:
+>
+> - A session is ended whenever the user is disconnected;
+> - Remember to close the terminal you used to apply the tweak BEFORE using ROS;
+> - Though it doesn't seem to cause the issues observed on the faculty's lab PCS, it is still **recommended** to apply this tweak on the Raspberry Pi (since the `.bashrc` file isn't erased when a session ends, you only need to apply it ONCE).
+
+The second tweak is not required, but it saves on build time. Because the lab PCs are only used to run Gazebo simulations and do not use serial communication to send the low-level commands to the racecar, two packages can be skipped in the build. To skip these packages, add `--packages-skip serial pb2roscpp` at the end of your `colcon build` command. Here's an example of the full command:
+
+```bash
+colcon build --symlink-install --packages-skip serial pb2roscpp
+```
