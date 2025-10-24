@@ -60,7 +60,7 @@ def main(args=None):
     try:
         rclpy.init(args=args)
         node = ROSMonitor()
-        rclpy.get_default_context().on_shutdown(node.shutdown())
+        rclpy.get_default_context().on_shutdown(node.shutdown)
         rclpy.spin(node)
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
