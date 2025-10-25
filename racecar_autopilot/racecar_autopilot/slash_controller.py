@@ -88,7 +88,7 @@ class SlashController(Node):
                 # Closed-loop velocity on arduino, open-loop steering
                 self.propulsion_cmd = self.propulsion_ref
                 self.arduino_mode = 2
-                self.steering_cmd = self.propulsion_ref + self.steering_offset
+                self.steering_cmd = self.steering_ref + self.steering_offset
 
             elif self.high_level_mode == 2:
                 # Closed-loop position on arduino, open-loop steering

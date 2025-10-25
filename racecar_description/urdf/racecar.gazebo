@@ -1,158 +1,189 @@
 <?xml version="1.0"?>
 <robot name="racecar" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<!-- Gazebo references -->
+  <!-- Gazebo references -->
 
-<gazebo reference="$(arg prefix)/chassis">
-  <mu1 value="0.0"/>
-  <mu2 value="0.0"/>
-  <kp  value="10000000.0" />
-  <kd  value="1.0" />
-  <material>Gazebo/$(arg color)</material>
-</gazebo>
+  <gazebo reference="$(arg prefix)/chassis">
+    <mu1 value="0.0" />
+    <mu2 value="0.0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>
+      <script>
+        <uri>file://media/materials/scripts/gazebo.material</uri>
+        <name>Gazebo/Blue</name>
+      </script>
+    </material>
+  </gazebo>
 
-<gazebo reference="$(arg prefix)/left_rear_wheel">
-  <mu1 value="1.0"/>
-  <mu2 value="1.0"/>
-  <kp  value="10000000.0" />
-  <kd  value="1.0" />
-  <fdir1 value="1 0 0"/>
-  <material>Gazebo/Black</material>
-</gazebo>
+  <gazebo reference="$(arg prefix)/left_rear_wheel">
+    <mu1 value="1.0" />
+    <mu2 value="1.0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <fdir1 value="1 0 0" />
+    <material>
+      <script>
+        <uri>file://media/materials/scripts/gazebo.material</uri>
+        <name>Gazebo/Black</name>
+      </script>
+    </material>
+  </gazebo>
 
-<gazebo reference="$(arg prefix)/right_rear_wheel">
-  <mu1 value="1.0"/>
-  <mu2 value="1.0"/>
-  <kp  value="10000000.0" />
-  <kd  value="1.0" />
-  <fdir1 value="1 0 0"/>
-  <material>Gazebo/Black</material>
-</gazebo>
+  <gazebo reference="$(arg prefix)/right_rear_wheel">
+    <mu1 value="1.0" />
+    <mu2 value="1.0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <fdir1 value="1 0 0" />
+    <material>
+      <script>
+        <uri>file://media/materials/scripts/gazebo.material</uri>
+        <name>Gazebo/Black</name>
+      </script>
+    </material>
+  </gazebo>
 
-<gazebo reference="$(arg prefix)/left_front_wheel">
-  <mu1 value="1.0"/>
-  <mu2 value="1.0"/>
-  <kp  value="10000000.0" />
-  <kd  value="1.0" />
-  <fdir1 value="0 0 1"/>
-  <material>Gazebo/Black</material>
-</gazebo>
+  <gazebo reference="$(arg prefix)/left_front_wheel">
+    <mu1 value="1.0" />
+    <mu2 value="1.0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <fdir1 value="0 0 1" />
+    <material>
+      <script>
+        <uri>file://media/materials/scripts/gazebo.material</uri>
+        <name>Gazebo/Black</name>
+      </script>
+    </material>
+  </gazebo>
 
-<gazebo reference="$(arg prefix)/right_front_wheel">
-  <mu1 value="1.0"/>
-  <mu2 value="1.0"/>
-  <kp  value="10000000.0" />
-  <kd  value="1.0" />
-  <fdir1 value="0 0 1"/>
-  <material>Gazebo/Black</material>
-</gazebo>
+  <gazebo reference="$(arg prefix)/right_front_wheel">
+    <mu1 value="1.0" />
+    <mu2 value="1.0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <fdir1 value="0 0 1" />
+    <material>
+      <script>
+        <uri>file://media/materials/scripts/gazebo.material</uri>
+        <name>Gazebo/Black</name>
+      </script>
+    </material>
+  </gazebo>
 
-<!-- Gazebo plugins -->
+  <!-- Gazebo plugins -->
 
-<gazebo>
-  <plugin name="ignition::gazebo::systems::AckermannSteering" filename="libignition-gazebo-ackermann-steering-system">
-    <left_joint>left_front_wheel_joint</left_joint>
-    <right_joint>right_front_wheel_joint</right_joint>
-    <left_steering_joint>left_steering_hinge_joint</left_steering_joint>
-    <right_steering_joint>right_steering_hinge_joint</right_steering_joint>
-    <wheel_separation>0.25</wheel_separation>
-    <kingpin_width>0.23</kingpin_width>
-    <wheel_base>0.325</wheel_base>
-    <wheel_radius>0.05</wheel_radius>
-    <steering_limit>0.667</steering_limit>
-    <topic>$(arg prefix)/cmd_vel</topic>
-    <child_frame_id>$(arg prefix)/base_footprint</child_frame_id>
-    <publish_tf>false</publish_tf>
-    <tf_topic>$(arg prefix)/odom/tf</tf_topic>
-    <odom_topic>$(arg prefix)/odom</odom_topic>
-  </plugin>
+  <gazebo>
+    <plugin name="gz::sim::systems::AckermannSteering"
+      filename="libgz-sim-ackermann-steering-system">
+      <left_joint>left_front_wheel_joint</left_joint>
+      <right_joint>right_front_wheel_joint</right_joint>
+      <left_steering_joint>left_steering_hinge_joint</left_steering_joint>
+      <right_steering_joint>right_steering_hinge_joint</right_steering_joint>
+      <wheel_separation>0.25</wheel_separation>
+      <kingpin_width>0.23</kingpin_width>
+      <wheel_base>0.325</wheel_base>
+      <wheel_radius>0.05</wheel_radius>
+      <steering_limit>0.667</steering_limit>
+      <topic>$(arg prefix)/cmd_vel</topic>
+      <child_frame_id>$(arg prefix)/base_footprint</child_frame_id>
+      <publish_tf>false</publish_tf>
+      <tf_topic>$(arg prefix)/odom/tf</tf_topic>
+      <odom_topic>$(arg prefix)/odom</odom_topic>
+    </plugin>
 
-  <plugin filename="libignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
-    <render_engine>ogre2</render_engine>
-  </plugin>  
+    <plugin filename="libgz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
 
-  <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu">
-    <topic>imu</topic>
-    <imu_noise_density>0.0</imu_noise_density>
-    <imu_random_walk>0.0</imu_random_walk>
-    <orientation_noise_density>0.0</orientation_noise_density>
-    <orientation_random_walk>0.0</orientation_random_walk>
-    <gravity>0 0 -9.81</gravity>
-    <initial_orientation_as_reference>false</initial_orientation_as_reference>
-  </plugin>
+    <plugin filename="libgz-sim-imu-system.so" name="gz::sim::systems::Imu">
+      <topic>imu</topic>
+      <imu_noise_density>0.0</imu_noise_density>
+      <imu_random_walk>0.0</imu_random_walk>
+      <orientation_noise_density>0.0</orientation_noise_density>
+      <orientation_random_walk>0.0</orientation_random_walk>
+      <gravity>0 0 -9.81</gravity>
+      <initial_orientation_as_reference>false</initial_orientation_as_reference>
+    </plugin>
 
-  <plugin filename="ignition-gazebo-joint-state-publisher-system"
-             name="ignition::gazebo::systems::JointStatePublisher">
-    <gz_frame_id>odom</gz_frame_id>
-    <topic>/joint_states</topic>
-  </plugin>
+    <plugin filename="gz-sim-joint-state-publisher-system"
+      name="gz::sim::systems::JointStatePublisher">
+      <gz_frame_id>odom</gz_frame_id>
+      <topic>/joint_states</topic>
+    </plugin>
 
-</gazebo>
+  </gazebo>
   <!-- hokuyo -->
-<xacro:unless value="$(optenv DISABLE_GAZEBO_LASER false)">
-  <gazebo reference="$(arg prefix)/base_laser">
-    <material>Gazebo/Grey</material>
-    <sensor type="gpu_lidar" name="hokuyo_sensor">
-      <pose>0 0 0.0124 0 0 0</pose>
-      <topic>$(arg prefix)/scan</topic>
-      <visualize>false</visualize>
-      <update_rate>10</update_rate>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>360</samples>
-            <resolution>1</resolution>
-            <min_angle>-3.12413907051</min_angle>
-            <max_angle>3.14159274101</max_angle>
-          </horizontal>
-        </scan>
-        <range>
-          <min>0.15</min>
-          <max>12.0</max>
-          <resolution>0.01</resolution>
-        </range>
+  <xacro:unless value="$(optenv DISABLE_GAZEBO_LASER false)">
+    <gazebo reference="$(arg prefix)/base_laser">
+      <material>
+        <script>
+          <uri>file://media/materials/scripts/gazebo.material</uri>
+          <name>Gazebo/DarkGrey</name>
+        </script>
+      </material>
+      <sensor type="gpu_lidar" name="hokuyo_sensor">
+        <pose>0 0 0.0124 0 0 0</pose>
+        <topic>$(arg prefix)/scan</topic>
+        <visualize>false</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.12413907051</min_angle>
+              <max_angle>3.14159274101</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.15</min>
+            <max>12.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <gz_frame_id>$(arg prefix)/base_laser</gz_frame_id>
+      </sensor>
+    </gazebo>
+  </xacro:unless>
+
+  <!-- camera -->
+  <xacro:unless value="$(optenv DISABLE_GAZEBO_CAMERA false)">
+    <gazebo reference="$(arg prefix)/camera_link">
+      <sensor type="camera" name="camera_sensor">
+        <topic>$(arg prefix)/camera</topic>
+        <update_rate>10.0</update_rate>
+        <!-- math.atan(320 / 687.8065795898438) * 2 -->
+        <horizontal_fov>1.5</horizontal_fov>
+        <image>
+          <width>160</width>
+          <height>120</height>
+          <format>B8G8R8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
         <noise>
+          <type>gaussian</type>
           <mean>0.0</mean>
-          <stddev>0.01</stddev>
+          <stddev>0.007</stddev>
         </noise>
-      </ray>
-      <gz_frame_id>$(arg prefix)/base_laser</gz_frame_id>
+        <gz_frame_id>$(arg prefix)/camera_optical_link</gz_frame_id>
+      </sensor>
+    </gazebo>
+  </xacro:unless>
+
+  <gazebo reference="$(arg prefix)/imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <gz_frame_id>$(arg prefix)/imu_link</gz_frame_id>
+      <topic>$(arg prefix)/imu</topic>
     </sensor>
   </gazebo>
-</xacro:unless>
-
-<!-- camera -->
-<xacro:unless value="$(optenv DISABLE_GAZEBO_CAMERA false)">
-  <gazebo reference="$(arg prefix)/camera_link">
-    <sensor type="camera" name="camera_sensor">
-      <topic>$(arg prefix)/camera</topic>
-      <update_rate>10.0</update_rate>
-      <!-- math.atan(320 / 687.8065795898438) * 2 -->
-      <horizontal_fov>1.5</horizontal_fov>
-      <image>
-        <width>160</width>
-        <height>120</height>
-        <format>B8G8R8</format>
-      </image>
-      <clip>
-        <near>0.02</near>
-        <far>300</far>
-      </clip>
-      <noise>
-        <type>gaussian</type>
-        <mean>0.0</mean>
-        <stddev>0.007</stddev>
-      </noise>
-      <gz_frame_id>$(arg prefix)/camera_optical_link</gz_frame_id>
-    </sensor>
-  </gazebo>
-</xacro:unless>
-
-<gazebo reference="$(arg prefix)/imu_link">
-  <sensor name="imu_sensor" type="imu">
-    <gz_frame_id>$(arg prefix)/imu_link</gz_frame_id>
-    <topic>$(arg prefix)/imu</topic>
-  </sensor>
-</gazebo>
 
 </robot>
