@@ -16,7 +16,7 @@ def launch_setup(context, *args, **kwargs):
 
     # Package Directories
     racecar_description = get_package_share_directory('racecar_description')
-    racecar_gazebo = get_package_share_directory('racecar_gazebo')
+    # racecar_gazebo = get_package_share_directory('racecar_gazebo')  # NOTE: Unused.
     racecar_navigation = get_package_share_directory('racecar_navigation')
 
     # Parse robot description from xacro
@@ -92,9 +92,9 @@ def launch_setup(context, *args, **kwargs):
     )
 
 
-    gaz_control = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(racecar_gazebo, 'launch', 'gazebo_control.launch.py')]),
-    )
+    # gaz_control = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([os.path.join(racecar_gazebo, 'launch', 'gazebo_control.launch.py')]),
+    # )  # NOTE: Does nothing.
 
     kalmanFilter = IncludeLaunchDescription(
                         PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
@@ -110,7 +110,7 @@ def launch_setup(context, *args, **kwargs):
         cmd_vel_arb,
         joystick,
         teleop,
-        gaz_control,
+        # gaz_control,
         kalmanFilter
     ]
 
