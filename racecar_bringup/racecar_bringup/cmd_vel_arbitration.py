@@ -37,9 +37,8 @@ class Arbitration(Node):
 
     def check_autopilot_status(self, msg: Joy):
         """Checks if `LB` + `LT` are pressed (i.e. deadman switch + autopilot-using-behaviors mode)."""
-        self.__autopilot_active = (
-            msg.buttons[4] and msg.axes[2] == -1.0
-        )  # TODO: Validate the correct axis for DirectInput mode.
+        self.__autopilot_active = msg.buttons[4] and msg.buttons[6]
+        # NOTE: On DirectInput mode, LB is msg.buttons[6]. On XInput mode, LB is msg.axes[2] (== -1.0).
 
     def cmd_vel_callback(self, msg, priority: int):
         self._time_called[priority] = self.get_clock().now()
