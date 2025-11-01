@@ -100,8 +100,8 @@ def launch_setup(context, *args, **kwargs):
 
     joystick = Node(
         package='joy',
-        executable='joy_node',
-        name='joy_node',
+        executable='game_controller_node',
+        name='joy',
         parameters=[{'deadzone': 0.2},
                     {'autorepeat_rate': 0.0},
                     {'coalesce_interval': 0.01}],

@@ -44,7 +44,7 @@ def generate_launch_description():
 
         Node(
             package='joy',  
-            executable='joy_node',
+            executable='game_controller_node',
             name='joy',
             output='screen',
         ),

@@ -51,7 +51,7 @@ def generate_launch_description():
             actions=[
                 Node(
                     package='joy',
-                    executable='joy_node',
+                    executable='game_controller_node',
                     name='joy',
                     parameters=[{'deadzone': 0.05}],
                     arguments=['dev', '/dev/input/js0'],

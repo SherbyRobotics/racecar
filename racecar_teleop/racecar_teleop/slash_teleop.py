@@ -5,6 +5,11 @@ import numpy as np
 from sensor_msgs.msg import Joy
 from geometry_msgs.msg import Twist
 
+"""
+NOTE: This node is meant to be used with `joy.game_controller_node`, for mode-independent mappings on the Logitech F710 gamepad.
+For gamepad mappings, see this:
+https://github.com/ros-drivers/joystick_drivers/blob/ros2/joy/README.md#ros-2-driver-for-generic-joysticks-and-game-controllers.
+"""
 
 #########################################
 class Teleop(Node):
@@ -22,29 +27,16 @@ class Teleop(Node):
         self.ps4 = self.declare_parameter('ps4', False).value
 
         self.cmd2rad   = self.maxStAng*2*3.1416/360
-        self.joystickCompatibilityWarned = False
-
 
         self.pub_cmd = self.create_publisher(Twist, 'ctl_ref', 1)
         
         # Always create subscribers last
         self.sub_joy = self.create_subscription(Joy, 'joy', self.joy_callback, 1)
-
         
 
     ####################################### 
         
-    def joy_callback( self, joy_msg ):
-        """ """
-        min_axes = 5 if self.ps4 else 4
-        if len(joy_msg.axes) < min_axes or len(joy_msg.buttons) < 7:
-            if not self.joystickCompatibilityWarned:
-                self.get_logger().info("slash_teleop: Received topic doesn't have enough axes and/or buttons. If a Logitech gamepad is used, make sure also it is in X mode. Will not warn again.")
-                self.joystickCompatibilityWarned = True
-            return
-
-        self.joystickCompatibilityWarned = False   # reset in case we switch mode on the gamepad
-
+    def joy_callback(self, joy_msg: Joy):
         propulsion_user_input = joy_msg.axes[3]    # Up-down Right joystick 
         steering_user_input   = joy_msg.axes[0]    # Left-right left joystick
         
@@ -52,19 +44,19 @@ class Teleop(Node):
                 
         # Software deadman switch
         #If left button is active 
-        if (joy_msg.buttons[4]):
+        if (joy_msg.buttons[9]):
             
             #No button pressed (see below)
             # Closed-loop velocity, Open-loop steering, control mode = 0
             
             #If right button is active       
-            if (joy_msg.buttons[5]):   
+            if (joy_msg.buttons[10]): 
                 # Fully Open-Loop
                 self.cmd_msg.linear.x  = propulsion_user_input * self.max_volt #[volts]
                 self.cmd_msg.angular.z = steering_user_input * self.cmd2rad
                 self.cmd_msg.linear.z  = 1.0   #CtrlChoice
             
-            elif (joy_msg.buttons[10]): # RJP
+            elif (joy_msg.buttons[8]): # RJP
                 """
                 GRO501-1: closed-loop velocity fixed @ X m/s, open-loop
                 steering, where X is determined "on-site".
@@ -74,7 +66,7 @@ class Teleop(Node):
                 self.cmd_msg.linear.z = 0.0 # high-level mode
                 
             #If right trigger is active       
-            elif (joy_msg.buttons[7]):   # START
+            elif (joy_msg.buttons[6]):   # START
                 """
                 GRO501-1: closed-loop position fixed @ X m, open-loop
                 steering, where X is determined "on-site".
@@ -84,21 +76,21 @@ class Teleop(Node):
                 self.cmd_msg.linear.z  = 2.0   #CtrlChoice
                 
             #If button A is active 
-            elif(joy_msg.buttons[1]):   
+            elif(joy_msg.buttons[0]):   
                 # Closed-loop velocity, Closed-loop steering 
                 self.cmd_msg.linear.x  = propulsion_user_input * self.max_vel #[m/s]
                 self.cmd_msg.angular.z = steering_user_input # [m]
                 self.cmd_msg.linear.z  = 3.0  # Control mode
                 
             #If button B is active 
-            elif(joy_msg.buttons[2]):   
+            elif(joy_msg.buttons[1]):   
                 # Closed-loop position, Closed-loop steering 
                 self.cmd_msg.linear.x  = propulsion_user_input # [m]
                 self.cmd_msg.angular.z = steering_user_input # [m]
                 self.cmd_msg.linear.z  = 4.0  # Control mode
                 
             #If button x is active 
-            elif(joy_msg.buttons[0]):   
+            elif(joy_msg.buttons[2]):   
                 # Closed-loop velocity with fixed 1 m/s ref, Closed-loop steering
                 self.cmd_msg.linear.x  = 2.0 #[m/s]
                 self.cmd_msg.angular.z = 0.0 # [m]
@@ -112,19 +104,19 @@ class Teleop(Node):
                 self.cmd_msg.linear.z  = 6.0  # Control mode
                 
             #If left trigger is active 
-            elif (joy_msg.buttons[6]):
+            elif (joy_msg.axes[4] == -1.0):
                 # No ctl_ref msg published!
                 return
                 
-            #If right joy pushed
-            # elif(joy_msg.buttons[11]):
+            #If right trigger pushed
+            # elif(joy_msg.axes[5] == -1.0):
             #      # Template for a custom mode
             #     self.cmd_msg.linear.x  = 0.0
             #     self.cmd_msg.angular.z = 0.0
             #     self.cmd_msg.linear.z  = 7.0 # Control mode
                 
             #If bottom arrow is active
-            # elif(joy_msg.axes[7]):
+            # elif(joy_msg.buttons[12]):
             #     # Template for a custom mode
             #     self.cmd_msg.linear.x  = 0.0
             #     self.cmd_msg.angular.z = 0.0
