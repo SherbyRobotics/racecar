@@ -14,7 +14,7 @@ def launch_setup(context, *args, **kwargs):
     prefix = LaunchConfiguration('prefix').perform(context)
     localization = LaunchConfiguration('localization').perform(context)
     database_path = LaunchConfiguration('database_path').perform(context)
-    odom_correction = LaunchConfiguration('odom_correction').perform(context)
+    odom_correction = LaunchConfiguration('odom_correction').perform(context).lower()
     use_sim_time = LaunchConfiguration('use_sim_time')
     delete_db = LaunchConfiguration('delete_db').perform(context)
 
@@ -35,8 +35,8 @@ def launch_setup(context, *args, **kwargs):
             {'queue_size': 10},
             {'topic_queue_size': 1},
             {'approx_sync': True},
-            {'RGBD/NeighborLinkRefining': 'true'},
-            {'RGBD/ProximityBySpace': 'true'},
+            {'RGBD/NeighborLinkRefining': odom_correction},
+            {'RGBD/ProximityBySpace': odom_correction},
             {'RGBD/AngularUpdate': '0.01'},
             {'RGBD/LinearUpdate': '0.01'},
             {'Grid/FromDepth': 'false'},
@@ -55,7 +55,6 @@ def launch_setup(context, *args, **kwargs):
         remappings=[
             ('scan', f'{prefix}/scan'),
             ('grid_map', 'map'),
-            ('move_base', 'move_base')
         ]
     )
 
