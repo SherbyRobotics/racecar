@@ -92,10 +92,6 @@ def launch_setup(context, *args, **kwargs):
     )
 
 
-    # gaz_control = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource([os.path.join(racecar_gazebo, 'launch', 'gazebo_control.launch.py')]),
-    # )  # NOTE: Does nothing.
-
     kalmanFilter = IncludeLaunchDescription(
                         PythonLaunchDescriptionSource([os.path.join(racecar_navigation, 'launch', 'kalmanFilter.launch.py')]),
                         launch_arguments={"odom_topic":f'/{prefix}/odom/filtered',
@@ -110,7 +106,6 @@ def launch_setup(context, *args, **kwargs):
         cmd_vel_arb,
         joystick,
         teleop,
-        # gaz_control,
         kalmanFilter
     ]
 
