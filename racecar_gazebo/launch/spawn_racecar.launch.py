@@ -4,6 +4,7 @@ import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, OpaqueFunction
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -11,12 +12,12 @@ from xml.dom.minidom import Document
 
 
 def launch_setup(context, *args, **kwargs):
-    # Declare launch arguments
+    # Get launch arguments
     prefix = LaunchConfiguration('prefix').perform(context)
+    use_joy = LaunchConfiguration('use_joy').perform(context).lower() == "true"
 
     # Package Directories
     racecar_description = get_package_share_directory('racecar_description')
-    # racecar_gazebo = get_package_share_directory('racecar_gazebo')  # NOTE: Unused.
     racecar_navigation = get_package_share_directory('racecar_navigation')
 
     # Parse robot description from xacro
@@ -68,6 +69,7 @@ def launch_setup(context, *args, **kwargs):
     cmd_vel_arb = Node(
         package='racecar_bringup',
         executable='cmd_vel_arbitration',
+        parameters=[{'bypass_joy': not use_joy}],
         remappings=[(f'/{prefix}/cmd_vel_output', f'/{prefix}/cmd_vel')],
         namespace=prefix
     )
@@ -79,7 +81,8 @@ def launch_setup(context, *args, **kwargs):
         parameters=[{'deadzone': 0.2},
                     {'autorepeat_rate': 0.0},
                     {'coalesce_interval': 0.01}],
-        namespace=prefix
+        namespace=prefix,
+        condition=IfCondition(LaunchConfiguration('use_joy'))
     )
 
 
@@ -88,7 +91,8 @@ def launch_setup(context, *args, **kwargs):
             executable='slash_teleop',
             name='racecar_teleop',
             remappings=[(f'/{prefix}/ctl_ref', f'/{prefix}/cmd_vel_abtr_0')],
-            namespace=prefix   
+            namespace=prefix,
+            condition=IfCondition(LaunchConfiguration('use_joy'))
     )
 
 
@@ -113,6 +117,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         DeclareLaunchArgument('prefix', default_value='racecar'),
+        DeclareLaunchArgument('use_joy', default_value='True', description="launch joy related node"),
         OpaqueFunction(function=launch_setup)
     ])
 

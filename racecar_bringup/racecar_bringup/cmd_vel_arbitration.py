@@ -14,6 +14,11 @@ class Arbitration(Node):
         self._delay_sec = (
             self.declare_parameter("delay_sec", 0.5).get_parameter_value().double_value
         )
+        
+        self._bypass_joy = (
+            self.declare_parameter("bypass_joy", False).get_parameter_value().bool_value
+        )
+        
         self._time_called = [self.get_clock().now() for _ in range(9)]
 
         self._cmd_vel_pub = self.create_publisher(Twist, "cmd_vel_output", 1)
@@ -50,7 +55,7 @@ class Arbitration(Node):
                 pub = False
                 break
         if pub:
-            if self.__autopilot_active:
+            if self.__autopilot_active or self._bypass_joy:
                 self._cmd_vel_pub.publish(msg)
             elif priority == 0:
                 self._cmd_vel_pub.publish(msg)

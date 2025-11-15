@@ -38,6 +38,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         PythonLaunchDescriptionSource(
             [os.path.join(racecar_gazebo, "launch", "spawn_racecar.launch.py")]
         ),
+        launch_arguments={"use_joy": LaunchConfiguration('use_joy')}.items()
     )
 
     return (gazeboDefaultResourcePath, addRacecarGazeboResourcePath, gazebo, spawn_racecar)
@@ -51,4 +52,6 @@ def generate_launch_description():
         choices=["tunnel", "tunnel_genie", "circuit"],
     )
 
-    return LaunchDescription([world_arg, OpaqueFunction(function=launch_setup)])
+    return LaunchDescription([DeclareLaunchArgument('use_joy', default_value='True', description="launch joy related node"),
+                              world_arg, 
+                              OpaqueFunction(function=launch_setup)])
