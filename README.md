@@ -33,7 +33,7 @@ To be able to test our code, there are a few requirements.
 
 * For Desktop/Laptop development, see this [section](images/README.md#creating-a-virtual-machine) to setup ROS in a virtual machine or in a dual boot with Ubuntu 24.04
 
-* Click here to [download the default virtual machine](https://usherbrooke-my.sharepoint.com/:u:/g/personal/lali3401_usherbrooke_ca/ET_KS0N6qFpPjCdlN4sOIrYBsIMreMN1X6O5qblisWM_Rw?e=6nY1pi), see this [section](images/README.md#importing-a-virtual-machine) for how to import it in Virtual box
+* Click here to [download the default virtual machine](https://usherbrooke.sharepoint.com/:u:/s/genie-robotique-montage/IQBziR3UqTC4RLEV-InRo3QyASJViTz5hc1ibc5v5FGeuy0?e=O65S3v), see this [section](images/README.md#importing-a-virtual-machine) for how to import it in Virtual box
     Use the VM to show topics and view them in RVIZ to limit the usage of the RaspberryPi. You might need to change the [ROS_DOMAIN_ID](https://docs.ros.org/en/rolling/Concepts/Intermediate/About-Domain-ID.html) on both machine before using it : `export ROS_DOMAIN_ID = X`
 * As the racecar repository is still under continuous development, we recommand to pull the code at least once before starting any new project as the source code might be more up to date than the version available on a RPI5 image.
 
