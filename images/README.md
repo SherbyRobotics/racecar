@@ -27,7 +27,7 @@
 # Importing a Virtual Machine
 
 1. Install [VirtualBox](https://www.virtualbox.org/). Optionally, the VirtualBox Extension Pack can also be installed for USB2-USB3 support.
-2. Click here to [download the default virtual machine](https://usherbrooke-my.sharepoint.com/:u:/g/personal/lali3401_usherbrooke_ca/ET_KS0N6qFpPjCdlN4sOIrYBsIMreMN1X6O5qblisWM_Rw?e=6nY1pi),
+2. Click here to [download the default virtual machine](https://usherbrooke.sharepoint.com/:u:/s/genie-robotique-montage/IQBziR3UqTC4RLEV-InRo3QyASJViTz5hc1ibc5v5FGeuy0?e=O65S3v),
 3. Open VirtualBox the import the VM using the file->import option. Then select the VM and edit its Settings:
     1. System->Processor: set at least 2 to 6 processors (or 50% of your CPUs). 
 	2. Network->Adapter 2: Enable it, attached to "Bridged Adapter" with your wireless network adapter. This will be used to connect the virtual machine to ROS on the RaceCar.
