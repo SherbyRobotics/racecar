@@ -178,22 +178,33 @@ class BlobDetector(Node):
                     info_K = np.array(info.k).reshape([3, 3])
                     info_D = np.array(info.d)
                     info_P = np.array(info.p).reshape([3, 4])
+                    # Hypothesis: Returns reprojected points in pixel coordinates.
                     pts_uv = cv2.undistortPoints(pts_uv, info_K, info_D, info_P)
                     angle = np.arcsin(-pts_uv[0][0][0]) # negative to get angle from forward x axis
                     x = pts_uv[0][0][0]
                     y = pts_uv[0][0][1]
 
                     # Get depth.
+                    # Hypothesis: Reapplies fx/cx -> u/v wrong (bounds are out of image).
+                    # Therefore, no valid depth is found, and closestObject[2] stays 0.
+                    # Fix: pts_uv computed with info_P, so pts_uv contains pixel coords, and
+                    #      we only need to round to an integer value.
+                    # NOTE: results obtained with the commented commands are also invalid, so
+                    #       the hypothesis may be incorrect.
+                    # u = int(round(x))
+                    # v = int(round(y))
                     u = int(x * info.p[0] + info.p[2])
                     v = int(y * info.p[5] + info.p[6])
                     depth = -1
+                    # if u <= 0 and u < cv_depth.shape[1] and 0 <= v < cv_depth.shape[0]:
                     if u >= 0 and u < cv_depth.shape[1]:
                         for j in range(0, cv_depth.shape[0]):
                             if cv_depth[j, u] > 0:
                                 depth = cv_depth[j, u]
                                 break
                                 # is the depth contained in the blob?
-                                if abs(j-v) < keypoints[i].size/2:
+                                # NOTE: unreachable.
+                                if abs(j - v) < keypoints[i].size / 2:
                                     depth = cv_depth[j, u]
                                     break
                                 
