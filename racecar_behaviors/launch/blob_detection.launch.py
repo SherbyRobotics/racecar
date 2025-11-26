@@ -43,7 +43,7 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
         remappings=[('image', 'raspicam_node/image'), ('camera_info', 'racecar/camera_info'),
                     ('depth', 'raspicam_node/depth_registered')],
-        parameters=[{'map_frame_id': 'racecar/odom', 'frame_id': 'racecar/base_footprint',
+        parameters=[{'map_frame_id': 'racecar/map', 'frame_id': 'racecar/base_footprint',
                      'object_frame_id': 'racecar/object', 'color_hue': 160}]
     )
 
