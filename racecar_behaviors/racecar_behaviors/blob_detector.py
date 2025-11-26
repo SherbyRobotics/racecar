@@ -1,34 +1,34 @@
-    #!/usr/bin/env python3
+#!/usr/bin/env python3
 
-# Band-Aid to be able to use `ros2 launch`
+# === Band-Aid to be able to use `ros2 launch`
 import sys
+
 if "/usr/local/lib/python3.12/dist-packages" in sys.path:
     sys.path.remove("/usr/local/lib/python3.12/dist-packages")
+# ===
 
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 from rclpy.duration import Duration
-# from rclpy.parameter_event_handler import ParameterEventHandler
 
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 from std_msgs.msg import String
-from std_srvs.srv import Empty
 from sensor_msgs.msg import Image, CameraInfo
-from geometry_msgs.msg import Twist, Point, TransformStamped
+from geometry_msgs.msg import TransformStamped
 import message_filters
 
 import tf2_ros
 from tf2_ros import Buffer, TransformListener
 import tf_transformations
-from visualization_msgs.msg import Marker
-from racecar_behaviors.libbehaviors import *
+from racecar_behaviors.libbehaviors import multiply_transforms
+
 
 class BlobDetector(Node):
     def __init__(self):
-        super().__init__('blob_detector')
+        super().__init__("blob_detector")
         self.bridge = CvBridge()
 
         self.map_frame_id = self.declare_parameter('map_frame_id', 'map').value
@@ -95,13 +95,22 @@ class BlobDetector(Node):
         # self.hue_handle = self.handler.add_parameter_callback( parameter_name = 'color_hue', node_name='blob_detector', callback=self.hue_callback)
 
     def param_callback(self):
-        self.color_hue = self.get_parameter('color_hue').get_parameter_value().integer_value 
-        self.color_range = self.get_parameter('color_range').get_parameter_value().integer_value
-        self.color_saturation = self.get_parameter('color_saturation').get_parameter_value().integer_value
-        self.color_value = self.get_parameter('color_value').get_parameter_value().integer_value
-        self.border = self.get_parameter('border').get_parameter_value().integer_value
-        self.get_logger().info(f"param values:{self.color_hue}, {self.color_range}, {self.color_saturation}, {self.color_value}, {self.border}")
-        
+        self.color_hue = (
+            self.get_parameter("color_hue").get_parameter_value().integer_value
+        )
+        self.color_range = (
+            self.get_parameter("color_range").get_parameter_value().integer_value
+        )
+        self.color_saturation = (
+            self.get_parameter("color_saturation").get_parameter_value().integer_value
+        )
+        self.color_value = (
+            self.get_parameter("color_value").get_parameter_value().integer_value
+        )
+        self.border = self.get_parameter("border").get_parameter_value().integer_value
+        self.get_logger().info(
+            f"param values:{self.color_hue}, {self.color_range}, {self.color_saturation}, {self.color_value}, {self.border}"
+        )
 
     # def config_callback(self, config, level):
     #     self.get_logger().info("Reconfigure Request:")
@@ -123,7 +132,7 @@ class BlobDetector(Node):
         except Exception as e:
             self.get_logger().info(str(depth))
             pass
-        
+
         hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
         
         mask = cv2.inRange(hsv, np.array([self.color_hue-self.color_range,self.color_saturation,self.color_value]), np.array([self.color_hue+self.color_range,255,255]))
@@ -143,8 +152,7 @@ class BlobDetector(Node):
                     angle = np.arcsin(-pts_uv[0][0][0]) # negative to get angle from forward x axis
                     x = pts_uv[0][0][0]
                     y = pts_uv[0][0][1]
-                    # self.get_logger().info(f"({i+1}/{len(keypoints)}) {keypoints[i].pt[0]} {keypoints[i].pt[1]} -> {x} {y} angle={angle*180/np.pi} deg")
-                    
+
                     # Get depth.
                     u = int(x * info.p[0] + info.p[2])
                     v = int(y * info.p[5] + info.p[6])
@@ -179,11 +187,11 @@ class BlobDetector(Node):
             transform.transform.translation.x = float(transObj[0])
             transform.transform.translation.y = float(transObj[1])
             transform.transform.translation.z = float(transObj[2])
-            self.br.sendTransform(transform)  
+            self.br.sendTransform(transform)
             msg = String()
             msg.data = self.object_frame_id
-            self.object_pub.publish(msg) # signal that an object has been detected
-            
+            self.object_pub.publish(msg)  # signal that an object has been detected
+
             # Compute object pose in map frame
             try:
                 self.tf_buffer.lookup_transform(self.map_frame_id, image.header.frame_id, image.header.stamp, Duration(nanoseconds=500000000)) # 500 ms
@@ -225,5 +233,6 @@ def main(args=None):
     rclpy.spin(blobDetector)
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
