@@ -31,14 +31,42 @@ class BlobDetector(Node):
         super().__init__("blob_detector")
         self.bridge = CvBridge()
 
-        self.map_frame_id = self.declare_parameter('map_frame_id', 'map').value
-        self.frame_id = self.declare_parameter('frame_id', 'base_link').value
-        self.object_frame_id = self.declare_parameter('object_frame_id', 'object').value
-        self.color_hue = self.declare_parameter('color_hue', 125).value  # 160=purple, 100=blue, 10=Orange
-        self.color_range = self.declare_parameter('color_range', 20).value
-        self.color_saturation = self.declare_parameter('color_saturation', 150).value
-        self.color_value = self.declare_parameter('color_value', 10).value
-        self.border = self.declare_parameter('border', 1).value
+        self.map_frame_id: str = (
+            self.declare_parameter("map_frame_id", "map")
+            .get_parameter_value()
+            .string_value
+        )
+        self.frame_id = (
+            self.declare_parameter("frame_id", "base_link")
+            .get_parameter_value()
+            .string_value
+        )
+        self.object_frame_id = (
+            self.declare_parameter("object_frame_id", "object")
+            .get_parameter_value()
+            .string_value
+        )
+        self.color_hue = (
+            self.declare_parameter("color_hue", 125).get_parameter_value().integer_value
+        )  # 160=purple, 100=blue, 10=Orange
+        self.color_range = (
+            self.declare_parameter("color_range", 20)
+            .get_parameter_value()
+            .integer_value
+        )
+        self.color_saturation = (
+            self.declare_parameter("color_saturation", 150)
+            .get_parameter_value()
+            .integer_value
+        )
+        self.color_value = (
+            self.declare_parameter("color_value", 10)
+            .get_parameter_value()
+            .integer_value
+        )
+        self.border = (
+            self.declare_parameter("border", 1).get_parameter_value().integer_value
+        )
 
         self.wait_time = 0
 
@@ -121,16 +149,18 @@ class BlobDetector(Node):
         return response
    
     def image_callback(self, image, depth, info):
-
+        cv_image = np.array([])  # Remove unbound warnings
         try:
             cv_image = self.bridge.imgmsg_to_cv2(image, "bgr8")
         except CvBridgeError as e:
-             self.get_logger().info(str(e))
-            
+            self.get_logger().info(str(e))
+
+        cv_depth = np.array([])  # Remove unbound warnings
         try:
             cv_depth = self.bridge.imgmsg_to_cv2(depth, "32FC1")
         except Exception as e:
             self.get_logger().info(str(depth))
+            self.get_logger().error(e)
             pass
 
         hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
