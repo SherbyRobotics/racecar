@@ -20,7 +20,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         remappings=[
             ("/cmd_vel", f"/{prefix}/cmd_vel_abtr_5"),
             ("/scan", f"/{prefix}/scan"),
-            (f"/{prefix}/odom", f"/{prefix}/odometry/filtered"),
+            ("/odom", f"/{prefix}/odom/filtered"),
         ],
     )
 
