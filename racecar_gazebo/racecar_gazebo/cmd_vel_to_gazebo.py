@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# cmd_vel_shim.py
+
 import math, rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
@@ -7,7 +7,7 @@ from geometry_msgs.msg import Twist
 
 class CmdVelGazebo(Node):
   def __init__(self):
-    super().__init__('cmd_vel_gz')
+    super().__init__('cmd_vel_gazebo')
     self.declare_parameter('wheelbase', 0.325)  # match your <wheel_base> in Gazebo
     self.L = float(self.get_parameter('wheelbase').value)
 
