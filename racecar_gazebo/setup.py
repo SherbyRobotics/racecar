@@ -49,6 +49,7 @@ setup(
     entry_points={
         'console_scripts': [
             'cmd_vel_to_ackermann_drive = racecar_gazebo.cmd_vel_to_ackermann_drive:main',
+            'cmd_vel_to_gazebo = racecar_gazebo.cmd_vel_to_gazebo:main',
             'servo_commands = racecar_gazebo.servo_commands:servo_commands',
             'gazebo_odometry = racecar_gazebo.gazebo_odometry:main'
         ],
