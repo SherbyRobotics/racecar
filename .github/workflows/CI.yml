@@ -30,10 +30,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Test build  
-      uses: addnab/docker-run-action@v4
+      uses: addnab/docker-run-action@v3
       with:
           image: osrf/ros:${{ env.ROS_DISTRO }}-desktop
           options: -v ${{ github.workspace }}:/home
