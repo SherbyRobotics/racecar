@@ -31,7 +31,7 @@ def launch_setup(context, *args, **kwargs):
         package='rtabmap_util',
         executable='pointcloud_to_depthimage',
         name='pointcloud_to_depthimage',
-        parameters=[{'fixed_frame_id': 'racecar/odom/filtered', 'fill_holes_size': 8, 'topic_queue_size': 20}],
+        parameters=[{'fixed_frame_id': 'racecar/odom/filtered', 'fill_holes_size': 4, 'topic_queue_size': 10}],
         remappings=[('camera_info', 'racecar/camera_info'), ('cloud', 'scan_cloud'),
                     ('image', 'raspicam_node/depth_registered'), ('image_raw', 'raspicam_node/depth_registered_raw')]
     )
