@@ -62,7 +62,7 @@ def launch_setup(context, *args, **kwargs):
                     executable='v4l2_camera_node',
                     name='camera',
                     parameters=[{'camera_frame_id' : 'racecar/camera_optical_link',
-                                 'saturation' : 100,}],
+                                 'saturation' : 100, 'camera_info_url' : 'package://racecar_bringup/config/front_camera.yaml'}],
                     remappings=[('image_raw', 'racecar/camera'),
                                 ('camera_info', 'racecar/camera_info')],
                     condition=IfCondition(LaunchConfiguration('start_camera'))
