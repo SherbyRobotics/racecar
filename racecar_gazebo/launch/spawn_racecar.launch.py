@@ -94,6 +94,13 @@ def launch_setup(context, *args, **kwargs):
             namespace=prefix,
             condition=IfCondition(LaunchConfiguration('use_joy'))
     )
+    gazebo_cmd = Node(
+        package='racecar_gazebo',
+        executable='cmd_vel_to_gazebo',
+        name='cmd_vel_to_gazebo',
+        namespace=prefix,
+        condition=IfCondition(LaunchConfiguration('use_joy'))
+    )
 
 
     kalmanFilter = IncludeLaunchDescription(
@@ -110,6 +117,7 @@ def launch_setup(context, *args, **kwargs):
         cmd_vel_arb,
         joystick,
         teleop,
+        gazebo_cmd,
         kalmanFilter
     ]
 

@@ -4,8 +4,8 @@
   gz_type_name: "gz.msgs.Clock"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/racecar/cmd_vel"
-  gz_topic_name: "/racecar/cmd_vel"
+- ros_topic_name: "/racecar/cmd_vel_to_gz"
+  gz_topic_name: "/racecar/cmd_vel_to_gz"
   ros_type_name: "geometry_msgs/msg/Twist"
   gz_type_name: "gz.msgs.Twist"
   direction: ROS_TO_GZ
