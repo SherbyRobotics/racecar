@@ -128,12 +128,13 @@ class BlobDetector(Node):
         
         mask = cv2.inRange(hsv, np.array([self.color_hue-self.color_range,self.color_saturation,self.color_value]), np.array([self.color_hue+self.color_range,255,255]))
         keypoints = self.detector.detect(mask) 
-        
+
         closestObject = [0,0,0] # Object pose (x,y,z) in camera frame (x->right, y->down, z->forward)
         if len(keypoints) > 0:
             cv_image = cv2.drawKeypoints(cv_image, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-            
-            for i in range(0, len(keypoints)):               
+
+            for i in range(0, len(keypoints)):
+
                 if info.k[0] > 0 and keypoints[i].pt[0] >= self.border and keypoints[i].pt[0] < cv_image.shape[1]-self.border:
                     pts_uv = np.array([[[keypoints[i].pt[0], keypoints[i].pt[1]]]], dtype=np.float32)
                     info_K = np.array(info.k).reshape([3, 3])
@@ -143,8 +144,8 @@ class BlobDetector(Node):
                     angle = np.arcsin(-pts_uv[0][0][0]) # negative to get angle from forward x axis
                     x = pts_uv[0][0][0]
                     y = pts_uv[0][0][1]
-                    # self.get_logger().info(f"({i+1}/{len(keypoints)}) {keypoints[i].pt[0]} {keypoints[i].pt[1]} -> {x} {y} angle={angle*180/np.pi} deg")
-                    
+                    ##self.get_logger().info(f"({i+1}/{len(keypoints)}) {keypoints[i].pt[0]} {keypoints[i].pt[1]} -> {x} {y} angle={angle*180/np.pi} deg")
+
                     # Get depth.
                     u = int(x * info.p[0] + info.p[2])
                     v = int(y * info.p[5] + info.p[6])
@@ -186,8 +187,8 @@ class BlobDetector(Node):
             
             # Compute object pose in map frame
             try:
-                self.tf_buffer.lookup_transform(self.map_frame_id, image.header.frame_id, image.header.stamp, Duration(nanoseconds=500000000)) # 500 ms
-                t = self.tf_buffer.lookup_transform(self.map_frame_id, image.header.frame_id, image.header.stamp)
+                latest = self.tf_buffer.get_latest_common_time(self.map_frame_id, image.header.frame_id) # 500 ms
+                t = self.tf_buffer.lookup_transform(self.map_frame_id, image.header.frame_id, latest)
                 transMap = [t.transform.translation.x, t.transform.translation.y, t.transform.translation.z]
                 rotMap = [t.transform.rotation.x, t.transform.rotation.y, t.transform.rotation.z, t.transform.rotation.w]
             except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException, tf2_ros.TransformException) as e:
@@ -198,7 +199,8 @@ class BlobDetector(Node):
             
             # Compute object pose in base frame
             try:
-                t = self.tf_buffer.lookup_transform(self.frame_id, image.header.frame_id, image.header.stamp, Duration(nanoseconds=500000000)) # 500 ms
+                latest = self.tf_buffer.get_latest_common_time(self.frame_id, image.header.frame_id) # 500 ms
+                t = self.tf_buffer.lookup_transform(self.frame_id, image.header.frame_id, latest) # 500 ms
                 transBase = [t.transform.translation.x, t.transform.translation.y, t.transform.translation.z]
                 rotBase = [t.transform.rotation.x, t.transform.rotation.y, t.transform.rotation.z, t.transform.rotation.w]
             except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException, tf2_ros.TransformException) as e:
