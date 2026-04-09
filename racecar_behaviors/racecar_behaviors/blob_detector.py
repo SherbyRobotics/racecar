@@ -57,7 +57,7 @@ class BlobDetector(Node):
         
         # Set Area filtering parameters 
         params.filterByArea = True
-        params.minArea = 1500
+        params.minArea = 1000
         params.maxArea = 5000000000
           
         # Set Circularity filtering parameters 
