@@ -1,27 +1,22 @@
----
+# System Context
 
-# ✅ 📁 docs/architecture/components.md
-
-```markdown
-# Component Map
-
-This diagram shows the internal structure of the system and relationships between key components.
+This diagram shows how the system interacts with external actors such as the user and simulation environment.
 
 ```mermaid
-flowchart TD
-    Teleop[Teleop / Joy Input]
-    Arbitration[cmd_vel_arbitration]
-    Shim[cmd_vel_to_ackermann_drive]
-    Controller[Ackermann Controllers]
+flowchart LR
+    User[User / Developer]
+    Teleop[Teleoperation Nodes]
+    ROS[ROS2 System]
     Bridge[ros_gz_bridge]
-    Gazebo[Gazebo Ackermann Plugin]
-    VESC[VESC Driver]
+    Gazebo[Gazebo Simulation]
+    Car[Racecar Model]
+    Hardware[Physical Vehicle]
 
-    Teleop --> Arbitration
-    Arbitration --> Shim
-    Shim --> Controller
-
-    Controller --> Bridge
+    User --> Teleop
+    Teleop --> ROS
+    ROS --> Bridge
     Bridge --> Gazebo
+    Gazebo --> Car
 
-    Controller --> VESC
+    ROS --> Hardware
+
