@@ -11,4 +11,4 @@ flowchart LR
     Bridge[ros_gz_bridge]
     Gazebo[Gazebo Simulation]
     Car[Racecar Model]
-    Hardware[Physical Vehicle (VESC)]
+    Hardware[Physical Vehicle ]
