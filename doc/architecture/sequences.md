@@ -1,8 +1,4 @@
----
 
-# ✅ 📁 `docs/architecture/sequences.md`
-
-```markdown
 # Command Flow Sequence
 
 This diagram describes how a command flows from the user to the vehicle.
