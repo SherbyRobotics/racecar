@@ -1,5 +1,5 @@
 
-# 🏎️ Architecture Documentation
+# Architecture Documentation
 
 This section describes the architecture of the racecar system.
 
@@ -8,13 +8,13 @@ This section describes the architecture of the racecar system.
 The system is built using a modular ROS2 architecture that supports both:
 
 - Simulation (Gazebo)
-- Real vehicle hardware (VESC)
+- Real vehicle hardware (Racecar)
 
 The same control flow is reused for both environments.
 
 ---
 
-## 📊 Architecture Diagrams
+## Architecture Diagrams
 
 - [System Context](context.md)  
   High-level view of how the system interacts with users and external systems.
@@ -27,6 +27,3 @@ The same control flow is reused for both environments.
 
 ---
 
-## 🧠 Summary
-
-The architecture follows a layered approach:
