@@ -23,7 +23,7 @@ The same control flow is reused for both environments.
   Internal structure of the system and relationships between modules.
 
 - [Sequence Diagram](sequences.md)  
-  Step-by-step command flow through the system.
+  Step-by-step of the most complex core logic flow through the system.
 
 ---
 
