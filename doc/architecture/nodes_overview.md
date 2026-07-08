@@ -1,3 +1,7 @@
+# Racecar Nodes Overview
+
+This diagram provides a simplified ROS2 node graph, highlighting the flow of information between the nodes responsible for sensing, localization, perception, autonomous behaviors, and vehicle control.
+
 | Color     | Package              |
 | --------- | -------------------- |
 | 🔵 Blue   | `racecar_teleop`     |
