@@ -23,7 +23,7 @@ First, get some metric Allen Keys so you can mount your ArduinoMega and your Ras
    * Connect the IMU in J4 "I2C".
    * Connect the propulsion encoder in J2 "EncProp".
 
-* Mount your Rapberry Pi5 on its craddle. Secure it with the elastic band. Its USB ports must face toward the back of the RaceCar.
+* Mount your Raspberry Pi5 on its craddle. Secure it with the elastic band. Its USB ports must face toward the back of the RaceCar.
 
 * Connect the camera (#6) in a USB port of the Pi5.
 
@@ -103,7 +103,7 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
 
 * The RaceCar contains two batteries:
     * a 5V Anker battery to power the Raspberry Pi and the LiDAR;
-    * a 8.4V Traxxas Ni-Mh battery to power the motors.
+    * a 8.4V Traxxas Ni-MH battery to power the motors.
 
 # Charging the Anker battery
 
@@ -113,41 +113,26 @@ First, make sure the ethernet and hotspot interfaces are properly configured on 
 
 # Charging the Traxxas battery
 
-* For the Traxxas battery, use the charger coming with the Kit (it may differ from the figure below depending on the version). Make sure the switch of the motor drive is on left ("Charge"). Connect the wires like in the figure below. **To avoid a short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the reverse when removing the wires after charging!)**. On the charger, make sure to choose **"NiMH Charge"** and the maximum current limit is 2A. Hold « Start » to start charging. When the battery is charged, the charger should stop by itself with a sound. Stop charging manually if it has been charging for more than 2 hours. Normally, the charger is set to cutoff after 2 hours of charging.
+* For the Traxxas battery, use the charger provided with the Kit. Make sure the switch of the motor drive is on left ("Charge"). Connect the wires like in the figure below. **To avoid a short circuit, make sure to connect the "banana" plugs first in the charger before plugging the other end to the power board (do the reverse when removing the wires after charging!)**. On the charger, make sure to choose **"NiMH BATT"**. Next choose **"NiMH Auto CHARGE"** and set the current to 3A. Hold « Start » to start charging. When the battery is charged, the charger should stop by itself with a sound. Stop charging manually if it has been charging for more than 2h30. Normally, the charger is set to cutoff after 2h30 of charging.
 
-    ![traxxas_battery](Branchements_du_chargeur(Pi5).jpg)
+    ![traxxas_Menu](ChargeStepOne.jpg)
 
-* Sometimes, the charger will "charge" the Traxxas battery for like 20 seconds and then decide it is full. In reality, the battery has not been recharged. Wait a minute and try again (Hold Start). Repeat until the charging cycle starts for real (at least 25 minutes or more);
-* If it still doesn't want to charge, you must perform a Discharge/Charge cycle. Set the Discharge rate at 100mA and the Charge rate at the usual 2A.
+    ![traxxas_battery](ChargeStepTwo.jpg)
 
-```
-If the charger is not already in NiMH Mode:
-- Press "Stop" and then "Inc" until you get "NiMH Batt"
+* Sometimes, the charger will "charge" the Traxxas battery for like 20 seconds and then decide it is full. In reality, the battery has not been recharged. Make sure you are in "NiMH Auto CHARGE" with the current set to 3.0A. Wait a minute and try again (Hold Start). Repeat until the charging cycle starts for real (at least 25 minutes or more).
 
-To set the charger into Discharge -> Charge Mode:
-
-- Press "Start"
-- If the Current is other than 2.0A, press "Start" once and adjust value with "Dec." and "Inc.", then press "Start" once to confirm
-- Press "Inc." until you find "NiMH Discharge"
-- Press "Start" to adjust values: 0.1A and 1.4V
-- Press "Inc." Until you find "NiMH Cycle"
-- Press "Start" to adjust cycle to "DCHG>CHG" (discharge, then charge)
-- Hold "Start" until the charger commences the cycle.
-```
 * The Charger user manual can be found [here](SkyRC_iMAX_B6AC_V2_V3.10.pdf).
 
 # The Killswitch
 
-* The RaceCar features a big red mushroom: the killswitch. When pressed, the motor drive is disabled and the car stops moving. This is a hardware killswitch connected directly to the motor drive. It will disable propulsion regardless of software. The killswitch is a "normally close" switch. When you press it, the circuit open;
-* When the RaceCar moves around, you have to run after it if you want to make an emergency stop. Make yourself a remote killswitch when you are ready to test drive. The switch is connected into a detacheable header on the motor drive. The simplest remote killswitch is a long loop of wire that you hold in your hand. Should the RaceCar go too far away from you, the detachable header will pop out of its socket (as long as you hold firmly your end), opening the circuit:
+* The RaceCar features a big red mushroom: the killswitch. When pressed, the motor drive is disabled and the car stops moving. This is a hardware killswitch connected directly to the motor drive. It will disable propulsion regardless of software. The killswitch is a "normally close" switch. When you press it, the circuit open.
+* When the RaceCar moves around, you have to run after it if you want to make an emergency stop. Make yourself a remote killswitch when you are ready to test drive. The switch is connected into a detacheable header on the motor drive. The simplest remote killswitch is a long loop of wire that you hold in your hand. Should the RaceCar go too far away from you, the detachable header will pop out of its socket (as long as you hold firmly your end), opening the circuit.
 
     ![Killswitch header](Killswitch_Header.jpg)
 
     ![Simplest Killswitch](Simplest_remote_killswitch.jpg)
 
     <p align="center"><i>The simplest remote killswitch: a long loop of wire</i></p>
-
-* Alternatively you can dismount the red mushroom from the RaceCar and lenghten its wires so you can hold it in your hand during live tests instead of the simple wire loop.
 
 # The LiDAR configuration
 * For the LiDAR, you'll need to set the serial baud rate in the bringup launch file according to your specific model. There are two variants: the A2M8 (red) and the A2M12 (purple), as illustrated in the image below:
