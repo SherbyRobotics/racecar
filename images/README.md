@@ -10,7 +10,7 @@
     4. Set 0 in "Free space following", then click on "Resize".
     5. Click on "Apply".
     
-5. To [connect by ethernet or hotspot](https://github.com/SherbyRobotics/racecar/tree/ros2/doc), as your RPI has different hardware, you may have to update the ethernet and hotspot connections with the right device if not working already out-of-the-box. In Network Manager (top right), click on "Edit Connections…". 
+5. To connect by ethernet or hotspot, as your RPI has different hardware, you may have to update the ethernet and hotspot connections with the right device if not working already out-of-the-box. In Network Manager (top right), click on "Edit Connections…". 
     1. Edit "Wired connection 192.168.10.1". Under "Ethernet" panel, select device with "eth0", then save. Remove "Wired connection 1" if it exists.
     2. Edit "Hotspot 10.42.0.1". Under "Wi-Fi" panel, select device with "wlan0", then save. Change SSID name of the connection with ID of your racecar. The default password `racecar0` can also be changed. 
 
@@ -47,7 +47,7 @@ If your are configuring a native Ubuntu 24.04 computer skip to step 6. If you wa
 2. Download Ubuntu 24.04.2 LTS (Noble Numbat) [64-bit PC (AMD64) desktop image](https://www.releases.ubuntu.com/noble/)
 3. Open VirtualBox, create a new image called "Ubuntu 24.04" with at least 4-6 GB of RAM (or 50% of your computer RAM). Click default next options up to hard drive size, which can be set to 20 GB. Before starting the virtual machine, edit its Settings:
     1. System->Processor: set at least 2 to 6 processors (or 50% of your CPUs). 
-	2. Network->Adapter 2: Enable it, attached to "Bridged Adapter" with your wireless network adapter. This will be used to connect the virtual machine to ROS on the RaceCar (see [ROS on multiple computers](https://github.com/SherbyRobotics/racecar/tree/master/doc) example).
+	2. Network->Adapter 2: Enable it, attached to "Bridged Adapter" with your wireless network adapter. This will be used to connect the virtual machine to ROS on the RaceCar.
 4. Start the virtual machine, it will ask for an ISO file, select the Ubuntu 24.04 Desktop ISO file previously downloaded. Install Ubuntu with all default settings.
 5. After installation, the virtual machine will reboot, connect to your account and in VirtualBox's Devices menu, select "Insert Guest Additions CD Image...", click on "Run" button to install them. After installation, reboot the virtual machine. You can then enable the shared clipboard (Devices->Shared Clipboard) and resize the window as you wish.
 6. To install automatically the RaceCar's developement environment, open a terminal and execute thoses commands (make sure the virtual machine has access to Internet):
