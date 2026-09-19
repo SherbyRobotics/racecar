@@ -66,8 +66,8 @@ const float pos_ki     = 0.0;
 const float pos_ei_sat = 10000.0;
 
 // Loop period
-const unsigned long time_period_low  = 2;    // 500 Hz for internal PID loop
-const unsigned long time_period_high = 25;   // 50 Hz  for ROS communication
+const unsigned long time_period_low  = 2;    // [ms] internal PID loop (see the test in loop())
+const unsigned long time_period_high = 25;   // [ms] ROS communication (see the test in loop())
 const unsigned long time_period_com  = 1000; // 1000 ms = max com delay (watchdog)
 
 // Hardware min-zero-max range for the steering servo and the drive
@@ -414,6 +414,8 @@ void ctl(int dt_low)
         // Reset encoder counts
 
         clearEncoderCount();
+        enc_now       = readEncoder(); // counter is 0 now: no false speed step next tick
+        enc_last_high = enc_now;       // same for data[9] (distance since last publish)
 
         // reset integral actions
         vel_error_int = 0;
@@ -549,7 +551,7 @@ void cmdCallback()
 
 void sensorsCallback(unsigned long dt)
 {
-    sensorsMsg.data_count = 19;
+    sensorsMsg.data_count = 19; // do not change: pb2roscpp and arduino_sensors expect exactly 19 floats
     sensorsMsg.data[0]    = pos_now; // wheel position in m
     sensorsMsg.data[1]    = vel_old; // wheel velocity in m/sec
 
