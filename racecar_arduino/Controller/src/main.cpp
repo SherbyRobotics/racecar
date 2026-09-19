@@ -41,9 +41,10 @@ const int dri_pwm_pin = 6;  // H bridge drive pwm
 const int dri_dir_pin = 42; //
 
 // debug
-// Option: dt of ctl() measured with micros() (4 us) instead of millis(). Swap the 4 lines tagged MICROS
-// below together: comment out the line just above each one, then uncomment the tagged line.
-// Never leave both ctl(...) calls active in loop(): the second one would read a speed of ~0.
+// Option: dt of ctl() measured with micros() (4 us) instead of millis(), and no Serial.flush().
+// Swap the 5 lines tagged MICROS below together: comment out the line just above each one, then
+// uncomment the tagged line. Never leave both ctl(...) calls active in loop(): the second one would
+// read a speed of ~0.
 long timer_debug      = 0;
 long time_micros      = 0;
 // MICROS: unsigned long time_micros      = 0; // [us] micros() at the current ctl() tick
@@ -590,6 +591,7 @@ void sensorsCallback(unsigned long dt)
 
     pbUtils.pbSend(1, SENSORS);
     Serial.flush();
+    // MICROS: ; // no Serial.flush(): same bytes on the wire, loop() waits ~5.5 ms less
 }
 
 // ======================================== SERIAL ========================================
