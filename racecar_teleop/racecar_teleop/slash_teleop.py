@@ -36,6 +36,8 @@ class Teleop(Node):
         
     def joy_callback( self, joy_msg ):
         """ """
+        # TODO: vérifier le mode de la manette (D ou X) avec « ros2 topic echo /joy ».
+        # Les indices ci-dessous supposent le mode D (DirectInput), comme le README.
         min_axes = 5 if self.ps4 else 4
         if len(joy_msg.axes) < min_axes or len(joy_msg.buttons) < 7:
             if not self.joystickCompatibilityWarned:
@@ -64,7 +66,7 @@ class Teleop(Node):
                 self.cmd_msg.angular.z = steering_user_input * self.cmd2rad
                 self.cmd_msg.linear.z  = 1.0   #CtrlChoice
             
-            elif (joy_msg.buttons[10]): # RJP
+            elif (joy_msg.buttons[10]): # L3 (mode D)
                 """
                 GRO501-1: closed-loop velocity fixed @ X m/s, open-loop
                 steering, where X is determined "on-site".
@@ -74,7 +76,7 @@ class Teleop(Node):
                 self.cmd_msg.linear.z = 0.0 # high-level mode
                 
             #If right trigger is active       
-            elif (joy_msg.buttons[7]):   # START
+            elif (joy_msg.buttons[7]):   # RT (mode D)
                 """
                 GRO501-1: closed-loop position fixed @ X m, open-loop
                 steering, where X is determined "on-site".
@@ -99,7 +101,7 @@ class Teleop(Node):
                 
             #If button x is active 
             elif(joy_msg.buttons[0]):   
-                # Closed-loop velocity with fixed 1 m/s ref, Closed-loop steering
+                # Closed-loop velocity with fixed 2 m/s ref, Closed-loop steering
                 self.cmd_msg.linear.x  = 2.0 #[m/s]
                 self.cmd_msg.angular.z = 0.0 # [m]
                 self.cmd_msg.linear.z  = 5.0 # Control mode
