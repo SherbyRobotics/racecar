@@ -106,12 +106,12 @@ High-level Mode | Input buttons | Function
 0|`LB`| Closed-loop velocity, open-loop steering (`LB` + `L3` is the same mode with a fixed 2 m/s ref)
 1|`LB` + `RB`|Fully Open-loop
 2|`LB` + `RT`|Closed-loop position, open-loop steering
-3|`LB` + `A`|Closed-loop velocity, closed-loop steering
+3|`LB` + `A`|Closed-loop velocity, closed-loop steering ( `LB` + `X` is the same mode with a fixed 2 m/s)
 4|`LB` + `B`|Closed-loop position, closed-loop steering
-5|`LB` + `X`|Closed-loop velocity, closed-loop steering
+5|—---------| Empty template 
 6|`LB` + `Y`|Reset encoder command
-7|`LB` + `R3`| Empty Template (commented out in teleop)
-8|`LB` + `Cross key Up/Down`| Empty Template (commented out in teleop)
+7|`LB` + `R3`| Empty Template 
+8|`LB` + `Cross key Up/Down`| Empty Template 
 NaN|`LB` + `LT`|Joystick-based control disabled (no ctl_ref published)
 
 ## Low-level Controller Modes (Arduino modes)

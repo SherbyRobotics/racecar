@@ -37,7 +37,7 @@ class SlashController(Node):
         # Design offline, paste here. Shapes must match the x you assemble below.
         self.params_autopilot = {
             "K": None,  # (m, n)
-            "ubar": None,  # (m,) feedforward; often zeros
+            "ubar": None,  # (m,) feedforward
         }
         self.params_parking = {
             "K": None,
@@ -107,7 +107,7 @@ class SlashController(Node):
             # TODO: test on real racecar to validate
             # APP4 — catalog of signals available
             #
-            # 1. Measurements (updated every self.dt)
+            # 1. Measurements (last value received)
             #    self.position       encoder, longitudinal position [m]
             #    self.velocity       encoder, longitudinal speed [m/s]
             #    self.laser_y        lidar, lateral position [m]
@@ -122,15 +122,15 @@ class SlashController(Node):
             # 3. Controllable actions — two channels; meaning depends on
             #    arduino_mode
             #    u[0]  propulsion
-            #          arduino_mode == 0 → open-loop voltage V (PWM)
+            #          arduino_mode == 1 → open-loop voltage V [V]
             #          arduino_mode == 2 → closed-loop velocity setpoint
             #          arduino_mode == 3 → closed-loop position setpoint
             #    u[1]  steering δ  (steering_offset is added after the policy)
-            #    self.arduino_mode  is a choice you must set below (0 / 2 / 3)
+            #    self.arduino_mode  is a choice you must set below (1 / 2 / 3)
             # ----------------------------------------------------------
 
-            elif self.high_level_mode == 3 or self.high_level_mode == 5:
-                # Autopilot (high-level mode 3 or 5)
+            elif self.high_level_mode == 3:
+                # Autopilot (high-level mode 3)
 
                 #########################################################
                 # TODO: complètez — assemblage de x, r et arduino_mode
@@ -145,7 +145,7 @@ class SlashController(Node):
 
                 self.propulsion_cmd = u[0]
                 self.steering_cmd = u[1] + self.steering_offset
-                self.arduino_mode = 0  # complètez: 0, 2 ou 3
+                self.arduino_mode = 0  # complètez: 1, 2 ou 3 (0 = sortie nulle)
                 #########################################################
 
             elif self.high_level_mode == 4:
@@ -164,8 +164,14 @@ class SlashController(Node):
 
                 self.propulsion_cmd = u[0]
                 self.steering_cmd = u[1] + self.steering_offset
-                self.arduino_mode = 0  # complètez: 0, 2 ou 3
+                self.arduino_mode = 0  # complètez: 1, 2 ou 3 (0 = sortie nulle)
                 #########################################################
+
+            elif self.high_level_mode == 5:
+                # Template for custom controllers
+                self.steering_cmd = 0 + self.steering_offset
+                self.propulsion_cmd = 0
+                self.arduino_mode = 0  # Mode ??? on arduino
 
             elif self.high_level_mode == 6:
                 # Reset encoders
@@ -249,23 +255,6 @@ class SlashController(Node):
 
         # Publish cmd msg
         self.pub_cmd.publish(cmd_prop)
-
-    #######################################
-    def pub_kinematic(self):
-        # init encd_info msg
-        pos = Twist()
-        vel = Twist()
-        acc = Twist()
-
-        # Msg
-        pos.linear.x = 0
-        vel.linear.x = 0
-        acc.linear.x = 0
-
-        # Publish cmd msg
-        self.pub_pos.publish(pos)
-        self.pub_vel.publish(vel)
-        self.pub_acc.publish(acc)
 
 
 def main(args=None):
