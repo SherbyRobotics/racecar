@@ -41,9 +41,14 @@ const int dri_pwm_pin = 6;  // H bridge drive pwm
 const int dri_dir_pin = 42; //
 
 // debug
+// Option: dt of ctl() measured with micros() (4 us) instead of millis(). Swap the 4 lines tagged MICROS
+// below together: comment out the line just above each one, then uncomment the tagged line.
+// Never leave both ctl(...) calls active in loop(): the second one would read a speed of ~0.
 long timer_debug      = 0;
 long time_micros      = 0;
+// MICROS: unsigned long time_micros      = 0; // [us] micros() at the current ctl() tick
 long time_micros_last = 0;
+// MICROS: unsigned long time_micros_last = 0; // [us] micros() at the previous ctl() tick
 
 // Prototype
 void cmdCallback();
@@ -318,6 +323,7 @@ const unsigned long baud_rate = 115200;
 // Controller One tick
 ///////////////////////////////////////////////////////////////////
 void ctl(int dt_low)
+// MICROS: void ctl(float dt_low) // [ms] real period since the last tick, measured with micros()
 {
     ///////////////////////////////////////////////
     // STEERING CONTROL
@@ -498,6 +504,7 @@ void loop()
     if ((time_now - time_last_low) > time_period_low)
     {
         ctl(time_now - time_last_low);                // one control tick
+        // MICROS: time_micros = micros(); ctl((time_micros - time_micros_last) * 0.001f); // one control tick, dt [ms] from micros()
         timer_debug = time_micros - time_micros_last; ///
 
         time_last_low    = time_now;
