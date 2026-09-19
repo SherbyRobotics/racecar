@@ -53,7 +53,7 @@ bool PBUtils::decodePb(char* inputString, int *subMsgId, int &nbsNewMsgs)
 
 // pbSend version: 0 = original (String + sprintf), 1 = fast (same bytes on the wire)
 #define PBSEND_FAST 0
-// PBSEND: #define PBSEND_FAST 1 // fast pbSend: same bytes, ~0.2 ms instead of ~8-13 ms (estimate) of String/sprintf
+// PBSEND: #define PBSEND_FAST 1 // fast pbSend: same bytes, ~1.8 ms instead of ~9.7 ms (simavr, 16 MHz)
 
 #if PBSEND_FAST
 /*
