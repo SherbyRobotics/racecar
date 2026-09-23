@@ -40,15 +40,9 @@ const int str_pin = 9; // Servo
 const int dri_pwm_pin = 6;  // H bridge drive pwm
 const int dri_dir_pin = 42; //
 
-// debug
-long timer_debug      = 0;
-long time_micros      = 0;
-long time_micros_last = 0;
-unsigned long pause_us = 0; // [us] duration of the last sensorsCallback (debug, see the PAUSE line)
-
 // Prototype
 void cmdCallback();
-void sensorsCallback(unsigned long dt);
+void sensorsCallback(unsigned long dt_com_us);
 
 ///////////////////////////////////////////////////////////////////
 // Parameters
@@ -66,10 +60,10 @@ const float pos_kd     = 0.0;
 const float pos_ki     = 0.0;
 const float pos_ei_sat = 10000.0;
 
-// Loop period
-const unsigned long time_period_low  = 2000;    // [us] 500 Hz internal PID loop
-const unsigned long time_period_high = 25000;   // [us] 40 Hz ROS communication
-const unsigned long time_period_com  = 1000000; // [us] 1 s = max com delay (watchdog)
+// Comparison targets [us]
+const unsigned long period_ctl_us      = 2000;    // 500 Hz internal PID loop
+const unsigned long period_com_us      = 20000;   // 50 Hz ROS communication
+const unsigned long period_watchdog_us = 1000000; // 1 s max without a command
 
 // Hardware min-zero-max range for the steering servo and the drive
 const int min_str_angle = 45;
@@ -79,7 +73,7 @@ const int pwm_min_dri   = -511;
 const int pwm_zer_dri   = 0;
 const int pwm_max_dri   = 511;
 
-const int dri_wakeup_time = 20; // micro second
+const int dri_wakeup_us = 20; // [us] fixed H-bridge wake pulse
 
 // Units Conversion
 const double batteryV             = 8;
@@ -116,13 +110,17 @@ float vel_error_int = 0;
 float pos_error_int = 0;
 
 // Loop timing
-unsigned long time_now       = 0;
-unsigned long time_last_low  = 0;
-unsigned long time_last_high = 0;
-unsigned long time_last_com  = 0; // com watchdog
+// time_ = recorded micros() value, period_ = comparison target, dt_ = measured delta
+unsigned long time_now_us      = 0;
+unsigned long time_last_ctl_us = 0;
+unsigned long time_last_com_us = 0;
+unsigned long time_last_cmd_us = 0; // watchdog: last received command
+unsigned long dt_ctl_us        = 0;
+unsigned long dt_com_us        = 0;
+unsigned long dt_pause_us      = 0; // duration of the last sensorsCallback
 
 // For odometry
-signed long enc_last_high = 0;
+signed long enc_last_com = 0;
 
 ///////////////////////////////////////////////////////////////////
 // Encoder init/read/reset functions
@@ -260,7 +258,7 @@ void set_pwm(int pwm)
         if (dri_standby == 1)
         {
             digitalWrite(dri_pwm_pin, HIGH);
-            delayMicroseconds(dri_wakeup_time);
+            delayMicroseconds(dri_wakeup_us);
             dri_standby = 0;
         }
 
@@ -318,7 +316,7 @@ const unsigned long baud_rate = 115200;
 ///////////////////////////////////////////////////////////////////
 // Controller One tick
 ///////////////////////////////////////////////////////////////////
-void ctl(float dt_low) // [ms] real period since the last tick, measured with micros()
+void ctl(float dt_ctl_ms) // [ms] measured control delta since the last tick
 {
     ///////////////////////////////////////////////
     // STEERING CONTROL
@@ -341,7 +339,7 @@ void ctl(float dt_low) // [ms] real period since the last tick, measured with mi
     // Velocity computation
 
     // TODO: VOUS DEVEZ COMPLETEZ LA DERIVEE FILTRE ICI
-    float vel_raw = (enc_now - enc_old) * tick2m / dt_low * 1000;
+    float vel_raw = (enc_now - enc_old) * tick2m / dt_ctl_ms * 1000.0f;
     float alpha   = 0;       // TODO
     float vel_fil = vel_raw; // Filter TODO
 
@@ -416,7 +414,7 @@ void ctl(float dt_low) // [ms] real period since the last tick, measured with mi
 
         clearEncoderCount();
         enc_now       = readEncoder(); // counter is 0 now: no false speed step next tick
-        enc_last_high = enc_now;       // same for data[9] (distance since last publish)
+        enc_last_com = enc_now;       // same for data[9] (distance since last publish)
 
         // reset integral actions
         vel_error_int = 0;
@@ -479,13 +477,13 @@ void setup()
 
 void loop()
 {
-    time_now = micros(); // [us] 4 us resolution; wraps after 71.6 min (unsigned differences stay correct)
+    time_now_us = micros(); // [us] 4 us resolution; wraps after 71.6 min (unsigned differences stay correct)
 
     /////////////////////////////////////////////////////////////
     // Watchdog: stop the car if no recent communication from ROS
     //////////////////////////////////////////////////////////////
 
-    if ((time_now - time_last_com) > time_period_com)
+    if ((time_now_us - time_last_cmd_us) > period_watchdog_us)
     {
         // All-stop
         dri_ref  = 0; // velocity set-point
@@ -496,14 +494,19 @@ void loop()
     // Low-level controller
     ///////////////////////////////////////
 
-    if ((time_now - time_last_low) > time_period_low)
-    {
-        ctl((time_now - time_last_low) * 0.001f); // one control tick, dt in [ms]
-        timer_debug = time_micros - time_micros_last; ///
+    dt_ctl_us = time_now_us - time_last_ctl_us;
 
-        time_last_low    = time_now;
-        time_micros_last = time_micros;
+    if (dt_ctl_us > period_ctl_us) // 500 Hz control tick
+    {
+        time_last_ctl_us = time_now_us;
+
+        // one control tick, dt in [ms]
+        ctl(dt_ctl_us * 0.001f);
     }
+
+    ////////////////////////////////////////
+    // Receive commands from ROS
+    ///////////////////////////////////////
 
     if (inCmdComplete)
     {
@@ -530,14 +533,19 @@ void loop()
         }
     }
 
-    unsigned long dt = time_now - time_last_high;
-    if (dt > time_period_high)
+    dt_com_us = time_now_us - time_last_com_us;
+
+    ////////////////////////////////////////
+    // Publish sensors data
+    ///////////////////////////////////////
+
+    if (dt_com_us > period_com_us) // 50 Hz communication tick
     {
-        unsigned long pause_t0 = micros(); // debug: duration of sensorsCallback (see the PAUSE line)
-        sensorsCallback(dt);
-        pause_us = micros() - pause_t0;
-        time_last_high = time_now;
-        enc_last_high  = enc_now;
+        unsigned long time_pause_us = micros(); // clock at the start of sensorsCallback
+        sensorsCallback(dt_com_us);
+        dt_pause_us      = micros() - time_pause_us;
+        time_last_com_us = time_now_us;
+        enc_last_com     = enc_now;
     }
 }
 
@@ -549,10 +557,10 @@ void cmdCallback()
     dri_ref  = cmdMsg.data[1];  // volt or m/s or m
     ctl_mode = cmdMsg.data[2];  // 1    or 2   or 3*/
 
-    time_last_com = micros();
+    time_last_cmd_us = micros();
 }
 
-void sensorsCallback(unsigned long dt)
+void sensorsCallback(unsigned long dt_com_us)
 {
     sensorsMsg.data_count = 19; // do not change: pb2roscpp and arduino_sensors expect exactly 19 floats
     sensorsMsg.data[0]    = pos_now; // wheel position in m
@@ -561,15 +569,15 @@ void sensorsCallback(unsigned long dt)
     // For DEBUG
     sensorsMsg.data[2] = (float)dri_ref; // set point received by arduino
     sensorsMsg.data[3] = (float)dri_cmd; // drive set point in volts
-    // sensorsMsg.data[3] = (float)Serial.available(); // futile: we SHOULD NOT receive anything if Serial is not available.
-    sensorsMsg.data[4] = (float)dri_pwm;            // drive set point in pwm
-    sensorsMsg.data[5] = (float)enc_now;            // raw encoder counts
+    sensorsMsg.data[4] = (float)dt_ctl_us;
+    // sensorsMsg.data[4] = (float)dri_pwm;            // drive set point in pwm
+    // sensorsMsg.data[5] = (float)enc_now;            // raw encoder counts
+    sensorsMsg.data[5] = (float)dt_pause_us;
     sensorsMsg.data[6] = (float)str_ref;            // steering angle (don't remove/change, used for GRO830)
-    //sensorsMsg.data[7] = (float)(ctl_mode);         // for com debug
-    sensorsMsg.data[7] = (float)pause_us; // [us] duration of the PREVIOUS sensorsCallback (debug, replaces ctl_mode)
-    sensorsMsg.data[8] = (float)dt * 0.001f;        // [ms] time elapsed since last publish (don't remove/change, used for GRO830)
+    sensorsMsg.data[7] = (float)(ctl_mode);         // for com debug
+    sensorsMsg.data[8] = (float)dt_com_us * 0.001f; // [ms] time elapsed since last publish (don't remove/change, used for GRO830)
     sensorsMsg.data[9] =
-        (enc_now - enc_last_high) * tick2m; // distance travelled since last publish (don't remove/change, used for GRO830)
+        (enc_now - enc_last_com) * tick2m; // distance travelled since last publish (don't remove/change, used for GRO830)
 
 // Read IMU (don't remove/change, used for GRO830)
 #ifdef IMU
