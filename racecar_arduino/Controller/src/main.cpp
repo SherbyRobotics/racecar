@@ -565,8 +565,8 @@ void sensorsCallback(unsigned long dt)
     sensorsMsg.data[4] = (float)dri_pwm;            // drive set point in pwm
     sensorsMsg.data[5] = (float)enc_now;            // raw encoder counts
     sensorsMsg.data[6] = (float)str_ref;            // steering angle (don't remove/change, used for GRO830)
-    sensorsMsg.data[7] = (float)(ctl_mode);         // for com debug
-    // PAUSE: sensorsMsg.data[7] = (float)pause_us; // [us] duration of the PREVIOUS sensorsCallback (debug, replaces ctl_mode)
+    //sensorsMsg.data[7] = (float)(ctl_mode);         // for com debug
+    sensorsMsg.data[7] = (float)pause_us; // [us] duration of the PREVIOUS sensorsCallback (debug, replaces ctl_mode)
     sensorsMsg.data[8] = (float)dt * 0.001f;        // [ms] time elapsed since last publish (don't remove/change, used for GRO830)
     sensorsMsg.data[9] =
         (enc_now - enc_last_high) * tick2m; // distance travelled since last publish (don't remove/change, used for GRO830)
@@ -586,8 +586,6 @@ void sensorsCallback(unsigned long dt)
 #endif
 
     pbUtils.pbSend(1, SENSORS);
-    // no Serial.flush(): the 161-char frame fits in the 256-byte TX buffer (platformio.ini) and is sent
-    // by the UART interrupt in ~14 ms while loop() goes on (same bytes and timing on the wire)
 }
 
 // ======================================== SERIAL ========================================
