@@ -28,14 +28,21 @@ class SlashController(Node):
         self.dt = 0.05
         self.timer = self.create_timer(self.dt, self.timed_controller)
 
-        # Paramters
+        # Parameters
 
         # Controller
         self.steering_offset = 0.0  # To adjust according to the vehicle
 
-        self.K_autopilot = None  # TODO: DESIGN LQR
-
-        self.K_parking = None  # TODO: DESIGN PLACEMENT DE POLES
+        # TODO: test on real racecar to validate
+        # Design offline, paste here. Shapes must match the x you assemble below.
+        self.params_autopilot = {
+            "K": None,  # (m, n)
+            "ubar": None,  # (m,) feedforward
+        }
+        self.params_parking = {
+            "K": None,
+            "ubar": None,
+        }
 
         # Memory
 
@@ -96,52 +103,75 @@ class SlashController(Node):
                 self.arduino_mode = 3
                 self.steering_cmd = self.steering_ref + self.steering_offset
 
-            # APP4 (closed-loop steering) controllers bellow
-            elif self.high_level_mode == 3 or self.high_level_mode == 5:
-                # Closed-loop velocity and steering
+            # ----------------------------------------------------------
+            # TODO: test on real racecar to validate
+            # APP4 — catalog of signals available
+            #
+            # 1. Measurements (last value received)
+            #    self.position       encoder, longitudinal position [m]
+            #    self.velocity       encoder, longitudinal speed [m/s]
+            #    self.laser_y        lidar, lateral position [m]
+            #    self.laser_theta    lidar, heading [rad]
+            #    self.laser_dy_fill  filtered dy/dt [m/s]
+            #
+            # 2. References (from ctl_ref)
+            #    self.propulsion_ref  longitudinal ref (speed or position,
+            #                         depends on the high-level joystick mode)
+            #    self.steering_ref    steering / lateral ref
+            #
+            # 3. Controllable actions — two channels; meaning depends on
+            #    arduino_mode
+            #    u[0]  propulsion
+            #          arduino_mode == 1 → open-loop voltage V [V]
+            #          arduino_mode == 2 → closed-loop velocity setpoint
+            #          arduino_mode == 3 → closed-loop position setpoint
+            #    u[1]  steering δ  (steering_offset is added after the policy)
+            #    self.arduino_mode  is a choice you must set below (1 / 2 / 3)
+            # ----------------------------------------------------------
+
+            elif self.high_level_mode == 3:
+                # Autopilot (high-level mode 3)
 
                 #########################################################
-                # TODO: COMPLETEZ LE CONTROLLER
+                # TODO: complètez — assemblage de x, r et arduino_mode
 
-                # Auto-pilot # 1
-
-                # x = [ ?,? ,.... ]
-                # r = [ ?,? ,.... ]
-                # u = [ servo_cmd , prop_cmd ]
+                # x = np.array([ ... ])   # pick from the catalog
+                # r = np.array([ ... ])
 
                 x = None
                 r = None
 
-                u = self.controller1(x, r)
+                u = self.ctl_autopilot(x, r)
 
-                self.steering_cmd = u[1] + self.steering_offset
                 self.propulsion_cmd = u[0]
-                self.arduino_mode = 0  # Mode ??? on arduino
-                # TODO: COMPLETEZ LE CONTROLLER
+                self.steering_cmd = u[1] + self.steering_offset
+                self.arduino_mode = 0  # complètez: 1, 2 ou 3 (0 = sortie nulle)
                 #########################################################
 
             elif self.high_level_mode == 4:
-                # Closed-loop position and steering
+                # Parking (high-level mode 4)
 
                 #########################################################
-                # TODO: COMPLETEZ LE CONTROLLER
+                # TODO: complètez — assemblage de x, r et arduino_mode
 
-                # Auto-pilot # 1
-
-                # x = [ ?,? ,.... ]
-                # r = [ ?,? ,.... ]
-                # u = [ servo_cmd , prop_cmd ]
+                # x = np.array([ ... ])   # pick from the catalog
+                # r = np.array([ ... ])
 
                 x = None
                 r = None
 
-                u = self.controller2(x, r)
+                u = self.ctl_parking(x, r)
 
-                self.steering_cmd = u[1] + self.steering_offset
                 self.propulsion_cmd = u[0]
-                self.arduino_mode = 0  # Mode ??? on arduino
-                # TODO: COMPLETEZ LE CONTROLLER
+                self.steering_cmd = u[1] + self.steering_offset
+                self.arduino_mode = 0  # complètez: 1, 2 ou 3 (0 = sortie nulle)
                 #########################################################
+
+            elif self.high_level_mode == 5:
+                # Template for custom controllers
+                self.steering_cmd = 0 + self.steering_offset
+                self.propulsion_cmd = 0
+                self.arduino_mode = 0  # Mode ??? on arduino
 
             elif self.high_level_mode == 6:
                 # Reset encoders
@@ -165,25 +195,27 @@ class SlashController(Node):
         self.send_arduino()
 
     #######################################
-    def controller1(self, y, r):
+    def ctl_autopilot(self, x, r, t=0, params=None):
 
-        # Control Law TODO
+        params = self.params_autopilot if params is None else params
 
-        u = np.array([0, 0])  # placeholder
+        # K = params["K"]
+        # ubar = params["ubar"]
+        # u = ubar - K @ (x - r)
 
-        # u = self.K_autopilot @ (r - x)
-
+        u = np.zeros(2)
         return u
 
     #######################################
-    def controller2(self, y, r):
+    def ctl_parking(self, x, r, t=0, params=None):
 
-        # Control Law TODO
+        params = self.params_parking if params is None else params
 
-        u = np.array([0, 0])  # placeholder
+        # K = params["K"]
+        # ubar = params["ubar"]
+        # u = ubar - K @ (x - r)
 
-        # u = self.K_parking  @ (r - x)
-
+        u = np.zeros(2)
         return u
 
     #######################################
@@ -223,23 +255,6 @@ class SlashController(Node):
 
         # Publish cmd msg
         self.pub_cmd.publish(cmd_prop)
-
-    #######################################
-    def pub_kinematic(self):
-        # init encd_info msg
-        pos = Twist()
-        vel = Twist()
-        acc = Twist()
-
-        # Msg
-        pos.linear.x = 0
-        vel.linear.x = 0
-        acc.linear.x = 0
-
-        # Publish cmd msg
-        self.pub_pos.publish(pos)
-        self.pub_vel.publish(vel)
-        self.pub_acc.publish(acc)
 
 
 def main(args=None):
