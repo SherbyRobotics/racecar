@@ -118,6 +118,8 @@ unsigned long time_last_cmd_us = 0; // watchdog: last received command
 unsigned long dt_ctl_us        = 0;
 unsigned long dt_com_us        = 0;
 unsigned long dt_pause_us      = 0; // duration of the last sensorsCallback
+float dt_ctl_ms = 0 ;
+float dt_com_ms = 0 ;
 
 // For odometry
 signed long enc_last_com = 0;
@@ -500,8 +502,10 @@ void loop()
     {
         time_last_ctl_us = time_now_us;
 
+        dt_ctl_ms = dt_ctl_us * 0.001f;
+
         // one control tick, dt in [ms]
-        ctl(dt_ctl_us * 0.001f);
+        ctl(dt_ctl_ms);
     }
 
     ////////////////////////////////////////
@@ -546,6 +550,7 @@ void loop()
         dt_pause_us      = micros() - time_pause_us;
         time_last_com_us = time_now_us;
         enc_last_com     = enc_now;
+        dt_com_ms = dt_com_us * 0.001f;
     }
 }
 
@@ -569,7 +574,7 @@ void sensorsCallback(unsigned long dt_com_us)
     // For DEBUG
     sensorsMsg.data[2] = (float)dri_ref; // set point received by arduino
     sensorsMsg.data[3] = (float)dri_cmd; // drive set point in volts
-    sensorsMsg.data[4] = (float)dt_ctl_us;
+    sensorsMsg.data[4] = (float)dt_ctl_ms;
     // sensorsMsg.data[4] = (float)dri_pwm;            // drive set point in pwm
     // sensorsMsg.data[5] = (float)enc_now;            // raw encoder counts
     sensorsMsg.data[5] = (float)dt_pause_us;
