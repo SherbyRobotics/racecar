@@ -39,6 +39,7 @@ To be able to test our code, there are a few requirements.
 
 ### Documentation
 
+* [Architecture Diagrams](doc/architecture/README.md#architecture-diagram)
 * [Hardware Connections](doc/README.md#hardware-connections)
 * [USB Hub woes](doc/README.md#usb-hub-woes)
 * [Steering Offset](doc/README.md#steering-offset)
