@@ -86,6 +86,7 @@
       <wheel_base>0.325</wheel_base>
       <wheel_radius>0.05</wheel_radius>
       <steering_limit>0.667</steering_limit>
+      <steer_p_gain>100</steer_p_gain>
       <topic>$(arg prefix)/cmd_vel_to_gz</topic>
       <child_frame_id>$(arg prefix)/base_footprint</child_frame_id>
       <publish_tf>false</publish_tf>
