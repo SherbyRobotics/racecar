@@ -158,7 +158,7 @@ class WallEstimator(Node):
 
         if n_good_scan > 2:
 
-            # Estimate left wall line from points
+            # Estimate right wall line from points
             d = np.array(d_data)
             theta = np.array(theta_data)
             self.theta_right, self.y_right = self.estimate_line_from_points(d, theta)

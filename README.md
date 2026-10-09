@@ -103,15 +103,15 @@ Joystick inputs: LB is used as a deadman switch and must be always pressed for t
 High-level Mode | Input buttons | Function
 -|-|-
 -1|None| Disabled
-0|`LB`| Closed-loop velocity, open-loop steering
+0|`LB`| Closed-loop velocity, open-loop steering (`LB` + `L3` is the same mode with a fixed 2 m/s ref)
 1|`LB` + `RB`|Fully Open-loop
 2|`LB` + `RT`|Closed-loop position, open-loop steering
-3|`LB` + `A`|Closed-loop velocity, closed-loop steering
+3|`LB` + `A`|Closed-loop velocity, closed-loop steering ( `LB` + `X` is the same mode with a fixed 2 m/s)
 4|`LB` + `B`|Closed-loop position, closed-loop steering
-5|`LB` + `X`|Closed-loop velocity, closed-loop steering
+5|—---------| Empty template 
 6|`LB` + `Y`|Reset encoder command
-7|`LB` + `LY`|Empty Template
-8|`LB` + `Croos key Up/Down`| Empty Template
+7|`LB` + `R3`| Empty Template 
+8|`LB` + `Cross key Up/Down`| Empty Template 
 NaN|`LB` + `LT`|Joystick-based control disabled (no ctl_ref published)
 
 ## Low-level Controller Modes (Arduino modes)
@@ -121,7 +121,7 @@ The low-level mode is the operating mode of the Arduino. The low-level mode is s
 Low-level Mode | Function
 -|-
 0|Disabled
-1|Open-loop PWM control
+1|Open-loop voltage command (converted to PWM)
 2|Closed-loop velocity (based on wheel-encoder feedback)
-2|Closed-loop position (based on wheel-encoder feedback)
+3|Closed-loop position (based on wheel-encoder feedback)
 4|Reset encoder command

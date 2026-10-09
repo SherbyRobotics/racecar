@@ -34,7 +34,7 @@ import rosbag2_py  # noqa
 
 
 def get_rosbag_options(path, serialization_format='cdr'):
-    storage_options = rosbag2_py.StorageOptions(uri=path, storage_id='mcap')
+    storage_options = rosbag2_py.StorageOptions(uri=path, storage_id='')  # auto-detect mcap/sqlite3
 
     converter_options = rosbag2_py.ConverterOptions(
         input_serialization_format=serialization_format,
@@ -97,7 +97,7 @@ def dump_bag(bag_path):
         if hasattr(msg, "header"):
             t = msg.header.stamp.sec + 1e-9*msg.header.stamp.nanosec
         else:
-            t = ts
+            t = ts * 1e-9  # bag time [ns] -> [s], same unit as header stamps
         if start_time is None:
             start_time = t
         print(','.join([str(t - start_time)] +
