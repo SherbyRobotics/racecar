@@ -50,7 +50,8 @@ setup(
         'console_scripts': [
             'cmd_vel_to_ackermann_drive = racecar_gazebo.cmd_vel_to_ackermann_drive:main',
             'servo_commands = racecar_gazebo.servo_commands:servo_commands',
-            'gazebo_odometry = racecar_gazebo.gazebo_odometry:main'
+            'gazebo_odometry = racecar_gazebo.gazebo_odometry:main',
+            'state_space_converter = racecar_gazebo.state_space_converter:main'
         ],
     },
 )

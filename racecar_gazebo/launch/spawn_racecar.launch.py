@@ -70,7 +70,19 @@ def launch_setup(context, *args, **kwargs):
         package='racecar_bringup',
         executable='cmd_vel_arbitration',
         parameters=[{'bypass_joy': not use_joy}],
-        remappings=[(f'/{prefix}/cmd_vel_output', f'/{prefix}/cmd_vel')],
+        remappings=[(f'/{prefix}/cmd_vel_output', f'/{prefix}/cmd_vel'),
+                    ('/racecar/cmd_vel_abtr_0','/racecar/cmd_vel_abtr_ssc')],
+        namespace=prefix
+    )
+
+    state_space_converter = Node(
+        package='racecar_gazebo',
+        executable='state_space_converter',
+        parameters=[{'wheelbase': 0.325},
+            {'track_width': 0.22},
+            {'max_steering': 0.667},
+            {'invert_steering': False}],
+        remappings=[('cmd_in', '/racecar/cmd_vel_abtr_0'),('cmd_out', '/racecar/cmd_vel_abtr_ssc'),],
         namespace=prefix
     )
 
@@ -108,6 +120,7 @@ def launch_setup(context, *args, **kwargs):
         imageBridge,
         spawn,
         cmd_vel_arb,
+        state_space_converter,
         joystick,
         teleop,
         kalmanFilter
