@@ -49,6 +49,7 @@ To be able to test our code, there are a few requirements.
 * [Charging the Anker battery](doc/README.md#charging-the-anker-battery)
 * [Charging the Traxxas battery](doc/README.md#charging-the-traxxas-battery)
 * [The Killswitch](doc/README.md#the-killswitch)
+* [The Architechture Documentation](doc/architecture)
 
 ## How it works
 
