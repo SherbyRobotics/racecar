@@ -143,9 +143,9 @@ The same control flow is reused for both environments.
 
 ---
 
-## Architecture Diagrams
+# Architecture Diagrams
 
-- [System Context]  
+## System Context  
   This diagram shows how the system interacts with external actors such as the user and the simulation environment.
 
 ```mermaid
@@ -174,7 +174,7 @@ flowchart LR
 
 ```
 
-- [Component Map]  
+## Component Map  
   This diagram shows the relationship between the major modules of the system.
   
 ```mermaid
@@ -272,7 +272,7 @@ end
     ROS --> Execution
 ```
 
-- [Sequence Diagram]  
+## Sequence Diagram
   This diagram illustrates the most complex core logic flow of the system during autonomous operation.
 
 ```mermaid
@@ -312,7 +312,7 @@ sequenceDiagram
     end
 ```
 
-- [Packages Overview]  
+## Packages Overview
   This diagram provides a high-level overview of the project packages and their primary responsibilities and scripts.
 This also display APP-package relation.
 
@@ -452,7 +452,7 @@ Important resources:
     end
 ```
 
-- [Nodes Overview]  
+## Nodes Overview 
 This diagram provides a simplified ROS2 node graph, highlighting the flow of information between the nodes responsible for sensing, localization, perception, autonomous behaviors, and vehicle control.
 
 | Color     | Package              |
