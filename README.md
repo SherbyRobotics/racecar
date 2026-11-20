@@ -126,3 +126,52 @@ Low-level Mode | Function
 2|Closed-loop velocity (based on wheel-encoder feedback)
 2|Closed-loop position (based on wheel-encoder feedback)
 4|Reset encoder command
+
+
+# Architecture Documentation
+
+This section describes the architecture of the racecar system.
+
+## Overview
+
+The system is built using a modular ROS2 architecture that supports both:
+
+- Simulation (Gazebo)
+- Real vehicle hardware (Racecar)
+
+The same control flow is reused for both environments.
+
+---
+
+## Architecture Diagrams
+
+- [System Context](context.md)  
+  High-level view of how the system interacts with users and external systems.
+
+```mermaid
+
+flowchart LR
+
+    User[User]
+
+    subgraph Input [Input Interfaces]
+        Control["(Joystick / Web Interface)"]
+    end
+
+    subgraph Core [ROS2 System]
+        ROS[ROS2 Nodes]
+    end
+
+    subgraph Execution [Execution Systems]
+        Gazebo["Simulation (Gazebo)"]
+        Hardware[Racecar]
+    end
+
+    User --> Control
+    Control --> ROS
+    ROS --> Gazebo
+    ROS --> Hardware
+
+
+
+
