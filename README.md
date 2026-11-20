@@ -39,6 +39,7 @@ To be able to test our code, there are a few requirements.
 
 ### Documentation
 
+* [Architecture Diagrams](doc/architecture/README.md#architecture-diagram)
 * [Hardware Connections](doc/README.md#hardware-connections)
 * [USB Hub woes](doc/README.md#usb-hub-woes)
 * [Steering Offset](doc/README.md#steering-offset)
@@ -125,3 +126,463 @@ Low-level Mode | Function
 2|Closed-loop velocity (based on wheel-encoder feedback)
 3|Closed-loop position (based on wheel-encoder feedback)
 4|Reset encoder command
+
+
+# Architecture Documentation
+
+This section describes the architecture of the racecar system.
+
+## Overview
+
+The system is built using a modular ROS2 architecture that supports both:
+
+- Simulation (Gazebo)
+- Real vehicle hardware (Racecar)
+
+The same control flow is reused for both environments.
+
+---
+
+# Architecture Diagrams
+
+## System Context  
+  This diagram shows how the system interacts with external actors such as the user and the simulation environment.
+
+```mermaid
+
+flowchart LR
+
+    User[User]
+
+    subgraph Input [Input Interfaces]
+        Control["(Joystick / Web Interface)"]
+    end
+
+    subgraph Core [ROS2 System]
+        ROS[ROS2 Nodes]
+    end
+
+    subgraph Execution [Execution Systems]
+        Gazebo["Simulation (Gazebo)"]
+        Hardware[Racecar]
+    end
+
+    User --> Control
+    Control --> ROS
+    ROS --> Gazebo
+    ROS --> Hardware
+
+```
+
+## Component Map  
+  This diagram shows the relationship between the major modules of the system.
+  
+```mermaid
+
+flowchart LR
+
+    User[User]
+
+%% --------------------
+%% INPUT INTERFACES
+%% --------------------
+    subgraph Input [Input Interfaces]
+        Control["(Joystick / Web Interface)"]
+    end
+
+%% --------------------
+%% ROS SYSTEM
+%% --------------------
+    subgraph ROS [ROS2 System]
+        direction LR
+%% Control (grouped)
+    subgraph Controls [Arduino Motor Controls]
+        direction LR
+        SpeedControl[SpeedControl]
+        PositionControl[PositionControl]
+        Openloop[Openloop]
+    end
+
+%% Perception
+        subgraph Perception [Perception]
+            Lidar[Lidar]
+            Camera[Camera]
+        end
+
+%% Odometry / state
+        subgraph State [Odometry]
+            direction LR
+            IMU[IMU]
+            Encoder[Wheel Encoder]
+            Steering[Steering Angle]
+        end
+
+%% Navigation / decision
+    subgraph Navigation [Navigation Algorithms]
+        direction LR
+        SLAM[SLAM]
+        Blob[Blob Detection]
+        Brushfire[Brushfire]
+        Autopilot[Autopilot]
+    end
+
+end
+
+%% --------------------
+%% EXECUTION
+%% --------------------
+    subgraph Execution [Execution Systems]
+        direction LR
+        Racecar[Racecar]
+        Gazebo[Gazebo Simulation]
+    end
+%% --------------------
+%% MONITORING INTERFACES
+%% --------------------
+
+    subgraph Monitoring [Monitoring and Tools]
+        direction LR
+        RViz[RViz]
+        RQt[RQt]
+        ROS2Bag[ROS2Bag]
+    end
+
+    ROS --> Monitoring
+
+%% --------------------
+%% FLOW
+%% --------------------
+
+%% Inputs into system
+    User --> Input
+    Input --> ROS
+
+%% Sensor pipeline
+    State --> Navigation
+    State --> Controls
+    Perception --> Navigation
+
+
+%% Navigation feeds control
+    Navigation --> Controls
+
+%% Brushfire separate (map-level)
+
+%% Control outputs
+    ROS --> Execution
+```
+
+## Sequence Diagram
+  This diagram illustrates the most complex core logic flow of the system during autonomous operation.
+
+```mermaid
+sequenceDiagram
+
+    participant Sensors
+    participant ROS2
+    participant Navigation as Navigation and SLAM
+    participant Blob as Blob Detection
+    participant Autopilot
+    participant Arduino
+
+    %% Initialization
+    ROS2->>Navigation: load map and initialize path
+
+    %% Continuous loop
+    loop Autonomous Navigation
+
+        Sensors->>ROS2: publish sensor data (lidar, camera, imu, encoder)
+
+        %% Localization and navigation
+        ROS2->>Navigation: send lidar and odometry
+        Navigation->>ROS2: position estimate
+
+        %% Blob detection
+        ROS2->>Blob: send lidar and camera data
+        Blob->>ROS2: detected balloons
+
+        %% Autopilot (reactive wall avoidance)
+        ROS2->>Autopilot: send lidar data
+        Autopilot->>ROS2: generate steering and speed commands
+
+        %% Execution
+        ROS2->>Arduino: send control commands
+        Arduino-->>ROS2: odometry feedback
+
+    end
+```
+
+## Packages Overview
+  This diagram provides a high-level overview of the project packages and their primary responsibilities and scripts.
+This also display APP-package relation.
+
+```mermaid
+flowchart TB
+
+    %% ======================
+    %% FOUNDATION
+    %% ======================
+
+    subgraph Foundation["Foundation"]
+        direction LR
+
+        subgraph Beacon["racecar_beacon (APP1)"]
+            BC["Introduces ROS2 distributed systems concepts, including remote communication, monitoring and network-based data exchange.
+
+Important files:
+- remote_client.py
+- ros_monitor.py
+- vehicle_tracker.py"]
+        end
+
+        subgraph Bringup["racecar_bringup (APP1 to APP5)"]
+            B["Contains the launch files and integration nodes used to start the different laboratories and system configurations.
+
+Important files:
+- bringup.launch.py
+- autopilot.launch.py
+- teleop.launch.py
+- rviz.launch.py
+- cmd_vel_arbitration.py
+- arduino_sensors.py"]
+        end
+    end
+
+    %% ======================
+    %% USER CONTROL
+    %% ======================
+
+    subgraph UserControl["User Control"]
+        direction LR
+
+        subgraph Teleop["racecar_teleop (APP2 to APP5)"]
+            T["Allows manual control of the racecar using a joystick interface.
+
+Important files:
+- slash_teleop.py"]
+        end
+
+        subgraph Web["racecar_web_interface (APP3)"]
+            W["Provides a browser-based control interface for the racecar.
+
+Important files:
+- index.html
+- links.html
+- virtualjoystick.js
+- roslib.min.js"]
+        end
+    end
+
+    %% ======================
+    %% AUTONOMOUS FUNCTIONS
+    %% ======================
+
+    subgraph Autonomy["Autonomous Driving"]
+        direction LR
+
+        subgraph Navigation["racecar_navigation (APP5)"]
+            N["Provides localization, filtering and navigation capabilities used throughout the project.
+
+Important files:
+- slam.launch.py
+- navigation.launch.py
+- navigation_stack.launch.py
+- dual_ekf_params.yaml"]
+        end
+
+        subgraph Behaviors["racecar_behaviors (APP5)"]
+            BH["Implements perception and navigation algorithms such as blob detection, path following and brushfire analysis.
+
+Important files:
+- blob_detector.py
+- path_following.py
+- labo_brushfire.py
+- obstacle_detector.py
+- laserscan_to_pointcloud.py
+- libbehaviors.py"]
+        end
+
+        subgraph Autopilot["racecar_autopilot (APP4)"]
+            A["Implements autonomous vehicle control using LiDAR-based wall following and steering control.
+
+Important files:
+- wall_estimator.py
+- slash_controller.py"]
+        end
+    end
+
+    %% ======================
+    %% HARDWARE / SIMULATION
+    %% ======================
+
+    subgraph Platform["Hardware and Simulation"]
+        direction LR
+
+        subgraph Serial["racecar_serial (APP2)"]
+            S["Handles communication between ROS2 and the Arduino controller.
+
+Important files:
+- libserial
+- pb2roscpp"]
+        end
+
+        subgraph Arduino["racecar_arduino (APP2)"]
+            AR["Contains the embedded firmware responsible for motor control and sensor acquisition.
+
+Important files:
+- main.cpp
+- PBUtils.cpp"]
+        end
+
+    subgraph Gazebo["racecar_gazebo (APP5)"]
+        G["Provides the simulation environment used to test algorithms before deploying them on the physical vehicle.
+
+Important resources:
+- gazebo_control.launch.py
+- simulation.launch.py"]
+    end
+
+    subgraph Description["racecar_description"]
+        D["Stores the robot model, configuration files, and hardware descriptions used by ROS2 and Gazebo.
+
+    Important resources:
+    - URDF/Xacro files
+    - robot configuration"]
+        end
+    end
+```
+
+## Nodes Overview 
+This diagram provides a simplified ROS2 node graph, highlighting the flow of information between the nodes responsible for sensing, localization, perception, autonomous behaviors, and vehicle control.
+
+| Color     | Package              |
+| --------- | -------------------- |
+| 🔵 Blue   | `racecar_teleop`     |
+| 🟢 Green  | `racecar_navigation` |
+| 🟠 Orange | `racecar_behaviors`  |
+| 🔴 Red    | `racecar_autopilot`  |
+| 🟣 Purple | `racecar_bringup`    |
+| 🟡 Yellow | `racecar_serial`     |
+| ⚪ Gray    | `External packages`   |
+
+
+```mermaid
+
+flowchart LR
+
+    Joy["joy_node<br>Reads joystick input"]
+
+    Teleop["slash_teleop<br>Converts joystick input to driving commands"]
+
+    Lidar["rplidar<br>Publishes LiDAR scans"]
+
+    Camera["camera<br>Publishes camera images"]
+
+    IMU["imu_filter_madgwick<br>Publishes filtered IMU data"]
+
+    Odom["arduino_sensors<br>Publishes vehicle odometry"]
+
+    EKF["Kalman Filter<br>Fuses IMU and odometry"]
+
+    RTABMap["rtabmap<br>Performs SLAM and localization"]
+
+    Nav2["navigation_stack<br>Plans navigation paths"]
+
+    Path["path_following<br>Follows planned trajectories"]
+
+    Obstacle["obstacle_detector<br>Detects nearby obstacles"]
+
+    ScanCloud["laserscan_to_pointcloud<br>Converts scan to point cloud"]
+
+    Depth["pointcloud_to_depthimage<br>Generates depth image"]
+
+    Blob["blob_detector<br>Detects colored balloons"]
+
+    WallEstimator["wall_estimator<br>Estimates wall position"]
+
+    Controller["slash_controller<br>Generates steering commands"]
+
+    Arbitration["cmd_vel_arbitration<br>Selects active command source"]
+
+    Arduino["pb2roscpp<br>Bridges ROS2 and Arduino"]
+
+    Joy -- joy --> Teleop
+
+    %% LOCALIZATION
+
+    IMU -- racecar/imu --> EKF
+
+    Odom -- racecar/odom --> EKF
+
+    EKF -- odom/filtered --> RTABMap
+
+    Lidar -- racecar/scan --> RTABMap
+
+    RTABMap -- map --> Nav2
+
+    %% NAVIGATION
+
+    Nav2 -- navigation goals --> Path
+
+    Lidar -- racecar/scan --> Path
+
+    Odom -- odom/filtered --> Path
+
+    %% OBSTACLE DETECTION
+
+    Lidar -- racecar/scan --> Obstacle
+
+    %% BLOB DETECTION
+
+    Camera -- racecar/camera --> Blob
+
+    Camera -- camera_info --> Blob
+
+    Lidar -- racecar/scan --> ScanCloud
+
+    ScanCloud -- scan_cloud --> Depth
+
+    Depth -- depth image --> Blob
+
+    %% AUTOPILOT
+
+    Lidar -- racecar/scan --> WallEstimator
+
+    WallEstimator -- wall estimate --> Controller
+
+    %% COMMAND SOURCES
+
+    Teleop -- cmd_vel_abtr_0 --> Arbitration
+
+    Obstacle -- cmd_vel_abtr_1 --> Arbitration
+
+    Path -- cmd_vel_abtr_5 --> Arbitration
+
+    Controller -- ctl_ref --> Arbitration
+
+    %% VEHICLE
+
+    Arbitration -- cmd_vel --> Arduino
+
+    %% STYLES
+
+    classDef teleop fill:#dbeafe,stroke:#2563eb,color:#000;
+    classDef navigation fill:#dcfce7,stroke:#16a34a,color:#000;
+    classDef behaviors fill:#fed7aa,stroke:#ea580c,color:#000;
+    classDef autopilot fill:#fecaca,stroke:#dc2626,color:#000;
+    classDef bringup fill:#e9d5ff,stroke:#9333ea,color:#000;
+    classDef serial fill:#fde68a,stroke:#ca8a04,color:#000;
+    classDef external fill:#f3f4f6,stroke:#6b7280,color:#000;
+
+    class Joy,Teleop teleop;
+    class EKF,RTABMap,Nav2 navigation;
+    class Path,Obstacle,ScanCloud,Blob behaviors;
+    class WallEstimator,Controller autopilot;
+    class Odom,Arbitration bringup;
+    class Arduino serial;
+    class Lidar,Camera,IMU,Depth external;
+
+```
+
+
+
