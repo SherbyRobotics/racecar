@@ -172,6 +172,8 @@ flowchart LR
     ROS --> Gazebo
     ROS --> Hardware
 
+```
+
 - [Component Map](components.md)  
   Internal structure of the system and relationships between modules.
   
